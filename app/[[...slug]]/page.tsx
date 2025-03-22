@@ -47,7 +47,7 @@ export function generateStaticParams() {
 
 export default async function Page({ params }: Props) {
   const slug = nextSlugToWpSlug((await params).slug);
-  console.log('slug:', slug);
+
   const { contentNode } = await fetchGraphQL<{ contentNode: ContentNode }>(
     print(ContentInfoQuery),
     {

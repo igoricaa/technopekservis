@@ -11,8 +11,6 @@ const ProductPage = async () => {
     print(getAllProductsQuery)
   );
 
-  console.log(productsData);
-
   if (
     !productsData ||
     !productsData.products ||

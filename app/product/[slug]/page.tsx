@@ -25,8 +25,6 @@ const ProductPage = async ({
     slug: productData.product.productCategories?.nodes[0]?.slug || '',
   });
 
-  console.log('TEST:', productCategoryData);
-
   const product = productData.product;
   const productCategory = productCategoryData.productCategory;
 

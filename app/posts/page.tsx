@@ -9,8 +9,6 @@ const PostsPage = async () => {
     print(getAllPostsQuery)
   );
 
-  console.log(postsData);
-
   if (!postsData || !postsData.posts || postsData.posts.nodes.length === 0) {
     return <div>No posts found</div>;
   }
