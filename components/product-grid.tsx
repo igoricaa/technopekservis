@@ -20,7 +20,7 @@ const getProducts = async () => {
   return productsData.products.nodes;
 };
 
-const ProductListSection = ({ className }: { className?: string }) => {
+const ProductGridSection = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
@@ -28,16 +28,16 @@ const ProductListSection = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <Suspense fallback={<ProductListSkeleton />}>
-        <ProductList />
+      <Suspense fallback={<ProductGridSkeleton />}>
+        <ProductGrid />
       </Suspense>
     </div>
   );
 };
 
-export default ProductListSection;
+export default ProductGridSection;
 
-const ProductList = async () => {
+const ProductGrid = async () => {
   const products: Product[] = await getProducts();
 
   if (!products || products.length === 0) {
@@ -45,6 +45,26 @@ const ProductList = async () => {
   }
 
   return products.map((product: Product) => (
+    <ProductCard key={product.databaseId} product={product} />
+  ));
+};
+
+const ProductGridSkeleton = () => {
+  return [...Array(12)].map((_, index) => (
+    <article
+      key={index}
+      className='col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl animate-pulse'
+    >
+      <div className='relative w-full aspect-square overflow-hidden bg-gray-200' />
+      <div className='h-4 w-24 bg-gray-200 rounded mt-4' />
+      <div className='h-8 w-3/4 bg-gray-200 rounded mt-2' />
+      <div className='h-6 w-32 bg-gray-200 rounded mt-4' />
+    </article>
+  ));
+};
+
+const ProductCard = ({ product }: { product: Product }) => {
+  return (
     <article
       key={product.databaseId}
       className='col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl'
@@ -80,19 +100,5 @@ const ProductList = async () => {
         </Button>
       </Link>
     </article>
-  ));
-};
-
-const ProductListSkeleton = () => {
-  return [...Array(12)].map((_, index) => (
-    <article
-      key={index}
-      className='col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl animate-pulse'
-    >
-      <div className='relative w-full aspect-square overflow-hidden bg-gray-200' />
-      <div className='h-4 w-24 bg-gray-200 rounded mt-4' />
-      <div className='h-8 w-3/4 bg-gray-200 rounded mt-2' />
-      <div className='h-6 w-32 bg-gray-200 rounded mt-4' />
-    </article>
-  ));
+  );
 };

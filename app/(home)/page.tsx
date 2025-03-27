@@ -7,7 +7,7 @@ import { ContentNode } from '@/gql/graphql';
 import { nextSlugToWpSlug } from '@/utils/next-slug-to-wp-slug';
 import { SeoQuery } from '@/queries/general/seo-query';
 import Hero from '@/components/hero/hero';
-import ProductListSection from '@/components/product-list';
+import ProductGridSection from '@/components/product-grid';
 import Image from 'next/image';
 
 import Link from 'next/link';
@@ -58,7 +58,7 @@ export default async function Home({ params }: Props) {
       <Hero />
       <section className='max-w-7xl mx-auto px-side py-20'>
         <h2 className='text-5xl font-bold'>Izabrani proizvodi</h2>
-        <ProductListSection className='mt-16' />
+        <ProductGridSection className='mt-16' />
       </section>
 
       <section className='max-w-7xl mx-auto px-side py-20'>
