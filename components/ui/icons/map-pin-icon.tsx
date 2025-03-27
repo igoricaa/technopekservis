@@ -2,13 +2,15 @@ import { cn } from '@/lib/utils';
 
 const MapPinIcon: React.FC<React.SVGProps<SVGElement>> = ({
   className,
-  fill = 'currentColor',
+  ...props
+}: {
+  className?: string;
 }) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     viewBox='0 0 24 24'
-    fill={fill}
     className={cn('size-6', className)}
+    {...props}
   >
     <path
       fillRule='evenodd'

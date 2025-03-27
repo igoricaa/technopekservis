@@ -1,23 +1,9 @@
 import Link from 'next/link';
-import { print } from 'graphql/language/printer';
-import { MenuItem, RootQueryToMenuItemConnection } from '@/gql/graphql';
-import { fetchGraphQL } from '@/utils/fetch-graphql';
-import { getMenuQuery } from '@/queries/menu-query';
-
-async function getData() {
-  const { menuItems } = await fetchGraphQL<{
-    menuItems: RootQueryToMenuItemConnection;
-  }>(print(getMenuQuery));
-
-  if (menuItems === null) {
-    throw new Error('Failed to fetch data');
-  }
-
-  return menuItems;
-}
+import { MenuItem } from '@/gql/graphql';
+import { getMenuItems } from '@/queries/menu-query';
 
 export default async function Navigation() {
-  const menuItems = await getData();
+  const menuItems = await getMenuItems();
 
   return (
     <nav
@@ -26,7 +12,7 @@ export default async function Navigation() {
       itemScope
       itemType='http://schema.org/SiteNavigationElement'
     >
-      {menuItems.nodes.map((item: MenuItem, index: number) => {
+      {menuItems.map((item: MenuItem, index: number) => {
         if (!item.uri) return null;
 
         return (
