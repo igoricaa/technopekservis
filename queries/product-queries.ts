@@ -22,6 +22,22 @@ export const getAllProductsQuery = gql`
             }
           }
         }
+        productCategories {
+          nodes {
+            databaseId
+            slug
+            name
+            uri
+          }
+        }
+        productAttributes {
+          nodes {
+            databaseId
+            slug
+            name
+            uri
+          }
+        }
       }
     }
   }
@@ -47,6 +63,14 @@ export const getProductBySlugQuery = gql`
         }
       }
       productCategories {
+        nodes {
+          databaseId
+          slug
+          name
+          uri
+        }
+      }
+      productAttributes {
         nodes {
           databaseId
           slug

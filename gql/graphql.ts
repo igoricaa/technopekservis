@@ -1484,6 +1484,12 @@ export enum ContentTypesOfPostFormatEnum {
   Post = 'POST'
 }
 
+/** Allowed Content Types of the ProductAttribute taxonomy. */
+export enum ContentTypesOfProductAttributeEnum {
+  /** The Type of Content object */
+  Product = 'PRODUCT'
+}
+
 /** Allowed Content Types of the ProductCategory taxonomy. */
 export enum ContentTypesOfProductCategoryEnum {
   /** The Type of Content object */
@@ -1706,6 +1712,29 @@ export type CreatePostPayload = {
   post?: Maybe<Post>;
 };
 
+/** Input for the createProductAttribute mutation. */
+export type CreateProductAttributeInput = {
+  /** The slug that the product_attribute will be an alias of */
+  aliasOf?: InputMaybe<Scalars['String']['input']>;
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The description of the product_attribute object */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The name of the product_attribute object to mutate */
+  name: Scalars['String']['input'];
+  /** If this argument exists then the slug will be checked to see if it is not an existing valid term. If that check succeeds (it is not a valid term), then it is added and the term id is given. If it fails, then a check is made to whether the taxonomy is hierarchical and the parent argument is not empty. If the second check succeeds, the term will be inserted and the term id will be given. If the slug argument is empty, then it will be calculated from the term name. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the createProductAttribute mutation. */
+export type CreateProductAttributePayload = {
+  __typename?: 'CreateProductAttributePayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The created product_attribute */
+  productAttribute?: Maybe<ProductAttribute>;
+};
+
 /** Input for the createProductCategory mutation. */
 export type CreateProductCategoryInput = {
   /** The slug that the product_category will be an alias of */
@@ -1747,6 +1776,8 @@ export type CreateProductInput = {
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The password used to protect the content of the object */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the Product and ProductAttributes */
+  productAttributes?: InputMaybe<ProductProductAttributesInput>;
   /** Set connections between the Product and ProductCategories */
   productCategories?: InputMaybe<ProductProductCategoriesInput>;
   /** The slug of the object */
@@ -2019,6 +2050,25 @@ export type DeletePostPayload = {
   deletedId?: Maybe<Scalars['ID']['output']>;
   /** The object before it was deleted */
   post?: Maybe<Post>;
+};
+
+/** Input for the deleteProductAttribute mutation. */
+export type DeleteProductAttributeInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the ProductAttribute to delete */
+  id: Scalars['ID']['input'];
+};
+
+/** The payload for the deleteProductAttribute mutation. */
+export type DeleteProductAttributePayload = {
+  __typename?: 'DeleteProductAttributePayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The ID of the deleted object */
+  deletedId?: Maybe<Scalars['ID']['output']>;
+  /** The deleted term object */
+  productAttribute?: Maybe<ProductAttribute>;
 };
 
 /** Input for the deleteProductCategory mutation. */
@@ -3364,7 +3414,7 @@ export enum MenuItemNodeIdTypeEnum {
 }
 
 /** Deprecated in favor of MenuItemLinkeable Interface */
-export type MenuItemObjectUnion = Category | Page | Post | Product | ProductCategory | Tag;
+export type MenuItemObjectUnion = Category | Page | Post | Product | ProductAttribute | ProductCategory | Tag;
 
 /** Connection between the MenuItem type and the Menu type */
 export type MenuItemToMenuConnectionEdge = Edge & MenuConnectionEdge & OneToOneConnection & {
@@ -3636,6 +3686,8 @@ export enum MimeTypeEnum {
   ImageJpeg = 'IMAGE_JPEG',
   /** image/png mime type. */
   ImagePng = 'IMAGE_PNG',
+  /** image/svg+xml mime type. */
+  ImageSvgXml = 'IMAGE_SVG_XML',
   /** image/tiff mime type. */
   ImageTiff = 'IMAGE_TIFF',
   /** image/webp mime type. */
@@ -5856,6 +5908,8 @@ export type Product = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
   previewRevisionDatabaseId?: Maybe<Scalars['Int']['output']>;
   /** Whether the object is a node in the preview state */
   previewRevisionId?: Maybe<Scalars['ID']['output']>;
+  /** Connection between the Product type and the ProductAttribute type */
+  productAttributes?: Maybe<ProductToProductAttributeConnection>;
   /** Connection between the Product type and the ProductCategory type */
   productCategories?: Maybe<ProductToProductCategoryConnection>;
   /** Fields of the ProductDetails ACF Field Group */
@@ -5922,6 +5976,16 @@ export type ProductExcerptArgs = {
 
 
 /** The Product type */
+export type ProductProductAttributesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductToProductAttributeConnectionWhereArgs>;
+};
+
+
+/** The Product type */
 export type ProductProductCategoriesArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -5944,6 +6008,303 @@ export type ProductTermsArgs = {
 /** The Product type */
 export type ProductTitleArgs = {
   format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+/** The ProductAttribute type */
+export type ProductAttribute = DatabaseIdentifier & MenuItemLinkable & Node & TermNode & UniformResourceIdentifiable & {
+  __typename?: 'ProductAttribute';
+  /** Connection between the ProductAttribute type and the ContentNode type */
+  contentNodes?: Maybe<ProductAttributeToContentNodeConnection>;
+  /** The number of objects connected to the object */
+  count?: Maybe<Scalars['Int']['output']>;
+  /** The unique identifier stored in the database */
+  databaseId: Scalars['Int']['output'];
+  /** The description of the object */
+  description?: Maybe<Scalars['String']['output']>;
+  /** Connection between the TermNode type and the EnqueuedScript type */
+  enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
+  /** Connection between the TermNode type and the EnqueuedStylesheet type */
+  enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
+  /** The globally unique ID for the object */
+  id: Scalars['ID']['output'];
+  /** Whether the node is a Comment */
+  isComment: Scalars['Boolean']['output'];
+  /** Whether the node is a Content Node */
+  isContentNode: Scalars['Boolean']['output'];
+  /** Whether the node represents the front page. */
+  isFrontPage: Scalars['Boolean']['output'];
+  /** Whether  the node represents the blog page. */
+  isPostsPage: Scalars['Boolean']['output'];
+  /** Whether the object is restricted from the current viewer */
+  isRestricted?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the node is a Term */
+  isTermNode: Scalars['Boolean']['output'];
+  /** The link to the term */
+  link?: Maybe<Scalars['String']['output']>;
+  /** The human friendly name of the object. */
+  name?: Maybe<Scalars['String']['output']>;
+  /**
+   * The id field matches the WP_Post-&gt;ID field.
+   * @deprecated Deprecated in favor of databaseId
+   */
+  productAttributeId?: Maybe<Scalars['Int']['output']>;
+  /** Connection between the ProductAttribute type and the Product type */
+  products?: Maybe<ProductAttributeToProductConnection>;
+  /** The Yoast SEO data of the Product Attributes taxonomy. */
+  seo?: Maybe<TaxonomySeo>;
+  /** An alphanumeric identifier for the object unique to its type. */
+  slug?: Maybe<Scalars['String']['output']>;
+  /** Connection between the ProductAttribute type and the Taxonomy type */
+  taxonomy?: Maybe<ProductAttributeToTaxonomyConnectionEdge>;
+  /** The name of the taxonomy that the object is associated with */
+  taxonomyName?: Maybe<Scalars['String']['output']>;
+  /** The ID of the term group that this term object belongs to */
+  termGroupId?: Maybe<Scalars['Int']['output']>;
+  /** The taxonomy ID that the object is associated with */
+  termTaxonomyId?: Maybe<Scalars['Int']['output']>;
+  /** The unique resource identifier path */
+  uri?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** The ProductAttribute type */
+export type ProductAttributeContentNodesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductAttributeToContentNodeConnectionWhereArgs>;
+};
+
+
+/** The ProductAttribute type */
+export type ProductAttributeEnqueuedScriptsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The ProductAttribute type */
+export type ProductAttributeEnqueuedStylesheetsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The ProductAttribute type */
+export type ProductAttributeProductsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductAttributeToProductConnectionWhereArgs>;
+};
+
+/** Connection to ProductAttribute Nodes */
+export type ProductAttributeConnection = {
+  /** A list of edges (relational context) between RootQuery and connected ProductAttribute Nodes */
+  edges: Array<ProductAttributeConnectionEdge>;
+  /** A list of connected ProductAttribute Nodes */
+  nodes: Array<ProductAttribute>;
+  /** Information about pagination in a connection. */
+  pageInfo: ProductAttributeConnectionPageInfo;
+};
+
+/** Edge between a Node and a connected ProductAttribute */
+export type ProductAttributeConnectionEdge = {
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The connected ProductAttribute Node */
+  node: ProductAttribute;
+};
+
+/** Page Info on the connected ProductAttributeConnectionEdge */
+export type ProductAttributeConnectionPageInfo = {
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** The Type of Identifier used to fetch a single resource. Default is ID. */
+export enum ProductAttributeIdType {
+  /** The Database ID for the node */
+  DatabaseId = 'DATABASE_ID',
+  /** The hashed Global ID */
+  Id = 'ID',
+  /** The name of the node */
+  Name = 'NAME',
+  /** Url friendly name of the node */
+  Slug = 'SLUG',
+  /** The URI for the node */
+  Uri = 'URI'
+}
+
+/** Connection between the ProductAttribute type and the ContentNode type */
+export type ProductAttributeToContentNodeConnection = Connection & ContentNodeConnection & {
+  __typename?: 'ProductAttributeToContentNodeConnection';
+  /** Edges for the ProductAttributeToContentNodeConnection connection */
+  edges: Array<ProductAttributeToContentNodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<ContentNode>;
+  /** Information about pagination in a connection. */
+  pageInfo: ProductAttributeToContentNodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type ProductAttributeToContentNodeConnectionEdge = ContentNodeConnectionEdge & Edge & {
+  __typename?: 'ProductAttributeToContentNodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: ContentNode;
+};
+
+/** Page Info on the &quot;ProductAttributeToContentNodeConnection&quot; */
+export type ProductAttributeToContentNodeConnectionPageInfo = ContentNodeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'ProductAttributeToContentNodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the ProductAttributeToContentNodeConnection connection */
+export type ProductAttributeToContentNodeConnectionWhereArgs = {
+  /** The Types of content to filter */
+  contentTypes?: InputMaybe<Array<InputMaybe<ContentTypesOfProductAttributeEnum>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What parameter to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the ProductAttribute type and the Product type */
+export type ProductAttributeToProductConnection = Connection & ProductConnection & {
+  __typename?: 'ProductAttributeToProductConnection';
+  /** Edges for the ProductAttributeToProductConnection connection */
+  edges: Array<ProductAttributeToProductConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Product>;
+  /** Information about pagination in a connection. */
+  pageInfo: ProductAttributeToProductConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type ProductAttributeToProductConnectionEdge = Edge & ProductConnectionEdge & {
+  __typename?: 'ProductAttributeToProductConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Product;
+};
+
+/** Page Info on the &quot;ProductAttributeToProductConnection&quot; */
+export type ProductAttributeToProductConnectionPageInfo = PageInfo & ProductConnectionPageInfo & WpPageInfo & {
+  __typename?: 'ProductAttributeToProductConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the ProductAttributeToProductConnection connection */
+export type ProductAttributeToProductConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What parameter to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the ProductAttribute type and the Taxonomy type */
+export type ProductAttributeToTaxonomyConnectionEdge = Edge & OneToOneConnection & TaxonomyConnectionEdge & {
+  __typename?: 'ProductAttributeToTaxonomyConnectionEdge';
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The node of the connection, without the edges */
+  node: Taxonomy;
 };
 
 /** The ProductCategory type */
@@ -6430,9 +6791,9 @@ export type ProductConnectionPageInfo = {
 /** The &quot;ProductDetails&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
 export type ProductDetails = AcfFieldGroup & AcfFieldGroupFields & ProductDetails_Fields & {
   __typename?: 'ProductDetails';
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDetails&quot; Field Group */
+  /** Field of the &quot;wysiwyg&quot; Field Type added to the schema as part of the &quot;ProductDetails&quot; Field Group */
   advantages?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDetails&quot; Field Group */
+  /** Field of the &quot;wysiwyg&quot; Field Type added to the schema as part of the &quot;ProductDetails&quot; Field Group */
   characteristics?: Maybe<Scalars['String']['output']>;
   /**
    * The name of the field group
@@ -6445,9 +6806,9 @@ export type ProductDetails = AcfFieldGroup & AcfFieldGroupFields & ProductDetail
 
 /** Interface representing fields of the ACF &quot;ProductDetails&quot; Field Group */
 export type ProductDetails_Fields = {
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDetails&quot; Field Group */
+  /** Field of the &quot;wysiwyg&quot; Field Type added to the schema as part of the &quot;ProductDetails&quot; Field Group */
   advantages?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDetails&quot; Field Group */
+  /** Field of the &quot;wysiwyg&quot; Field Type added to the schema as part of the &quot;ProductDetails&quot; Field Group */
   characteristics?: Maybe<Scalars['String']['output']>;
   /**
    * The name of the field group
@@ -6469,6 +6830,26 @@ export enum ProductIdType {
   /** Identify a resource by the URI. */
   Uri = 'URI'
 }
+
+/** Set relationships between the Product to ProductAttributes */
+export type ProductProductAttributesInput = {
+  /** If true, this will append the ProductAttribute to existing related ProductAttributes. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<ProductProductAttributesNodeInput>>>;
+};
+
+/** List of ProductAttributes to connect the Product to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type ProductProductAttributesNodeInput = {
+  /** The description of the ProductAttribute. This field is used to set a description of the ProductAttribute if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the ProductAttribute. If present, this will be used to connect to the Product. If no existing ProductAttribute exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the ProductAttribute. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the ProductAttribute. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
 
 /** Set relationships between the Product to ProductCategories */
 export type ProductProductCategoriesInput = {
@@ -6509,6 +6890,87 @@ export type ProductToPreviewConnectionEdge = Edge & OneToOneConnection & Product
   cursor?: Maybe<Scalars['String']['output']>;
   /** The node of the connection, without the edges */
   node: Product;
+};
+
+/** Connection between the Product type and the ProductAttribute type */
+export type ProductToProductAttributeConnection = Connection & ProductAttributeConnection & {
+  __typename?: 'ProductToProductAttributeConnection';
+  /** Edges for the ProductToProductAttributeConnection connection */
+  edges: Array<ProductToProductAttributeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<ProductAttribute>;
+  /** Information about pagination in a connection. */
+  pageInfo: ProductToProductAttributeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type ProductToProductAttributeConnectionEdge = Edge & ProductAttributeConnectionEdge & {
+  __typename?: 'ProductToProductAttributeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary product_attribute */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: ProductAttribute;
+};
+
+/** Page Info on the &quot;ProductToProductAttributeConnection&quot; */
+export type ProductToProductAttributeConnectionPageInfo = PageInfo & ProductAttributeConnectionPageInfo & WpPageInfo & {
+  __typename?: 'ProductToProductAttributeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the ProductToProductAttributeConnection connection */
+export type ProductToProductAttributeConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Connection between the Product type and the ProductCategory type */
@@ -6860,6 +7322,8 @@ export type RootMutation = {
   createPostFormat?: Maybe<CreatePostFormatPayload>;
   /** The createProduct mutation */
   createProduct?: Maybe<CreateProductPayload>;
+  /** The createProductAttribute mutation */
+  createProductAttribute?: Maybe<CreateProductAttributePayload>;
   /** The createProductCategory mutation */
   createProductCategory?: Maybe<CreateProductCategoryPayload>;
   /** The createTag mutation */
@@ -6880,6 +7344,8 @@ export type RootMutation = {
   deletePostFormat?: Maybe<DeletePostFormatPayload>;
   /** The deleteProduct mutation */
   deleteProduct?: Maybe<DeleteProductPayload>;
+  /** The deleteProductAttribute mutation */
+  deleteProductAttribute?: Maybe<DeleteProductAttributePayload>;
   /** The deleteProductCategory mutation */
   deleteProductCategory?: Maybe<DeleteProductCategoryPayload>;
   /** The deleteTag mutation */
@@ -6914,6 +7380,8 @@ export type RootMutation = {
   updatePostFormat?: Maybe<UpdatePostFormatPayload>;
   /** The updateProduct mutation */
   updateProduct?: Maybe<UpdateProductPayload>;
+  /** The updateProductAttribute mutation */
+  updateProductAttribute?: Maybe<UpdateProductAttributePayload>;
   /** The updateProductCategory mutation */
   updateProductCategory?: Maybe<UpdateProductCategoryPayload>;
   /** The updateSettings mutation */
@@ -6964,6 +7432,12 @@ export type RootMutationCreatePostFormatArgs = {
 /** The root mutation */
 export type RootMutationCreateProductArgs = {
   input: CreateProductInput;
+};
+
+
+/** The root mutation */
+export type RootMutationCreateProductAttributeArgs = {
+  input: CreateProductAttributeInput;
 };
 
 
@@ -7024,6 +7498,12 @@ export type RootMutationDeletePostFormatArgs = {
 /** The root mutation */
 export type RootMutationDeleteProductArgs = {
   input: DeleteProductInput;
+};
+
+
+/** The root mutation */
+export type RootMutationDeleteProductAttributeArgs = {
+  input: DeleteProductAttributeInput;
 };
 
 
@@ -7130,6 +7610,12 @@ export type RootMutationUpdateProductArgs = {
 
 
 /** The root mutation */
+export type RootMutationUpdateProductAttributeArgs = {
+  input: UpdateProductAttributeInput;
+};
+
+
+/** The root mutation */
 export type RootMutationUpdateProductCategoryArgs = {
   input: UpdateProductCategoryInput;
 };
@@ -7226,6 +7712,10 @@ export type RootQuery = {
   posts?: Maybe<RootQueryToPostConnection>;
   /** An object of the Product Type.  */
   product?: Maybe<Product>;
+  /** A 0bject */
+  productAttribute?: Maybe<ProductAttribute>;
+  /** Connection between the RootQuery type and the ProductAttribute type */
+  productAttributes?: Maybe<RootQueryToProductAttributeConnection>;
   /**
    * A Product object
    * @deprecated Deprecated in favor of using the single entry point for this type with ID and IDType fields. For example, instead of postBy( id: &quot;&quot; ), use post(id: &quot;&quot; idType: &quot;&quot;)
@@ -7511,6 +8001,23 @@ export type RootQueryProductArgs = {
   asPreview?: InputMaybe<Scalars['Boolean']['input']>;
   id: Scalars['ID']['input'];
   idType?: InputMaybe<ProductIdType>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryProductAttributeArgs = {
+  id: Scalars['ID']['input'];
+  idType?: InputMaybe<ProductAttributeIdType>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryProductAttributesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RootQueryToProductAttributeConnectionWhereArgs>;
 };
 
 
@@ -8510,6 +9017,85 @@ export type RootQueryToPostFormatConnectionWhereArgs = {
   updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** Connection between the RootQuery type and the ProductAttribute type */
+export type RootQueryToProductAttributeConnection = Connection & ProductAttributeConnection & {
+  __typename?: 'RootQueryToProductAttributeConnection';
+  /** Edges for the RootQueryToProductAttributeConnection connection */
+  edges: Array<RootQueryToProductAttributeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<ProductAttribute>;
+  /** Information about pagination in a connection. */
+  pageInfo: RootQueryToProductAttributeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type RootQueryToProductAttributeConnectionEdge = Edge & ProductAttributeConnectionEdge & {
+  __typename?: 'RootQueryToProductAttributeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: ProductAttribute;
+};
+
+/** Page Info on the &quot;RootQueryToProductAttributeConnection&quot; */
+export type RootQueryToProductAttributeConnectionPageInfo = PageInfo & ProductAttributeConnectionPageInfo & WpPageInfo & {
+  __typename?: 'RootQueryToProductAttributeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the RootQueryToProductAttributeConnection connection */
+export type RootQueryToProductAttributeConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 /** Connection between the RootQuery type and the ProductCategory type */
 export type RootQueryToProductCategoryConnection = Connection & ProductCategoryConnection & {
   __typename?: 'RootQueryToProductCategoryConnection';
@@ -9332,6 +9918,7 @@ export type SeoTaxonomyTypes = {
   __typename?: 'SEOTaxonomyTypes';
   category?: Maybe<SeoTaxonomyType>;
   postFormat?: Maybe<SeoTaxonomyType>;
+  productAttribute?: Maybe<SeoTaxonomyType>;
   productCategory?: Maybe<SeoTaxonomyType>;
   tag?: Maybe<SeoTaxonomyType>;
 };
@@ -9894,6 +10481,8 @@ export enum TaxonomyEnum {
   Category = 'CATEGORY',
   /** Taxonomy enum post_format */
   Postformat = 'POSTFORMAT',
+  /** Taxonomy enum product_attribute */
+  Productattribute = 'PRODUCTATTRIBUTE',
   /** Taxonomy enum product_category */
   Productcategory = 'PRODUCTCATEGORY',
   /** Taxonomy enum post_tag */
@@ -10503,6 +11092,31 @@ export type UpdatePostPayload = {
   post?: Maybe<Post>;
 };
 
+/** Input for the updateProductAttribute mutation. */
+export type UpdateProductAttributeInput = {
+  /** The slug that the product_attribute will be an alias of */
+  aliasOf?: InputMaybe<Scalars['String']['input']>;
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The description of the product_attribute object */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the ProductAttribute object to update */
+  id: Scalars['ID']['input'];
+  /** The name of the product_attribute object to mutate */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** If this argument exists then the slug will be checked to see if it is not an existing valid term. If that check succeeds (it is not a valid term), then it is added and the term id is given. If it fails, then a check is made to whether the taxonomy is hierarchical and the parent argument is not empty. If the second check succeeds, the term will be inserted and the term id will be given. If the slug argument is empty, then it will be calculated from the term name. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the updateProductAttribute mutation. */
+export type UpdateProductAttributePayload = {
+  __typename?: 'UpdateProductAttributePayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The created product_attribute */
+  productAttribute?: Maybe<ProductAttribute>;
+};
+
 /** Input for the updateProductCategory mutation. */
 export type UpdateProductCategoryInput = {
   /** The slug that the product_category will be an alias of */
@@ -10550,6 +11164,8 @@ export type UpdateProductInput = {
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The password used to protect the content of the object */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the Product and ProductAttributes */
+  productAttributes?: InputMaybe<ProductProductAttributesInput>;
   /** Set connections between the Product and ProductCategories */
   productCategories?: InputMaybe<ProductProductCategoriesInput>;
   /** The slug of the object */
