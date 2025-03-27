@@ -11,13 +11,13 @@ const InfiniteSlider = async ({
   return (
     <section
       className={cn(
-        'py-12 sm:py-20 lg:py-0 w-full overflow-hidden flex items-center justify-center',
+        'py-12 sm:py-20 lg:py-0 w-full overflow-hidden flex items-center justify-center bg-black ',
         className
       )}
     >
       <div
         className={cn(
-          'flex justify-center items-center gap-16 sm:gap-20 lg:gap-28 w-fit h-48 bg-black animate-slide hover:pause-animation [&:hover>*]:opacity-30 [&>*:hover]:opacity-100'
+          'flex justify-center items-center gap-16 sm:gap-20 lg:gap-28 w-fit h-48 animate-slide hover:pause-animation [&:hover>*]:opacity-30 [&>*:hover]:opacity-100'
         )}
       >
         {[...data, ...data, ...data, ...data, ...data, ...data, ...data].map(
