@@ -1,23 +1,20 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { print } from 'graphql/language/printer';
-
 import { setSeoData } from '@/utils/seo-data';
-
 import { fetchGraphQL } from '@/utils/fetch-graphql';
-import { ContentInfoQuery } from '@/queries/general/content-info-query';
 import { ContentNode } from '@/gql/graphql';
-import PageTemplate from '@/components/templates/page/page-template';
 import { nextSlugToWpSlug } from '@/utils/next-slug-to-wp-slug';
-import PostTemplate from '@/components/templates/post/post-template';
 import { SeoQuery } from '@/queries/general/seo-query';
 import Hero from '@/components/hero/hero';
 import ProductList from '@/components/product-list';
 import Image from 'next/image';
-import { buttonVariants } from '@/components/ui/button';
+
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import InfiniteSlider from '@/components/infinite-slider';
+import ContactSection from '@/components/contact-section';
+import { buttonVariants } from '@/components/ui/button';
 import { clients } from '@/data';
 
 type Props = {
@@ -49,9 +46,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   } as Metadata;
 }
 
-export function generateStaticParams() {
-  return [];
-}
+// export function generateStaticParams() {
+//   return [];
+// }
 
 export default async function Home({ params }: Props) {
   const slug = nextSlugToWpSlug((await params).slug);
@@ -100,7 +97,10 @@ export default async function Home({ params }: Props) {
           </div>
         </div>
       </section>
+
       <InfiniteSlider data={clients} className='mt-20' />
+
+      <ContactSection className='py-28' />
     </main>
   );
 }
