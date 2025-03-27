@@ -8,21 +8,15 @@ import MapPinIcon from '../ui/icons/map-pin-icon';
 import MailIcon from '../ui/icons/mail-icon';
 import PhoneIcon from '../ui/icons/phone-icon';
 import { cn } from '@/lib/utils';
+import Logo from '../ui/logo';
 
 const Footer = () => {
   return (
     <footer className='pt-20 pb-6 bg-black'>
       <div className='max-w-7xl mx-auto px-side border-b border-white/20 pb-10 flex justify-between gap-10'>
         <div>
-          <div className='relative w-44 aspect-[250/203]'>
-            <Image
-              src='/technopek-servis-logo.webp'
-              alt='Techno Pek Servis'
-              fill
-              sizes='250px'
-              className='object-cover'
-            />
-          </div>
+          <Logo className='w-44' />
+
           <div className='mt-8 space-y-2'>
             <p className='text-xl text-white'>Zapratite nas</p>
             <ContactField

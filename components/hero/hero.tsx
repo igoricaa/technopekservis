@@ -5,10 +5,10 @@ import { cn } from '@/lib/utils';
 
 const Hero = () => {
   return (
-    <section className='relative w-screen h-[50vh] px-side py-12 flex flex-col justify-end'>
+    <section className='relative w-screen h-[60vh] px-side py-12 flex flex-col justify-end'>
       <Image
-        src='/technopek-servis-hero.webp'
-        alt='Technopek Servis - pekarska oprema'
+        src='/techno-pek-servis-hero.webp'
+        alt='Techno PEK Servis - pekarska oprema'
         fill
         priority
         sizes='100vw'

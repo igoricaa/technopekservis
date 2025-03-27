@@ -7,7 +7,7 @@ export default async function Navigation() {
 
   return (
     <nav
-      className=''
+      className='flex items-center gap-6'
       role='navigation'
       itemScope
       itemType='http://schema.org/SiteNavigationElement'
