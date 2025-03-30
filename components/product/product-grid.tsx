@@ -48,8 +48,8 @@ const ProductGrid = async () => {
       (category: any) => category.isPrimary
     )?.node as ProductCategory;
 
-    const categoryHierarchy = getCategoryHierarchy(primaryCategory);
-    const productLink = `/${categoryHierarchy}/${product.slug}`;
+    const { categoryHierarchyPath } = getCategoryHierarchy(primaryCategory);
+    const productLink = `/${categoryHierarchyPath}/${product.slug}`;
 
     return (
       <ProductCard
