@@ -7,7 +7,7 @@ import { ContentNode } from '@/gql/graphql';
 import { nextSlugToWpSlug } from '@/utils/next-slug-to-wp-slug';
 import { SeoQuery } from '@/queries/general/seo-query';
 import Hero from '@/components/hero/hero';
-import ProductGridSection from '@/components/product-grid';
+import { ProductGridSection } from '@/components/product/product-grid';
 import Image from 'next/image';
 
 import Link from 'next/link';

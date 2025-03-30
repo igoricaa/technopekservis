@@ -5,17 +5,12 @@ export const getAllProductCategoriesQuery = gql`
     productCategories {
       edges {
         node {
-          databaseId
           slug
           name
-          uri
-          count
           parent {
             node {
-              databaseId
               name
               slug
-              uri
             }
           }
         }
@@ -27,17 +22,12 @@ export const getAllProductCategoriesQuery = gql`
 export const getProductCategoryBySlugQuery = gql`
   query getProductCategoryBySlug($slug: ID!) {
     productCategory(id: $slug, idType: SLUG) {
-      databaseId
       slug
       name
-      uri
-      count
       parent {
         node {
-          databaseId
           slug
           name
-          uri
         }
       }
     }

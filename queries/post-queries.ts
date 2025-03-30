@@ -19,7 +19,6 @@ export const getAllPostsQuery = gql`
   query getAllPosts {
     posts {
       nodes {
-        id
         slug
         title
         date

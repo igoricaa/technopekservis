@@ -4,9 +4,7 @@ export const getAllProductsQuery = gql`
   query getAllProducts {
     products {
       nodes {
-        databaseId
         slug
-        uri
         title
         featuredImage {
           node {
@@ -22,20 +20,24 @@ export const getAllProductsQuery = gql`
             }
           }
         }
-        productCategories {
-          nodes {
-            databaseId
-            slug
-            name
-            uri
-          }
-        }
         productAttributes {
           nodes {
-            databaseId
             slug
             name
-            uri
+          }
+        }
+        productCategories {
+          edges {
+            isPrimary
+            node {
+              slug
+              name
+              ancestors {
+                nodes {
+                  slug
+                }
+              }
+            }
           }
         }
       }
@@ -63,19 +65,48 @@ export const getProductBySlugQuery = gql`
         }
       }
       productCategories {
-        nodes {
-          databaseId
-          slug
-          name
-          uri
+        edges {
+          isPrimary
+          node {
+            slug
+            name
+            ancestors {
+              nodes {
+                slug
+                name
+              }
+            }
+          }
         }
       }
       productAttributes {
         nodes {
-          databaseId
           slug
           name
-          uri
+        }
+      }
+    }
+  }
+`;
+
+export const getProductsByCategoryQuery = gql`
+  query getProductsByCategory($slug: ID!) {
+    productCategory(id: $slug, idType: SLUG) {
+      slug
+      ancestors {
+        nodes {
+          slug
+        }
+      }
+      products {
+        nodes {
+          slug
+          title
+          featuredImage {
+            node {
+              sourceUrl
+            }
+          }
         }
       }
     }

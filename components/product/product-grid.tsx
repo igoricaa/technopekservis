@@ -1,12 +1,13 @@
-import { Product } from '@/gql/graphql';
+import { Product, ProductCategory } from '@/gql/graphql';
 import { print } from 'graphql';
 import { cn } from '@/lib/utils';
 import { getAllProductsQuery } from '@/queries/product-queries';
 import { fetchGraphQL } from '@/utils/fetch-graphql';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Suspense } from 'react';
+import { getCategoryHierarchy } from '@/utils/utils';
 
 const getProducts = async () => {
   const productsData = await fetchGraphQL<{ products: { nodes: Product[] } }>(
@@ -20,7 +21,7 @@ const getProducts = async () => {
   return productsData.products.nodes;
 };
 
-const ProductGridSection = ({ className }: { className?: string }) => {
+export const ProductGridSection = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
@@ -35,8 +36,6 @@ const ProductGridSection = ({ className }: { className?: string }) => {
   );
 };
 
-export default ProductGridSection;
-
 const ProductGrid = async () => {
   const products: Product[] = await getProducts();
 
@@ -44,9 +43,24 @@ const ProductGrid = async () => {
     return <section>No products found</section>;
   }
 
-  return products.map((product: Product) => (
-    <ProductCard key={product.databaseId} product={product} />
-  ));
+  return products.map((product: Product) => {
+    const primaryCategory = product.productCategories?.edges.find(
+      (category: any) => category.isPrimary
+    )?.node as ProductCategory;
+
+    const categoryHierarchy = getCategoryHierarchy(primaryCategory);
+    const productLink = `/${categoryHierarchy}/${product.slug}`;
+
+    return (
+      <ProductCard
+        key={product.slug}
+        productTitle={product.title || ''}
+        productImage={product.featuredImage?.node?.sourceUrl || ''}
+        primaryCategory={primaryCategory.name || ''}
+        productLink={productLink}
+      />
+    );
+  });
 };
 
 const ProductGridSkeleton = () => {
@@ -63,38 +77,47 @@ const ProductGridSkeleton = () => {
   ));
 };
 
-const ProductCard = ({ product }: { product: Product }) => {
+export const ProductCard = ({
+  productTitle,
+  productImage,
+  primaryCategory,
+  productLink,
+  className,
+}: {
+  productTitle: string;
+  productImage: string;
+  primaryCategory: string;
+  productLink: string;
+  className?: string;
+}) => {
   return (
     <article
-      key={product.databaseId}
-      className='col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl'
+      className={cn(
+        'col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl',
+        className
+      )}
       role='article'
-      aria-label={`Product: ${product.title}`}
+      aria-label={`Product: ${productTitle}`}
     >
-      <Link
-        href={`/products/${product.slug}`}
-        aria-label={`View details for ${product.title}`}
-      >
+      <Link href={productLink} aria-label={`View details for ${productTitle}`}>
         <div className='relative w-full aspect-square overflow-hidden'>
           <Image
-            src={product.featuredImage?.node?.sourceUrl || ''}
-            alt={product.title || 'Product image'}
+            src={productImage}
+            alt={productTitle}
             fill
             sizes='25vw'
             className='object-cover group-hover:scale-110 transition-all duration-300'
             priority={false}
           />
         </div>
-        {product.productCategories?.nodes[0]?.name && (
-          <p className='uppercase text-gray-500'>
-            {product.productCategories.nodes[0].name}
-          </p>
-        )}
-        <h3 className='text-4xl font-bold'>{product.title}</h3>
+
+        <p className='uppercase text-gray-500'>{primaryCategory}</p>
+
+        <h3 className='text-4xl font-bold'>{productTitle}</h3>
         <Button
           variant='textual'
           className='text-accent mt-1 group-hover:after:translate-x-0 group-hover:after:delay-300 group-hover:before:translate-x-full group-hover:before:delay-0'
-          aria-label={`Saznaj više o ${product.title}`}
+          aria-label={`Saznaj više o ${productTitle}`}
         >
           Saznajte više
         </Button>
