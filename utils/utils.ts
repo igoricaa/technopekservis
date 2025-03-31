@@ -31,3 +31,12 @@ export const getCategoryHierarchy = (
 
   return { categoryHierarchyPath, categoryHierarchyNames };
 };
+
+export const sortCategoriesByChildren = (categories: ProductCategory[]) => {
+  return [...categories].sort((a, b) => {
+    const aHasChildren = a.children?.nodes && a.children.nodes.length > 0;
+    const bHasChildren = b.children?.nodes && b.children.nodes.length > 0;
+    if (aHasChildren === bHasChildren) return 0;
+    return aHasChildren ? -1 : 1;
+  });
+};

@@ -5,7 +5,6 @@ import DownloadIcon from '../ui/icons/download-icon';
 
 interface ProductDetailsProps {
   title: string;
-  category: string;
   advantages?: string | null;
   characteristics?: string | null;
   pdfUri?: string | null;
@@ -13,7 +12,6 @@ interface ProductDetailsProps {
 
 export function ProductDetails({
   title,
-  category,
   advantages,
   characteristics,
   pdfUri,
@@ -21,7 +19,6 @@ export function ProductDetails({
   return (
     <div>
       <h1 className='text-6xl font-semibold'>{title}</h1>
-      <h2 className='text-2xl font-semibold'>{category}</h2>
       {advantages && (
         <div className='max-w-none mt-6 space-y-2'>
           <h3 className='text-3xl font-medium'>Prednosti</h3>

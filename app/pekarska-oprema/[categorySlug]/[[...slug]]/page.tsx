@@ -8,7 +8,10 @@ import { print } from 'graphql';
 import { notFound } from 'next/navigation';
 import { ProductImage } from '@/components/product/product-image';
 import { ProductDetails } from '@/components/product/product-details';
-import { ProductCard } from '@/components/product/product-grid';
+import {
+  ProductCard,
+  ProductCardSkeleton,
+} from '@/components/product/product-card';
 import { getCategoryHierarchy } from '@/utils/utils';
 import Link from 'next/link';
 import { Suspense } from 'react';
@@ -81,7 +84,6 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
           <ProductDetails
             title={product.title || ''}
-            category={primaryCategory.name || ''}
             advantages={product.productDetails?.advantages}
             characteristics={product.productDetails?.characteristics}
             pdfUri={product.productDetails?.pdf?.node?.uri}
@@ -105,33 +107,6 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
 export default ProductPage;
 
-const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-shimmer before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent`;
-
-const RelatedProductsSkeleton = () => (
-  <div className='grid grid-cols-12 gap-4'>
-    {[...Array(4)].map((_, i) => (
-      <article
-        key={i}
-        className='col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl'
-        role='article'
-      >
-        <div className='relative w-full aspect-square overflow-hidden bg-gray-200'>
-          <div className={`absolute inset-0 ${shimmer}`} />
-        </div>
-        <div className='h-4 w-24 bg-gray-200 rounded mt-4'>
-          <div className={shimmer} />
-        </div>
-        <div className='h-8 w-3/4 bg-gray-200 rounded mt-2'>
-          <div className={shimmer} />
-        </div>
-        <div className='h-6 w-32 bg-gray-200 rounded mt-4'>
-          <div className={shimmer} />
-        </div>
-      </article>
-    ))}
-  </div>
-);
-
 const RelatedProducts = async ({
   categorySlug,
   productSlug,
@@ -145,8 +120,6 @@ const RelatedProducts = async ({
     print(getProductsByCategoryQuery),
     { slug: categorySlug }
   );
-
-  await new Promise((resolve) => setTimeout(resolve, 10000));
 
   // const colSpan = Math.min(
   //   Math.floor(12 / (productCategory.products.nodes.length - 1)),
@@ -172,7 +145,7 @@ const RelatedProducts = async ({
         productImage={product.featuredImage?.node?.sourceUrl || ''}
         primaryCategory={productCategory.slug}
         productLink={`/${categoryHierarchy}/${product.slug}`}
-        className={'lg:!col-span-4'}
+        className={'lg:!col-span-3'}
       />
     ));
 
@@ -180,3 +153,11 @@ const RelatedProducts = async ({
 
   return <div className='grid grid-cols-12 gap-4'>{relatedProducts}</div>;
 };
+
+const RelatedProductsSkeleton = () => (
+  <div className='grid grid-cols-12 gap-4'>
+    {[...Array(4)].map((_, i) => (
+      <ProductCardSkeleton key={i} />
+    ))}
+  </div>
+);

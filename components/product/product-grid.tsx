@@ -1,54 +1,72 @@
 import { Product, ProductCategory } from '@/gql/graphql';
 import { print } from 'graphql';
 import { cn } from '@/lib/utils';
-import { getAllProductsQuery } from '@/queries/product-queries';
+import { getProductsQuery } from '@/queries/product-queries';
 import { fetchGraphQL } from '@/utils/fetch-graphql';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '../ui/button';
-import { Suspense } from 'react';
 import { getCategoryHierarchy } from '@/utils/utils';
+import { ProductCard } from './product-card';
 
-const getProducts = async () => {
+const getProducts = async (numberOfProducts?: number) => {
   const productsData = await fetchGraphQL<{ products: { nodes: Product[] } }>(
-    print(getAllProductsQuery)
+    print(getProductsQuery),
+    {
+      limit: numberOfProducts,
+    }
   );
 
-  if (!productsData?.products?.nodes) {
+  if (
+    !productsData?.products?.nodes ||
+    productsData.products.nodes.length === 0
+  ) {
     return [];
   }
 
   return productsData.products.nodes;
 };
 
-export const ProductGridSection = ({ className }: { className?: string }) => {
+export const ProductGridSection = async ({
+  className,
+  numberOfProducts,
+}: {
+  className?: string;
+  numberOfProducts?: number;
+}) => {
   return (
-    <div
-      className={cn(
-        'grid grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-4',
-        className
-      )}
-    >
-      <Suspense fallback={<ProductGridSkeleton />}>
-        <ProductGrid />
-      </Suspense>
-    </div>
+    <section className={cn(className)}>
+      <ProductGrid numberOfProducts={numberOfProducts} />
+    </section>
   );
 };
 
-const ProductGrid = async () => {
-  const products: Product[] = await getProducts();
+const ProductGrid = async ({
+  numberOfProducts,
+}: {
+  numberOfProducts?: number;
+}) => {
+  const products: Product[] = await getProducts(numberOfProducts);
 
   if (!products || products.length === 0) {
     return <section>No products found</section>;
   }
 
-  return products.map((product: Product) => {
-    const primaryCategory = product.productCategories?.edges.find(
-      (category: any) => category.isPrimary
-    )?.node as ProductCategory;
+  const primaryCategory = products[0].productCategories?.edges.find(
+    (category: any) => category.isPrimary
+  )?.node as ProductCategory;
 
-    const { categoryHierarchyPath } = getCategoryHierarchy(primaryCategory);
+  const { categoryHierarchyPath } = getCategoryHierarchy(primaryCategory);
+
+  const colSpan = Math.min(Math.floor(12 / (numberOfProducts || 4)), 6);
+  const colSpanClass =
+    {
+      1: '!col-span-1',
+      2: '!col-span-2',
+      3: '!col-span-3',
+      4: '!col-span-4',
+      5: '!col-span-5',
+      6: '!col-span-6',
+    }[colSpan] || '!col-span-4';
+
+  return products.map((product: Product) => {
     const productLink = `/${categoryHierarchyPath}/${product.slug}`;
 
     return (
@@ -58,70 +76,8 @@ const ProductGrid = async () => {
         productImage={product.featuredImage?.node?.sourceUrl || ''}
         primaryCategory={primaryCategory.name || ''}
         productLink={productLink}
+        className={colSpanClass}
       />
     );
   });
-};
-
-const ProductGridSkeleton = () => {
-  return [...Array(12)].map((_, index) => (
-    <article
-      key={index}
-      className='col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl animate-pulse'
-    >
-      <div className='relative w-full aspect-square overflow-hidden bg-gray-200' />
-      <div className='h-4 w-24 bg-gray-200 rounded mt-4' />
-      <div className='h-8 w-3/4 bg-gray-200 rounded mt-2' />
-      <div className='h-6 w-32 bg-gray-200 rounded mt-4' />
-    </article>
-  ));
-};
-
-export const ProductCard = ({
-  productTitle,
-  productImage,
-  primaryCategory,
-  productLink,
-  className,
-}: {
-  productTitle: string;
-  productImage: string;
-  primaryCategory: string;
-  productLink: string;
-  className?: string;
-}) => {
-  return (
-    <article
-      className={cn(
-        'col-span-2 lg:col-span-3 group px-4 py-6 shadow-md',
-        className
-      )}
-      role='article'
-      aria-label={`Product: ${productTitle}`}
-    >
-      <Link href={productLink} aria-label={`View details for ${productTitle}`}>
-        <div className='relative w-full aspect-square overflow-hidden'>
-          <Image
-            src={productImage}
-            alt={productTitle}
-            fill
-            sizes='25vw'
-            className='object-cover group-hover:scale-110 transition-all duration-300'
-            priority={false}
-          />
-        </div>
-
-        <p className='uppercase text-gray-500'>{primaryCategory}</p>
-
-        <h3 className='text-4xl font-bold'>{productTitle}</h3>
-        <Button
-          variant='textual'
-          className='text-accent mt-1 group-hover:after:translate-x-0 group-hover:after:delay-300 group-hover:before:translate-x-full group-hover:before:delay-0'
-          aria-label={`Saznaj više o ${productTitle}`}
-        >
-          Saznajte više
-        </Button>
-      </Link>
-    </article>
-  );
 };
