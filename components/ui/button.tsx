@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           'bg-accent text-primary-foreground shadow-xs hover:bg-accent/90',
         textual:
-          '!px-0 !pb-1 text-primary text-lg rounded-none underline-animated',
+          '!px-0 !pb-1 text-primary text-base rounded-none underline-animated',
         filter:
           '!px-0 !py-0 !h-auto text-primary text-md rounded-none border-b border-transparent hover:border-accent',
         // destructive:

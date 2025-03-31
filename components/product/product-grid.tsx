@@ -49,12 +49,6 @@ const ProductGrid = async ({
     return <section>No products found</section>;
   }
 
-  const primaryCategory = products[0].productCategories?.edges.find(
-    (category: any) => category.isPrimary
-  )?.node as ProductCategory;
-
-  const { categoryHierarchyPath } = getCategoryHierarchy(primaryCategory);
-
   const colSpan = Math.min(Math.floor(12 / (numberOfProducts || 4)), 6);
   const colSpanClass =
     {
@@ -67,6 +61,12 @@ const ProductGrid = async ({
     }[colSpan] || '!col-span-4';
 
   return products.map((product: Product) => {
+    const primaryCategory = product.productCategories?.edges.find(
+      (category: any) => category.isPrimary
+    )?.node as ProductCategory;
+
+    const { categoryHierarchyPath } = getCategoryHierarchy(primaryCategory);
+
     const productLink = `/${categoryHierarchyPath}/${product.slug}`;
 
     return (

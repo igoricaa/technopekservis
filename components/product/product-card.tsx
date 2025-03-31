@@ -17,15 +17,16 @@ export const ProductCard = ({
   className?: string;
 }) => {
   return (
-    <article
-      className={cn(
-        'col-span-2 lg:col-span-3 group px-4 py-6 shadow-md',
-        className
-      )}
-      role='article'
-      aria-label={`Product: ${productTitle}`}
+    <Link
+      href={productLink}
+      aria-label={`View details for ${productTitle}`}
+      className={cn('col-span-2 lg:col-span-3', className)}
     >
-      <Link href={productLink} aria-label={`View details for ${productTitle}`}>
+      <article
+        className={cn('group px-4 py-6 shadow-md h-full flex flex-col')}
+        role='article'
+        aria-label={`Product: ${productTitle}`}
+      >
         <div className='relative w-full aspect-square overflow-hidden'>
           <Image
             src={productImage}
@@ -37,18 +38,18 @@ export const ProductCard = ({
           />
         </div>
 
-        <p className='uppercase text-gray-500'>{primaryCategory}</p>
+        <p className='text-xs uppercase text-gray-500'>{primaryCategory}</p>
 
-        <h3 className='text-4xl font-bold'>{productTitle}</h3>
+        <h3 className='text-2xl font-bold'>{productTitle}</h3>
         <Button
           variant='textual'
-          className='text-accent mt-1 group-hover:after:translate-x-0 group-hover:after:delay-300 group-hover:before:translate-x-full group-hover:before:delay-0'
+          className='text-accent mt-auto group-hover:after:translate-x-0 group-hover:after:delay-300 group-hover:before:translate-x-full group-hover:before:delay-0'
           aria-label={`Saznaj više o ${productTitle}`}
         >
           Saznajte više
         </Button>
-      </Link>
-    </article>
+      </article>
+    </Link>
   );
 };
 
