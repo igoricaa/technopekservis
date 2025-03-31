@@ -110,9 +110,24 @@ const shimmer = `relative overflow-hidden before:absolute before:inset-0 before:
 const RelatedProductsSkeleton = () => (
   <div className='grid grid-cols-12 gap-4'>
     {[...Array(4)].map((_, i) => (
-      <div key={i} className='col-span-3'>
-        <div className={`aspect-square bg-black/50 rounded ${shimmer}`} />
-      </div>
+      <article
+        key={i}
+        className='col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl'
+        role='article'
+      >
+        <div className='relative w-full aspect-square overflow-hidden bg-gray-200'>
+          <div className={`absolute inset-0 ${shimmer}`} />
+        </div>
+        <div className='h-4 w-24 bg-gray-200 rounded mt-4'>
+          <div className={shimmer} />
+        </div>
+        <div className='h-8 w-3/4 bg-gray-200 rounded mt-2'>
+          <div className={shimmer} />
+        </div>
+        <div className='h-6 w-32 bg-gray-200 rounded mt-4'>
+          <div className={shimmer} />
+        </div>
+      </article>
     ))}
   </div>
 );
@@ -130,6 +145,8 @@ const RelatedProducts = async ({
     print(getProductsByCategoryQuery),
     { slug: categorySlug }
   );
+
+  await new Promise((resolve) => setTimeout(resolve, 10000));
 
   // const colSpan = Math.min(
   //   Math.floor(12 / (productCategory.products.nodes.length - 1)),

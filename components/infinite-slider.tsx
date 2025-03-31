@@ -17,7 +17,7 @@ const InfiniteSlider = async ({
     >
       <div
         className={cn(
-          'flex justify-center items-center gap-16 sm:gap-20 lg:gap-28 w-fit h-48 animate-slide hover:pause-animation [&:hover>*]:opacity-30 [&>*:hover]:opacity-100'
+          'flex justify-center items-center gap-16 sm:gap-20 lg:gap-28 w-fit h-80 animate-slide hover:pause-animation [&:hover>*]:opacity-30 [&>*:hover]:opacity-100'
         )}
       >
         {[...data, ...data, ...data, ...data, ...data, ...data, ...data].map(
@@ -25,7 +25,7 @@ const InfiniteSlider = async ({
             <div
               key={`slide${index}`}
               className={cn(
-                'relative w-32 sm:w-40 lg:w-40 h-20 transition-opacity duration-500'
+                'relative w-32 sm:w-40 lg:w-40 h-24 transition-all duration-500 grayscale hover:grayscale-0'
               )}
             >
               <Image

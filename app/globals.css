@@ -116,6 +116,10 @@
     @apply -translate-x-full delay-0;
   }
 
+  .product-desc ul {
+    @apply list-disc pl-6;
+  }
+
   /* .shimmer-effect {
     position: absolute;
     top: 0;

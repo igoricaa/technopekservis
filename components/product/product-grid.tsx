@@ -93,7 +93,7 @@ export const ProductCard = ({
   return (
     <article
       className={cn(
-        'col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl',
+        'col-span-2 lg:col-span-3 group px-4 py-6 shadow-md',
         className
       )}
       role='article'
