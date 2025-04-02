@@ -1,3 +1,4 @@
+import { Product, ProductCategory } from '@/gql/graphql';
 import gql from 'graphql-tag';
 
 export const getAllProductsQuery = gql`
@@ -138,9 +139,11 @@ export const getProductsByCategoryQuery = gql`
   query getProductsByCategory($slug: ID!) {
     productCategory(id: $slug, idType: SLUG) {
       slug
+      name
       ancestors {
         nodes {
           slug
+          name
         }
       }
       products {
@@ -158,57 +161,108 @@ export const getProductsByCategoryQuery = gql`
   }
 `;
 
-export interface ProductCategory {
-  slug: string;
-  name: string;
-}
-
-export interface ProductAncestor {
-  slug: string;
-}
-
-export interface ProductCategoryEdge {
-  isPrimary: boolean;
-  node: {
+export interface GetProductsAndCategoriesByCategoryResponse {
+  productCategory: {
     slug: string;
     name: string;
+    products: {
+      nodes: Product[];
+    };
     ancestors: {
-      nodes: ProductAncestor[];
+      nodes: ProductCategory[];
     };
-  };
-}
-
-export interface ProductAttribute {
-  slug: string;
-  name: string;
-}
-
-export interface ProductDetails {
-  advantages: string[];
-  characteristics: string[];
-  pdf: {
-    node: {
-      uri: string;
-    };
-  };
-}
-
-export interface Product {
-  slug: string;
-  title: string;
-  featuredImage: {
-    node: {
-      sourceUrl: string;
-    };
-  };
-  productDetails: ProductDetails;
-  productAttributes: {
-    nodes: ProductAttribute[];
   };
   productCategories: {
-    edges: ProductCategoryEdge[];
+    edges: {
+      node: ProductCategory;
+    }[];
   };
 }
+
+export const getProductsAndCategoriesByCategoryQuery = gql`
+  query getProductsAndCategoriesByCategory($slug: ID!) {
+    productCategory(id: $slug, idType: SLUG) {
+      slug
+      name
+      ancestors {
+        nodes {
+          slug
+          name
+        }
+      }
+      products {
+        nodes {
+          slug
+          title
+          featuredImage {
+            node {
+              sourceUrl
+            }
+          }
+          productDetails {
+            advantages
+            characteristics
+            pdf {
+              node {
+                uri
+              }
+            }
+          }
+          productAttributes {
+            nodes {
+              slug
+              name
+            }
+          }
+          productCategories {
+            edges {
+              isPrimary
+              node {
+                slug
+                name
+                ancestors {
+                  nodes {
+                    slug
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    productCategories(where: { parent: 0 }) {
+      edges {
+        node {
+          children {
+            nodes {
+              slug
+              name
+              children {
+                nodes {
+                  slug
+                  name
+                  parent {
+                    node {
+                      name
+                      slug
+                      parent {
+                        node {
+                          slug
+                          name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export interface GetProductsAndCategoriesResponse {
   products: {
@@ -266,6 +320,8 @@ export const getProductsAndCategoriesQuery = gql`
     productCategories(where: { parent: 0 }) {
       edges {
         node {
+          slug
+          name
           children {
             nodes {
               slug
@@ -274,6 +330,18 @@ export const getProductsAndCategoriesQuery = gql`
                 nodes {
                   slug
                   name
+                  parent {
+                    node {
+                      name
+                      slug
+                      parent {
+                        node {
+                          slug
+                          name
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -283,24 +351,3 @@ export const getProductsAndCategoriesQuery = gql`
     }
   }
 `;
-
-// productCategories {
-//   edges {
-//     node {
-//       slug
-//       name
-//       parent {
-//         node {
-//           name
-//           slug
-//           parent {
-//             node {
-//               name
-//               slug
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// }

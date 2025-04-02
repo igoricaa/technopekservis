@@ -22,7 +22,7 @@ const Hero = () => {
           na tržištu.
         </p>
         <Link
-          href='/ponuda'
+          href='/pekarska-oprema'
           // className='text-white text-lg mt-2 bg-primary px-4 py-2 rounded-lg'
           className={cn(buttonVariants({ size: 'lg' }), 'mt-6')}
         >

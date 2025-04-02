@@ -1,6 +1,5 @@
 import { Product, ProductCategory } from '@/gql/graphql';
 import { print } from 'graphql';
-import { cn } from '@/lib/utils';
 import { getProductsQuery } from '@/queries/product-queries';
 import { fetchGraphQL } from '@/utils/fetch-graphql';
 import { getCategoryHierarchy } from '@/utils/utils';
@@ -25,26 +24,28 @@ const getProducts = async (numberOfProducts?: number) => {
 };
 
 export const ProductGridSection = async ({
-  className,
   numberOfProducts,
+  className,
 }: {
-  className?: string;
   numberOfProducts?: number;
+  className?: string;
 }) => {
+  const products = await getProducts(numberOfProducts);
+
   return (
-    <section className={cn(className)}>
-      <ProductGrid numberOfProducts={numberOfProducts} />
+    <section className={className}>
+      <ProductGrid products={products} numberOfProducts={numberOfProducts} />
     </section>
   );
 };
 
-const ProductGrid = async ({
+export const ProductGrid = ({
   numberOfProducts,
+  products,
 }: {
+  products: Product[];
   numberOfProducts?: number;
 }) => {
-  const products: Product[] = await getProducts(numberOfProducts);
-
   if (!products || products.length === 0) {
     return <section>No products found</section>;
   }
