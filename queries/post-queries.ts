@@ -1,14 +1,59 @@
 import gql from 'graphql-tag';
 
-export const getPostByIdQuery = gql`
-  query getPostById($id: ID!) {
-    post(id: $id, idType: DATABASE_ID) {
+export const getPostBySlugQuery = gql`
+  query getPostBySlug($slug: ID!) {
+    post(id: $slug, idType: SLUG) {
+      databaseId
+      slug
+      title
+      featuredImage {
+        node {
+          sourceUrl
+          altText
+        }
+      }
       content
       date
-      title
-      author {
-        node {
+      categories {
+        nodes {
           name
+        }
+      }
+    }
+  }
+`;
+
+export const getAdjacentPostsQuery = gql`
+  query getAdjacentPosts($date: String = "", $notIn: [ID] = []) {
+    previous: posts(
+      first: 1
+      where: { orderby: { field: DATE, order: ASC }, notIn: $notIn }
+      before: $date
+    ) {
+      nodes {
+        slug
+        title
+        featuredImage {
+          node {
+            altText
+            sourceUrl
+          }
+        }
+      }
+    }
+    next: posts(
+      first: 1
+      where: { orderby: { field: DATE, order: DESC }, notIn: $notIn }
+      after: $date
+    ) {
+      nodes {
+        slug
+        title
+        featuredImage {
+          node {
+            altText
+            sourceUrl
+          }
         }
       }
     }
@@ -21,8 +66,16 @@ export const getAllPostsQuery = gql`
       nodes {
         slug
         title
+        excerpt
+        uri
+        link
         date
-        content
+        featuredImage {
+          node {
+            sourceUrl
+            altText
+          }
+        }
       }
     }
   }

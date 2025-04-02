@@ -38,7 +38,7 @@ export const ProductCard = ({
           />
         </div>
 
-        <p className='text-xs uppercase text-gray-500'>{primaryCategory}</p>
+        <p className='text-xs uppercase text-gray-500 mt-2'>{primaryCategory}</p>
 
         <h3 className='text-2xl font-bold'>{productTitle}</h3>
         <Button
@@ -58,17 +58,9 @@ export const ProductCardSkeleton = () => (
     className='col-span-2 lg:col-span-3 group px-4 py-6 shadow-xl'
     role='article'
   >
-    <div className='relative w-full aspect-square overflow-hidden bg-gray-200'>
-      <div className={`absolute inset-0 shimmer`} />
-    </div>
-    <div className='h-4 w-24 bg-gray-200 rounded mt-4'>
-      <div className={`shimmer`} />
-    </div>
-    <div className='h-8 w-3/4 bg-gray-200 rounded mt-2'>
-      <div className={`shimmer`} />
-    </div>
-    <div className='h-6 w-32 bg-gray-200 rounded mt-4'>
-      <div className={`shimmer`} />
-    </div>
+    <div className='relative w-full aspect-square overflow-hidden shimmer'></div>
+    <div className='h-4 w-24 mt-2 shimmer'></div>
+    <div className='h-7 w-3/4 mt-2 shimmer'></div>
+    <div className='h-6 w-32 mt-2 shimmer'></div>
   </article>
 );
