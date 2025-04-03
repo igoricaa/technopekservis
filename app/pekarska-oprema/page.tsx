@@ -5,7 +5,10 @@ import {
   GetProductsAndCategoriesResponse,
 } from '@/queries/product-queries';
 import { fetchGraphQL } from '@/utils/fetch-graphql';
-import { sortCategoriesByChildren } from '@/utils/utils';
+import {
+  getCategoryHierarchySlugsAndNames,
+  sortCategoriesByChildren,
+} from '@/utils/utils';
 import { print } from 'graphql';
 
 const getProductsAndCategories = async () => {
@@ -29,11 +32,17 @@ const ShopPage = async () => {
     mainCategory.children?.nodes || []
   );
 
+  const breadcrumbItems = [
+    { label: 'Početna', href: '/' },
+    { label: 'Pekarska oprema', href: '/pekarska-oprema' },
+  ];
+
   return (
     <CategoryShopPage
       title='Pekarska oprema'
       products={products}
       categories={sortedCategories}
+      breadcrumbItems={breadcrumbItems}
     />
   );
 };

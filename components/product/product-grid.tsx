@@ -2,7 +2,7 @@ import { Product, ProductCategory } from '@/gql/graphql';
 import { print } from 'graphql';
 import { getProductsQuery } from '@/queries/product-queries';
 import { fetchGraphQL } from '@/utils/fetch-graphql';
-import { getCategoryHierarchy } from '@/utils/utils';
+import { getCategoryHierarchySlugsAndNames } from '@/utils/utils';
 import { ProductCard } from './product-card';
 
 const getProducts = async (numberOfProducts?: number) => {
@@ -66,7 +66,9 @@ export const ProductGrid = ({
       (category: any) => category.isPrimary
     )?.node as ProductCategory;
 
-    const { categoryHierarchyPath } = getCategoryHierarchy(primaryCategory);
+    const { slugs } = getCategoryHierarchySlugsAndNames(primaryCategory);
+
+    const categoryHierarchyPath = [...slugs].join('/');
 
     const productLink = `/${categoryHierarchyPath}/${product.slug}`;
 

@@ -9,7 +9,10 @@ import { print } from 'graphql';
 import CategoryShopPage from '@/components/shop/category-shop-page';
 import { ProductData } from '@/utils/types';
 import ProductPage from '@/components/product/product-page';
-import { sortCategoriesByChildren } from '@/utils/utils';
+import {
+  getCategoryHierarchySlugsAndNames,
+  sortCategoriesByChildren,
+} from '@/utils/utils';
 
 interface PageProps {
   params: Promise<{
@@ -72,11 +75,24 @@ const CategoryPage = async ({ categorySlug }: { categorySlug: string }) => {
     mainCategory.children?.nodes || []
   );
 
+  const { slugs, names } = getCategoryHierarchySlugsAndNames(
+    productsAndCategories.productCategory as ProductCategory
+  );
+
+  const breadcrumbItems = [
+    { label: 'Početna', href: '/' },
+    ...slugs.map((slug, index) => ({
+      label: names[index],
+      href: `/${slugs.slice(0, index + 1).join('/')}`,
+    })),
+  ];
+
   return (
     <CategoryShopPage
       title={categoryName}
       products={products}
       categories={sortedCategories}
+      breadcrumbItems={breadcrumbItems}
     />
   );
 };

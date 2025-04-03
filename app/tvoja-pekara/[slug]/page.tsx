@@ -1,3 +1,4 @@
+import Breadcrumbs from '@/components/breadcrumbs';
 import CtaSection from '@/components/cta-section';
 import { buttonVariants } from '@/components/ui/button';
 import HeaderBanner from '@/components/ui/header-banner';
@@ -24,22 +25,14 @@ const TvojaPekaraExamplePage = async ({
   return (
     <main className='pt-28'>
       <HeaderBanner />
-      <div className='flex gap-2 items-center font-medium pl-32 mt-4'>
-        <Link
-          href={`/`}
-          className='underline-animated solo before:!h-[1.5px] after:!h-[1.5px] '
-        >
-          Početna
-        </Link>{' '}
-        |{' '}
-        <Link
-          href={`/tvoja-pekara`}
-          className='underline-animated solo before:!h-[1.5px] after:!h-[1.5px] '
-        >
-          Tvoja pekara
-        </Link>{' '}
-        | <span>{bakeryExample.title}</span>
-      </div>
+
+      <Breadcrumbs
+        items={[
+          { label: 'Početna', href: '/' },
+          { label: 'Tvoja pekara', href: '/tvoja-pekara' },
+          { label: bakeryExample.title, href: `/tvoja-pekara/${slug}` },
+        ]}
+      />
       <h1 className='text-5xl font-bold text-center mt-16'>
         {bakeryExample.title}
       </h1>

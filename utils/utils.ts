@@ -1,35 +1,31 @@
 import { ProductCategory } from '@/gql/graphql';
 
-export const getCategoryHierarchy = (
+export const getCategoryHierarchySlugsAndNames = (
   primaryCategory: ProductCategory
-): { categoryHierarchyPath: string; categoryHierarchyNames: string } => {
-  if (!primaryCategory)
-    return { categoryHierarchyPath: '', categoryHierarchyNames: '' };
-  if (!primaryCategory.ancestors)
+): { slugs: string[]; names: string[] } => {
+  if (!primaryCategory) {
+    return { slugs: [], names: [] };
+  }
+
+  if (!primaryCategory.ancestors) {
     return {
-      categoryHierarchyPath: primaryCategory.slug as string,
-      categoryHierarchyNames: primaryCategory.name as string,
+      slugs: [primaryCategory.slug as string],
+      names: [primaryCategory.name as string],
     };
+  }
 
-  const categoriesSlugs = primaryCategory.ancestors.nodes.map(
-    (ancestor: any) => ancestor.slug
+  const { slugs, names } = [
+    primaryCategory,
+    ...primaryCategory.ancestors.nodes,
+  ].reduce(
+    (acc, node: any) => ({
+      slugs: [...acc.slugs, node.slug],
+      names: [...acc.names, node.name],
+    }),
+    { slugs: [] as string[], names: [] as string[] }
   );
 
-  const categoriesNames = primaryCategory.ancestors.nodes.map(
-    (ancestor: any) => ancestor.name
-  );
-
-  const categoryHierarchyPath = [
-    ...categoriesSlugs.reverse(),
-    primaryCategory.slug,
-  ].join('/');
-
-  const categoryHierarchyNames = [
-    ...categoriesNames.reverse(),
-    primaryCategory.name,
-  ].join(' / ');
-
-  return { categoryHierarchyPath, categoryHierarchyNames };
+  return { slugs: slugs.reverse(), names: names.reverse() };
 };
 
 export const sortCategoriesByChildren = (categories: ProductCategory[]) => {
