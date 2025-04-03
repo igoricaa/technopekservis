@@ -5,12 +5,16 @@ import { print } from 'graphql/language/printer';
 import { setSeoData } from '@/utils/seo-data';
 
 import { fetchGraphQL } from '@/utils/fetch-graphql';
-import { ContentInfoQuery } from '@/queries/general/content-info-query';
+import {
+  AllContentInfoQuery,
+  ContentInfoQuery,
+} from '@/queries/general/content-info-query';
 import { ContentNode } from '@/gql/graphql';
 import PageTemplate from '@/components/templates/page/page-template';
 import { nextSlugToWpSlug } from '@/utils/next-slug-to-wp-slug';
 import PostTemplate from '@/components/templates/post/post-template';
 import { SeoQuery } from '@/queries/general/seo-query';
+import ProductPage from '@/components/product/product-page';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -47,6 +51,7 @@ export function generateStaticParams() {
 
 export default async function Page({ params }: Props) {
   const slug = nextSlugToWpSlug((await params).slug);
+  console.log('slug', slug);
 
   const { contentNode } = await fetchGraphQL<{ contentNode: ContentNode }>(
     print(ContentInfoQuery),
@@ -56,14 +61,28 @@ export default async function Page({ params }: Props) {
     }
   );
 
+  const { contentNodes } = await fetchGraphQL<{ contentNodes: ContentNode[] }>(
+    print(AllContentInfoQuery)
+  );
+
+  console.log('contentNodes:', contentNodes);
+
   if (!contentNode) return notFound();
+
+  console.log('contentNode:', contentNode);
 
   switch (contentNode.contentTypeName) {
     case 'page':
       return <PageTemplate node={contentNode} />;
     case 'post':
       return <PostTemplate node={contentNode} />;
+    // case 'product':
+    //   return <ProductPage categorySlug={contentNode.slug} />;
     default:
-      return <p>{contentNode.contentTypeName} not implemented</p>;
+      return (
+        <main className='mt-60'>
+          <p>{contentNode.contentTypeName} not implemented</p>
+        </main>
+      );
   }
 }

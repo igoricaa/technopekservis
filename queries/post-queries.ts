@@ -23,6 +23,29 @@ export const getPostBySlugQuery = gql`
   }
 `;
 
+export const getPostByIdQuery = gql`
+  query getPostById($id: ID!) {
+    post(id: $id, idType: DATABASE_ID) {
+      databaseId
+      slug
+      title
+      featuredImage {
+        node {
+          sourceUrl
+          altText
+        }
+      }
+      content
+      date
+      categories {
+        nodes {
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const getAdjacentPostsQuery = gql`
   query getAdjacentPosts($date: String = "", $notIn: [ID] = []) {
     previous: posts(

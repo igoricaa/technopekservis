@@ -1,19 +1,16 @@
 import { print } from 'graphql/language/printer';
 import { ContentNode, Post } from '@/gql/graphql';
 import { fetchGraphQL } from '@/utils/fetch-graphql';
-import { getPostBySlugQuery } from '@/queries/post-queries';
+import { getPostByIdQuery } from '@/queries/post-queries';
 
 interface TemplateProps {
   node: ContentNode;
 }
 
 export default async function PostTemplate({ node }: TemplateProps) {
-  const { post } = await fetchGraphQL<{ post: Post }>(
-    print(getPostBySlugQuery),
-    {
-      id: node.slug,
-    }
-  );
+  const { post } = await fetchGraphQL<{ post: Post }>(print(getPostByIdQuery), {
+    id: node.databaseId,
+  });
 
   return (
     <div className='max-w-5xl mx-auto p-8'>
