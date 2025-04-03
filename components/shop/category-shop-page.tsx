@@ -14,7 +14,7 @@ const CategoryShopPage = ({
   breadcrumbItems: { label: string; href: string }[];
 }) => {
   return (
-    <main className='py-40'>
+    <main className='py-28'>
       <Breadcrumbs items={breadcrumbItems} />
       <div className='container mx-auto mt-20'>
         <h1 className='text-5xl font-bold mb-16'>{title}</h1>

@@ -1,3 +1,4 @@
+import Breadcrumbs from '@/components/breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { Post } from '@/gql/graphql';
 import { getAllPostsQuery } from '@/queries/post-queries';
@@ -15,20 +16,28 @@ const PostsPage = async () => {
     return <div>No posts found</div>;
   }
 
+  const breadcrumbItems = [
+    { label: 'Početna', href: '/' },
+    { label: 'Blog', href: '/blog' },
+  ];
+
   return (
-    <main className='container mx-auto py-44'>
-      <h1 className='text-5xl font-bold mb-16'>Blog</h1>
-      <section className='grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-4'>
-        {postsData.posts.nodes.map((post, index) => (
-          <PostCard
-            key={`post-${index}`}
-            postTitle={post.title || ''}
-            postFeaturedImage={post.featuredImage?.node?.sourceUrl || ''}
-            postExcerpt={post.excerpt || ''}
-            postSlug={post.slug || ''}
-          />
-        ))}
-      </section>
+    <main className='py-28'>
+      <Breadcrumbs items={breadcrumbItems} />
+      <div className='container mx-auto mt-20'>
+        <h1 className='text-5xl font-bold mb-16'>Blog</h1>
+        <section className='grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-4'>
+          {postsData.posts.nodes.map((post, index) => (
+            <PostCard
+              key={`post-${index}`}
+              postTitle={post.title || ''}
+              postFeaturedImage={post.featuredImage?.node?.sourceUrl || ''}
+              postExcerpt={post.excerpt || ''}
+              postSlug={post.slug || ''}
+            />
+          ))}
+        </section>
+      </div>
     </main>
   );
 };

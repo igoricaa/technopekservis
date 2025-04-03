@@ -1,3 +1,4 @@
+import Breadcrumbs from '@/components/breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { Post } from '@/gql/graphql';
 import { cn } from '@/lib/utils';
@@ -33,25 +34,34 @@ const BlogPostPage = async ({
 
   const post: Post = postData.post;
 
-  return (
-    <main className='container mx-auto py-44'>
-      <div className='relative w-full aspect-video'>
-        <Image
-          src={post.featuredImage?.node.sourceUrl || ''}
-          alt={post.title || ''}
-          fill
-          className='object-cover'
-        />
-      </div>
-      <h1 className='text-5xl font-bold mt-16 mb-10'>{post.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: post.content || '' }} />
+  const breadcrumbItems = [
+    { label: 'Početna', href: '/' },
+    { label: 'Blog', href: '/blog' },
+    { label: post.title || '', href: `/blog/${post.slug}` },
+  ];
 
-      <Suspense fallback={<AdjacentPostSkeleton />}>
-        <AdjacentPosts
-          currentPostDatabaseId={post.databaseId}
-          date={post.date || ''}
-        />
-      </Suspense>
+  return (
+    <main className='py-28'>
+      <Breadcrumbs items={breadcrumbItems} />
+      <div className='container mx-auto mt-20'>
+        <div className='relative w-full aspect-video'>
+          <Image
+            src={post.featuredImage?.node.sourceUrl || ''}
+            alt={post.title || ''}
+            fill
+            className='object-cover'
+          />
+        </div>
+        <h1 className='text-5xl font-bold mt-16 mb-10'>{post.title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: post.content || '' }} />
+
+        <Suspense fallback={<AdjacentPostSkeleton />}>
+          <AdjacentPosts
+            currentPostDatabaseId={post.databaseId}
+            date={post.date || ''}
+          />
+        </Suspense>
+      </div>
     </main>
   );
 };
