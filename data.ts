@@ -105,3 +105,102 @@ export const clients: Client[] = [
     image: '/tropic.jpg',
   },
 ];
+
+export type BakeryExample = {
+  title: string;
+  slug: string;
+  description: string;
+  link: string;
+  image: string;
+  equipment: string[];
+};
+
+export const bakeryExamples: BakeryExample[] = [
+  {
+    title: 'Pekare za površine do 30 m²',
+    slug: 'pekare-za-povrsine-do-30-m2',
+    description: 'Primer pekarskog prostora do 30 m²',
+    link: '/tvoja-pekara/pekare-za-povrsine-do-30-m2',
+    image: '/tvoja-pekara/pekara-za-povrsine-do-30-m2.webp',
+    equipment: [
+      'Spiral Mixer Spiral EvO TL 110',
+      'Planetary mixer Saturne 3',
+      'Table top dough sheeter Rhea',
+      'Refrigerated workbench BTP',
+      'Mobile tub storage table with motorised flour duster Paneodust',
+      'Electric deck oven Orion EvO 801/4.120 with integrated lifter',
+      'Paneotrad EvO',
+      'Blast freezer BSP 46.15',
+      'Convection oven Krystal 46.10',
+      'Roll-In Retarder-proofer single-compartment BFM 600x800',
+      'Retarder proofer cabinet BFA 400x600',
+    ],
+  },
+  {
+    title: 'Pekare za površine do 50 m²',
+    slug: 'pekare-za-povrsine-do-50-m2',
+    description: 'Primer pekarskog prostora do 50 m²',
+    link: '/tvoja-pekara/pekare-za-povrsine-do-50-m2',
+    image: '/tvoja-pekara/pekara-za-povrsine-do-50-m2.webp',
+    equipment: [
+      'Water cooler Fonto',
+      'Water meter Domix',
+      'Spiral mixer Spiral EvO',
+      'Mobile dough vat holder on casters',
+      'Hydraulic dough divider Divimach',
+      'Refrigerated workbench BTP',
+      'Refrigerated workbench BTP',
+      'Convection oven Krystal 46.10',
+      'Modular oven Soleo M4',
+      'Dough sheeter Rhea 600LC',
+      'Spiral mixer Spiral EvO',
+      'Blast freezer BSP',
+      'Retarder proofer cabinet BFA Danish model 400x600',
+    ],
+  },
+  {
+    title: 'Pekare za površine do 80 m²',
+    slug: 'pekare-za-povrsine-do-80-m2',
+    description: 'Primer pekarskog prostora do 80 m²',
+    link: '/tvoja-pekara/pekare-za-povrsine-do-80-m2',
+    image: '/tvoja-pekara/pekara-za-povrsine-do-80-m2.webp',
+    equipment: [
+      'Water cooler Fonto',
+      'Water meter Domix',
+      'Spiral mixer Spiral EvO',
+      'Mobile dough vat holder on casters',
+      'Hydraulic dough divider Mercure 4',
+      'Intermediate (chest type) proofer cabinet RP4',
+      'Moulder Major',
+      'Roll-in retarder proofer BFC',
+      'rack oven 8.64E',
+    ],
+  },
+  {
+    title: 'Pekare za površine do 100 m²',
+    slug: 'pekare-za-povrsine-do-100-m2',
+    description: 'Primer pekarskog prostora do 100 m²',
+    link: '/tvoja-pekara/pekare-za-povrsine-do-100-m2',
+    image: '/tvoja-pekara/pekara-za-povrsine-do-100-m2.webp',
+    equipment: [
+      'Water cooler Fonto',
+      'Electric deck oven Orion EvO with integrated lifter',
+      'Spiral mixer Spiral EvO',
+      'Roll-in retarder proofer BFC 2x3 racks 600x800',
+      'Doser meter Domix',
+      'Spiral mixer Spiral EvO',
+      'Mobile dough vat holder on casters',
+      'Hydraulic divider Mercure 4',
+      'Bun divider and rounder Eris SA',
+      'Intermediate (chest type) proofer cabinet RP4',
+      'Moulder Major',
+      'Retarder proofer cabinet BFA danish model 400x600',
+      'Roll-in blast freezer BSC',
+      'Combinated blast freezer and conservation unit BSCP',
+      'Refrigerated workbench BTP 30',
+      'Refrigerated workbench BTP 40',
+      'Convection oven Krystal 46.10',
+      'Planetary mixer Saturne 3',
+    ],
+  },
+];

@@ -2,23 +2,17 @@ import InfiniteSlider from '@/components/infinite-slider';
 import { clients } from '@/data';
 import Image from 'next/image';
 import podrucjeDelovanja from '@/public/techno-pek-servis-podrucje-delovanja.webp';
-import bannerBg from '@/public/techno-pek-servis-banner-bg.png';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import HeaderBanner from '@/components/ui/header-banner';
+import CtaSection from '@/components/cta-section';
 
 const AboutPage = () => {
   return (
     <main className='pt-28'>
-      <Image
-        src={bannerBg}
-        alt='Techno Pek Servis - O nama'
-        className='object-cover'
-      />
+      <HeaderBanner />
 
       <section className='pt-20 pb-30'>
         <div className='px-side max-w-5xl mx-auto'>
-          <h1 className='text-6xl font-bold mb-10'>O nama</h1>
+          <h1 className='text-5xl font-bold mb-10'>O nama</h1>
           <div className='space-y-4'>
             <p>
               Naša firma nudi visokokvalitetnu pekarsku opremu i profesionalne
@@ -84,24 +78,8 @@ const AboutPage = () => {
           />
         </div>
       </section>
-      <section className='bg-accent py-32'>
-        <div className='px-side py-14 max-w-3xl mx-auto text-center bg-white rounded-xl'>
-          <h2 className='text-5xl font-bold mb-10'>Imate pitanja?</h2>
-          <p className='text-xl'>
-            Ukoliko vam je potrebna dodatna pomoć, imate pitanja ili želite da
-            zakazete posetu, slobodno nas kontaktirajte i rado ćemo vam pomoći.
-          </p>
-          <Link
-            href='/kontakt'
-            className={cn(
-              buttonVariants({ variant: 'default', size: 'lg' }),
-              'mt-6'
-            )}
-          >
-            Kontaktirajte nas
-          </Link>
-        </div>
-      </section>
+
+      <CtaSection />
     </main>
   );
 };

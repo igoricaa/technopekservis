@@ -68,9 +68,7 @@ const ContactField = ({
       className='flex gap-2 items-center w-fit group'
     >
       {icon}{' '}
-      <span className='pb-[1px] underline-animated before:!h-[1.5px] after:!h-[1.5px] group-hover:after:translate-x-0 group-hover:after:delay-300 group-hover:before:translate-x-full group-hover:before:delay-0'>
-        {label}
-      </span>
+      <span className='pb-[1px] underline-animated grouped'>{label}</span>
     </Link>
   );
 };

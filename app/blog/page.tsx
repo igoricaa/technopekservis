@@ -71,7 +71,7 @@ const PostCard = ({
 
         <Button
           variant='textual'
-          className='text-accent mt-auto group-hover:after:translate-x-0 group-hover:after:delay-300 group-hover:before:translate-x-full group-hover:before:delay-0'
+          className='text-accent mt-auto grouped'
           aria-label={`Saznaj više o ${postTitle}`}
         >
           Saznajte više

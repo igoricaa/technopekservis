@@ -50,7 +50,6 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    console.log('menu: ', menu);
     setActiveMenu(menu);
   };
 

@@ -123,6 +123,14 @@
     @apply relative w-fit overflow-hidden;
   }
 
+  .underline-animated.solo {
+    @apply hover:after:translate-x-0 hover:after:delay-300 hover:before:translate-x-full hover:before:delay-0;
+  }
+
+  .underline-animated.grouped {
+    @apply group-hover:after:translate-x-0 group-hover:after:delay-300 group-hover:before:translate-x-full group-hover:before:delay-0;
+  }
+
   .underline-animated::before,
   .underline-animated::after {
     @apply content-[''] absolute bottom-0 left-0 w-full h-0.5 bg-accent origin-bottom-left transition-transform duration-300 ease-out;

@@ -134,7 +134,7 @@ const AdjacentPostCard = ({
           />
         </div>
         <h3 className='text-2xl font-bold mt-2'>{postTitle}</h3>
-        <Button variant='textual'>
+        <Button variant='textual' className='grouped'>
           Pročitaj više
         </Button>
       </article>
