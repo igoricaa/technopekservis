@@ -6,6 +6,7 @@ import { MenuItem } from '@/gql/graphql';
 import { cn } from '@/lib/utils';
 import { useMobile } from '@/utils/hooks';
 import { useState, useRef, useMemo } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface MenuItemWithChildren extends MenuItem {
   children?: MenuItemWithChildren[];
@@ -19,6 +20,7 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const isMobile = useMobile();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const pathname = usePathname();
 
   const menuTree = useMemo(() => {
     const menuMap: Record<number, MenuItemWithChildren> = {};
@@ -80,11 +82,17 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
         {menuTree.map((item) => {
           if (!item.label || !item.uri) return null;
 
+          const isActive =
+            pathname === item.uri ||
+            (pathname.startsWith(item.uri) && item.uri !== '/');
+
           if (item.children && item.children.length > 0) {
             return (
               <NavItemWithDropdown
                 key={item.databaseId}
+                href={item.uri}
                 label={item.label}
+                isActive={isActive}
                 active={activeMenu === item.databaseId.toString()}
                 // onClick={(e) => handleMenuToggle(item.databaseId.toString(), e)}
                 onMouseEnter={() => handleMenuHover(item.databaseId.toString())}
@@ -98,7 +106,12 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
           }
 
           return (
-            <NavItem key={item.databaseId} href={item.uri} label={item.label} />
+            <NavItem
+              key={item.databaseId}
+              href={item.uri}
+              label={item.label}
+              isActive={isActive}
+            />
           );
         })}
       </ul>
@@ -106,12 +119,23 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
   );
 }
 
-function NavItem({ href, label }: { href: string; label: string }) {
+function NavItem({
+  href,
+  label,
+  isActive,
+}: {
+  href: string;
+  label: string;
+  isActive: boolean;
+}) {
   return (
     <li>
       <Link
         href={href}
-        className='px-4 py-2 text-sm font-medium text-foreground hover:bg-accent rounded-md transition-colors'
+        className={cn(
+          'px-4 py-2 text-sm font-medium text-foreground hover:bg-accent rounded-md transition-colors',
+          isActive ? 'bg-accent text-accent-foreground' : ''
+        )}
       >
         {label}
       </Link>
@@ -120,7 +144,9 @@ function NavItem({ href, label }: { href: string; label: string }) {
 }
 
 function NavItemWithDropdown({
+  href,
   label,
+  isActive,
   active,
   onClick,
   onMouseEnter,
@@ -130,6 +156,8 @@ function NavItemWithDropdown({
   children,
 }: {
   label: string;
+  href: string;
+  isActive: boolean;
   active: boolean;
   onClick?: (e: React.MouseEvent) => void;
   onMouseEnter: () => void;
@@ -144,11 +172,12 @@ function NavItemWithDropdown({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <button
+      <Link
+        href={href}
         onClick={onClick}
         className={cn(
           'flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors',
-          active
+          active || isActive
             ? 'bg-accent text-accent-foreground'
             : 'text-foreground hover:bg-accent hover:text-accent-foreground'
         )}
@@ -160,7 +189,7 @@ function NavItemWithDropdown({
             active ? 'rotate-180' : ''
           )}
         />
-      </button>
+      </Link>
 
       {active && (
         <div

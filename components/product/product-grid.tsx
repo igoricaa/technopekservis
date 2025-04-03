@@ -47,7 +47,7 @@ export const ProductGrid = ({
   numberOfProducts?: number;
 }) => {
   if (!products || products.length === 0) {
-    return <section>No products found</section>;
+    return <section>Nema traženih proizvoda</section>;
   }
 
   const colSpan = Math.min(Math.floor(12 / (numberOfProducts || 4)), 6);
