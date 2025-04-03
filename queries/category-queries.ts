@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const getAllProductCategoriesQuery = gql`
   query getAllProductCategories {
-    productCategories {
+    productCategories(first: 100) {
       edges {
         node {
           slug

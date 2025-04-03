@@ -63,10 +63,10 @@ const CategoryPage = async ({ categorySlug }: { categorySlug: string }) => {
   const productsAndCategories = await getProductsAndCategoriesByCategory(
     categorySlug
   );
-  const products = productsAndCategories.productCategory.products.nodes;
+  const products = productsAndCategories.productCategory?.products.nodes;
   const productCategories = productsAndCategories.productCategories.edges;
   const mainCategory = productCategories[0].node;
-  const categoryName = productsAndCategories.productCategory.name;
+  const categoryName = productsAndCategories.productCategory?.name;
 
   const sortedCategories = sortCategoriesByChildren(
     mainCategory.children?.nodes || []

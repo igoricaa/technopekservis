@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Logo from '../ui/logo';
-import Navigation from './navigation';
+import Navigation from './navigation/navigation';
 import { buttonVariants } from '../ui/button';
 import { cn } from '@/lib/utils';
 

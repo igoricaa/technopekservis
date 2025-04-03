@@ -15,13 +15,14 @@ export async function getMenuItems(): Promise<MenuItem[]> {
   return menuItems.nodes;
 }
 
-const getMenuQuery = gql`
+export const getMenuQuery = gql`
   query getMenu {
-    menuItems(where: { location: PRIMARY_MENU }) {
+    menuItems(where: { location: PRIMARY_MENU }, first: 100) {
       nodes {
+        databaseId
         uri
-        target
         label
+        parentDatabaseId
       }
     }
   }

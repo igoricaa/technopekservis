@@ -231,7 +231,7 @@ export const getProductsAndCategoriesByCategoryQuery = gql`
         }
       }
     }
-    productCategories(where: { parent: 0 }) {
+    productCategories(where: { parent: 0 }, first: 100) {
       edges {
         node {
           children {
