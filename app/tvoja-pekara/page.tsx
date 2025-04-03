@@ -1,3 +1,4 @@
+import Breadcrumbs from '@/components/breadcrumbs';
 import CtaSection from '@/components/cta-section';
 import { buttonVariants } from '@/components/ui/button';
 import HeaderBanner from '@/components/ui/header-banner';
@@ -7,9 +8,14 @@ import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 const TvojaPekaraPage = () => {
+  const breadcrumbItems = [
+    { label: 'Početna', href: '/' },
+    { label: 'Tvoja pekara', href: '/tvoja-pekara' },
+  ];
   return (
     <main className='pt-28'>
       <HeaderBanner />
+      <Breadcrumbs items={breadcrumbItems} />
 
       <h1 className='text-5xl font-bold text-center mt-26'>
         Saveti za tvoju pekaru

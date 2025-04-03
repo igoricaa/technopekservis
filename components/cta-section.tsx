@@ -2,9 +2,9 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { buttonVariants } from './ui/button';
 
-const CtaSection = () => {
+const CtaSection = ({ className }: { className?: string }) => {
   return (
-    <section className='bg-accent py-32'>
+    <section className={cn('bg-accent py-32', className)}>
       <div className='px-side py-14 max-w-3xl mx-auto text-center bg-white rounded-xl'>
         <h2 className='text-5xl font-bold mb-10'>Imate pitanja?</h2>
         <p className='text-xl'>
