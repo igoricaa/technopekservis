@@ -27,18 +27,20 @@ export const ProductCard = ({
         role='article'
         aria-label={`Product: ${productTitle}`}
       >
-        <div className='relative w-full aspect-square overflow-hidden'>
+        <div className='overflow-hidden'>
           <Image
             src={productImage}
             alt={productTitle}
-            fill
-            sizes='25vw'
-            className='object-cover group-hover:scale-110 transition-all duration-300'
+            width={450}
+            height={450}
+            className='object-cover group-hover:scale-110 transition-all duration-300 aspect-square'
             priority={false}
           />
         </div>
 
-        <p className='text-xs uppercase text-gray-500 mt-2'>{primaryCategory}</p>
+        <p className='text-xs uppercase text-gray-500 mt-2'>
+          {primaryCategory}
+        </p>
 
         <h3 className='text-2xl font-bold'>{productTitle}</h3>
         <Button

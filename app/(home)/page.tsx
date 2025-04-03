@@ -7,17 +7,15 @@ import { ContentNode } from '@/gql/graphql';
 import { nextSlugToWpSlug } from '@/utils/next-slug-to-wp-slug';
 import { SeoQuery } from '@/queries/general/seo-query';
 import Hero from '@/components/hero/hero';
-import {
-  ProductGridSection,
-} from '@/components/product/product-grid';
+import { ProductGridSection } from '@/components/product/product-grid';
 import Image from 'next/image';
-
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import InfiniteSlider from '@/components/infinite-slider';
 import ContactSection from '@/components/contact-section';
 import { buttonVariants } from '@/components/ui/button';
 import { clients } from '@/data';
+import aboutUsImg from '@/public/techno-pek-servis-pekarska-oprema.webp';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -88,15 +86,11 @@ export default async function Home({ params }: Props) {
               Saznajte više
             </Link>
           </div>
-          <div className='relative w-full aspect-[720/400]'>
-            <Image
-              src='/about-us.webp'
-              alt='O nama'
-              fill
-              sizes='(max-width: 1024px) 100vw, 720px'
-              className='object-cover'
-            />
-          </div>
+          <Image
+            src={aboutUsImg}
+            alt='Techno Pek Servis - O nama'
+            className='object-cover w-xl max-w-2/5'
+          />
         </div>
       </section>
 

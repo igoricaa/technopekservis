@@ -53,12 +53,13 @@ const PostCard = ({
       className='col-span-2 lg:col-span-3'
     >
       <article className='group px-4 py-6 shadow-md h-full flex flex-col'>
-        <div className='relative w-full aspect-video overflow-hidden'>
+        <div className='overflow-hidden'>
           <Image
             src={postFeaturedImage}
             alt={postTitle}
-            fill
-            className='object-cover group-hover:scale-110 transition-all duration-300'
+            width={340}
+            height={191}
+            className='object-cover aspect-video group-hover:scale-110 transition-all duration-300'
           />
         </div>
 

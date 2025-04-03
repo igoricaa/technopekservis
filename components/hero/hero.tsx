@@ -2,16 +2,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { buttonVariants } from '../ui/button';
 import { cn } from '@/lib/utils';
+import heroImg from '@/public/techno-pek-servis-hero.webp';
 
 const Hero = () => {
   return (
     <section className='relative w-screen h-[60vh] px-side py-12 flex flex-col justify-end'>
       <Image
-        src='/techno-pek-servis-hero.webp'
-        alt='Techno PEK Servis - pekarska oprema'
+        src={heroImg}
+        alt='Techno Pek Servis - Pekarska oprema'
         fill
         priority
-        sizes='100vw'
+        sizes='(max-width:640px) 640px, (max-width: 1024px) 1024px, 1920px'
         className='object-cover'
       />
       <div className='relative z-10 bg-black/70 px-6 py-4 rounded-lg max-w-2xl'>

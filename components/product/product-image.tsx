@@ -15,7 +15,7 @@ export function ProductImage({ src, alt }: ProductImageProps) {
         alt={alt || ''}
         fill
         className='object-cover rounded-lg'
-        sizes='(max-width: 768px) 100vw, 50vw'
+        sizes='(max-width: 640px) 640px, (max-width: 1024px) 1024px , 650px'
         priority
       />
     </div>
