@@ -1,6 +1,9 @@
 export type FormFields = {
   name: string;
   email: string;
+  phone: string;
+  country: string;
+  company: string;
   message: string;
   recaptcha_token: string;
 };
@@ -14,6 +17,17 @@ function validateForm(data: FormFields) {
 
   if (!data.email || !/^\S+@\S+\.\S+$/.test(data.email)) {
     errors.email = 'Email adresa nije validna';
+  }
+  if (!data.phone || !/^\+?[\d\s-]{8,15}$/.test(data.phone)) {
+    errors.phone = 'Telefon mora sadržati 8-15 cifara, razmake, + i -';
+  }
+
+  if (!data.country || data.country.length < 2 || data.country.length > 50) {
+    errors.country = 'Država mora imati između 2 i 50 karaktera';
+  }
+
+  if (!data.company || data.company.length < 2 || data.company.length > 50) {
+    errors.company = 'Ime firme mora imati između 2 i 50 karaktera';
   }
 
   if (!data.message || data.message.length < 10 || data.message.length > 1000) {
@@ -47,6 +61,9 @@ export async function contactFormAction(
   const data: FormFields = {
     name: formData.get('name') as string,
     email: formData.get('email') as string,
+    phone: formData.get('phone') as string,
+    country: formData.get('country') as string,
+    company: formData.get('company') as string,
     message: formData.get('message') as string,
     recaptcha_token: formData.get('recaptcha_token') as string,
   };
@@ -61,16 +78,16 @@ export async function contactFormAction(
     };
   }
 
-  const recaptchaSuccess = await verifyRecaptcha(data.recaptcha_token);
-  if (!recaptchaSuccess) {
-    return {
-      defaultValues: data,
-      success: false,
-      errors: { recaptcha_token: 'Invalid reCAPTCHA' },
-    };
-  }
+  // const recaptchaSuccess = await verifyRecaptcha(data.recaptcha_token);
+  // if (!recaptchaSuccess) {
+  //   return {
+  //     defaultValues: data,
+  //     success: false,
+  //     errors: { recaptcha_token: 'Invalid reCAPTCHA' },
+  //   };
+  // }
 
-  fetch(`${process.env.SITE_URL}/api/send`, {
+  fetch(`/api/send`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -78,6 +95,9 @@ export async function contactFormAction(
     body: JSON.stringify({
       name: data.name,
       email: data.email,
+      phone: data.phone,
+      country: data.country,
+      company: data.company,
       message: data.message,
     }),
   })
@@ -101,6 +121,9 @@ export async function contactFormAction(
         defaultValues: {
           name: '',
           email: '',
+          phone: '',
+          country: '',
+          company: '',
           message: '',
           recaptcha_token: data.recaptcha_token,
         },
@@ -122,6 +145,9 @@ export async function contactFormAction(
     defaultValues: {
       name: '',
       email: '',
+      phone: '',
+      country: '',
+      company: '',
       message: '',
       recaptcha_token: data.recaptcha_token,
     },

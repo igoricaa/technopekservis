@@ -11,7 +11,9 @@ declare const grecaptcha: any;
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
 const inputClasses =
-  'group-data-[invalid=true]/field:border-destructive focus-visible:group-data-[invalid=true]/field:ring-destructive bg-transparent border-b border-foreground pb-2 px-1 outline-none';
+  'group-data-[invalid=true]/field:border-destructive focus-visible:group-data-[invalid=true]/field:ring-destructive bg-transparent border-b border-foreground pb-1 px-1 outline-none';
+const errorClasses = 'text-destructive text-xs absolute -bottom-5 left-1';
+const inputWrapperClasses = 'grid grid-cols-2 gap-7';
 
 export function ContactForm({ className }: { className?: string }) {
   const [captchaToken, setCaptchaToken] = useState('');
@@ -19,6 +21,9 @@ export function ContactForm({ className }: { className?: string }) {
     defaultValues: {
       name: '',
       email: '',
+      phone: '',
+      country: '',
+      company: '',
       message: '',
       recaptcha_token: '',
     },
@@ -29,47 +34,108 @@ export function ContactForm({ className }: { className?: string }) {
   return (
     <>
       <form action={formAction} className={cn(className)}>
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col gap-7'>
+          <div className={inputWrapperClasses}>
+            <div
+              className='group/field grid relative'
+              data-invalid={!!state.errors?.name}
+            >
+              <input
+                id='name'
+                name='name'
+                placeholder='Ime i prezime'
+                className={inputClasses}
+                aria-invalid={!!state.errors?.name}
+                aria-errormessage='error-name'
+                defaultValue={state.defaultValues.name}
+              />
+              {state.errors?.name && (
+                <p id='error-name' className={errorClasses}>
+                  {state.errors.name}
+                </p>
+              )}
+            </div>
+            <div
+              className='group/field grid relative'
+              data-invalid={!!state.errors?.email}
+            >
+              <input
+                id='email'
+                name='email'
+                placeholder='Email'
+                className={inputClasses}
+                aria-invalid={!!state.errors?.email}
+                aria-errormessage='error-email'
+                defaultValue={state.defaultValues.email}
+              />
+              {state.errors?.email && (
+                <p id='error-email' className={errorClasses}>
+                  {state.errors.email}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className={inputWrapperClasses}>
+            <div
+              className='group/field grid relative'
+              data-invalid={!!state.errors?.phone}
+            >
+              <input
+                id='phone'
+                name='phone'
+                placeholder='Telefon'
+                className={inputClasses}
+                aria-invalid={!!state.errors?.phone}
+                aria-errormessage='error-phone'
+                defaultValue={state.defaultValues.phone}
+              />
+              {state.errors?.phone && (
+                <p id='error-phone' className={errorClasses}>
+                  {state.errors.phone}
+                </p>
+              )}
+            </div>
+            <div
+              className='group/field grid relative'
+              data-invalid={!!state.errors?.country}
+            >
+              <input
+                id='country'
+                name='country'
+                placeholder='Država'
+                className={inputClasses}
+                aria-invalid={!!state.errors?.country}
+                aria-errormessage='error-country'
+                defaultValue={state.defaultValues.country}
+              />
+              {state.errors?.country && (
+                <p id='error-country' className={errorClasses}>
+                  {state.errors.country}
+                </p>
+              )}
+            </div>
+          </div>
           <div
-            className='group/field grid gap-2'
-            data-invalid={!!state.errors?.name}
+            className='group/field grid relative'
+            data-invalid={!!state.errors?.company}
           >
             <input
-              id='name'
-              name='name'
-              placeholder='Ime i prezime'
+              id='company'
+              name='company'
+              placeholder='Ime Firme'
               className={inputClasses}
-              aria-invalid={!!state.errors?.name}
-              aria-errormessage='error-name'
-              defaultValue={state.defaultValues.name}
+              aria-invalid={!!state.errors?.company}
+              aria-errormessage='error-company'
+              defaultValue={state.defaultValues.company}
             />
-            {state.errors?.name && (
-              <p id='error-name' className='text-destructive text-sm'>
-                {state.errors.name}
+            {state.errors?.company && (
+              <p id='error-company' className={errorClasses}>
+                {state.errors.company}
               </p>
             )}
           </div>
           <div
-            className='group/field grid gap-2'
-            data-invalid={!!state.errors?.email}
-          >
-            <input
-              id='email'
-              name='email'
-              placeholder='Email'
-              className={inputClasses}
-              aria-invalid={!!state.errors?.email}
-              aria-errormessage='error-email'
-              defaultValue={state.defaultValues.email}
-            />
-            {state.errors?.email && (
-              <p id='error-email' className='text-destructive text-sm'>
-                {state.errors.email}
-              </p>
-            )}
-          </div>
-          <div
-            className='group/field grid gap-2'
+            className='group/field grid relative'
             data-invalid={!!state.errors?.message}
           >
             <textarea
@@ -83,7 +149,7 @@ export function ContactForm({ className }: { className?: string }) {
               defaultValue={state.defaultValues.message}
             />
             {state.errors?.message && (
-              <p id='error-message' className='text-destructive text-sm'>
+              <p id='error-message' className={errorClasses}>
                 {state.errors.message}
               </p>
             )}
@@ -103,16 +169,16 @@ export function ContactForm({ className }: { className?: string }) {
             size='lg'
             variant='secondary'
           >
-            {pending ? 'Slanje...' : 'Pošalji poruku'}
+            {pending ? 'Slanje...' : 'Pošaljite upit'}
           </Button>
           {state.success ? (
-            <p className='text-muted-foreground flex items-center gap-2'>
-              Vaša poruka je poslata.
+            <p className='text-accent'>
+              Vaš upit je poslat, hvala vam na interesovanju.
             </p>
           ) : null}
           {state.errors &&
             (state.errors.recaptcha_token || state.errors.custom) && (
-              <p className='text-destructive flex items-center gap-2'>
+              <p className='text-destructive'>
                 {state.errors.custom ||
                   'Došlo je do greške, molimo pokušajte ponovo.'}
               </p>
