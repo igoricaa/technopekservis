@@ -1,16 +1,31 @@
+import Breadcrumbs from '@/components/breadcrumbs';
+import { ContactForm } from '@/components/contact-form';
+import GoogleMap from '@/components/google-map';
+import HeaderBanner from '@/components/ui/header-banner';
+import MailIcon from '@/components/ui/icons/mail-icon';
+import MapPinIcon from '@/components/ui/icons/map-pin-icon';
+import PhoneIcon from '@/components/ui/icons/phone-icon';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import MailIcon from './ui/icons/mail-icon';
-import MapPinIcon from './ui/icons/map-pin-icon';
-import PhoneIcon from './ui/icons/phone-icon';
-import GoogleMap from './google-map';
 
-const ContactSection = ({ className }: { className?: string }) => {
+const ContactPage = () => {
+  const breadcrubmItems = [
+    {
+      label: 'Home',
+      href: '/',
+    },
+    {
+      label: 'Kontakt',
+      href: '/kontakt',
+    },
+  ];
+
   return (
-    <section className={cn(className)}>
-      <div className='max-w-7xl mx-auto px-side grid grid-cols-1 md:grid-cols-2 gap-16'>
+    <main className='pt-28'>
+      <HeaderBanner />
+      <Breadcrumbs items={breadcrubmItems} />
+      <div className='max-w-7xl mx-auto px-side mt-40 flex gap-20'>
         <div className='flex flex-col gap-2'>
-          <h2 className='text-6xl font-bold mb-4'>Kako do nas</h2>
+          <h1 className='text-5xl font-bold mb-4'>Kontaktirajte nas</h1>
           <ContactField
             icon={<MapPinIcon className='w-5 h-5' />}
             label='Lazara Mamuzića 26A , Galenika'
@@ -38,15 +53,16 @@ const ContactSection = ({ className }: { className?: string }) => {
             vam pomoći.
           </p>
         </div>
-        <div>
-          <GoogleMap />
-        </div>
+        <ContactForm className='min-w-xl' />
       </div>
-    </section>
+      <div className='mt-40'>
+        <GoogleMap />
+      </div>
+    </main>
   );
 };
 
-export default ContactSection;
+export default ContactPage;
 
 const ContactField = ({
   icon,
