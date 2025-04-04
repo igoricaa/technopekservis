@@ -5,7 +5,7 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { MenuItem } from '@/gql/graphql';
 import { cn } from '@/lib/utils';
 import { useMobile } from '@/utils/hooks';
-import { useState, useRef, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 interface MenuItemWithChildren extends MenuItem {
@@ -19,7 +19,6 @@ interface NavMenuProps {
 export default function NavMenu({ menuItems }: NavMenuProps) {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const isMobile = useMobile();
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
 
   const menuTree = useMemo(() => {
@@ -49,31 +48,21 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
 
   const handleMenuHover = (menu: string) => {
     if (isMobile) return;
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
     setActiveMenu(menu);
   };
 
   const handleMenuLeave = () => {
     if (isMobile) return;
-    timeoutRef.current = setTimeout(() => {
-      setActiveMenu(null);
-    }, 100);
+    setActiveMenu(null);
   };
 
   const handleDropdownHover = () => {
     if (isMobile) return;
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
   };
 
   const handleDropdownLeave = () => {
     if (isMobile) return;
-    timeoutRef.current = setTimeout(() => {
-      setActiveMenu(null);
-    }, 100);
+    setActiveMenu(null);
   };
 
   return (
@@ -193,7 +182,7 @@ function NavItemWithDropdown({
 
       {active && (
         <div
-          className='absolute left-0 mt-1 w-[600px] rounded-md border bg-popover shadow-lg'
+          className='pt-1 absolute left-0  '
           onClick={(e) => e.stopPropagation()}
           onMouseEnter={onDropdownMouseEnter}
           onMouseLeave={onDropdownMouseLeave}
@@ -208,6 +197,21 @@ function NavItemWithDropdown({
 function TwoPanelMenu({ items }: { items: MenuItemWithChildren[] }) {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
+  const [hasThirdLevel, setHasThirdLevel] = useState<boolean>(false);
+
+  if (items.length === 0 || items.length === 1) {
+    return null;
+  }
+
+  useEffect(() => {
+    if (items.some((item) => item.children && item.children.length > 0)) {
+      setHasThirdLevel(true);
+      console.log('ima treci nivo- useEffect ', items);
+    } else {
+      setHasThirdLevel(false);
+      console.log('nema treci nivo- useEffect ', items);
+    }
+  }, [items]);
 
   // Get the currently active item object
   const currentActiveItem = activeItem
@@ -226,8 +230,13 @@ function TwoPanelMenu({ items }: { items: MenuItemWithChildren[] }) {
       : null;
 
   return (
-    <div className='p-2'>
-      <div className='grid grid-cols-3 gap-0 border rounded-md'>
+    <div className='p-2 shadow-lg rounded-md border bg-popover'>
+      <div
+        className={cn(
+          'grid gap-0 border rounded-md',
+          hasThirdLevel ? 'grid-cols-3 w-[600px]' : 'grid-cols-2 w-[400px]'
+        )}
+      >
         {/* First column - Main categories */}
         <ul className='border-r'>
           {items.map((item) => (
@@ -295,7 +304,7 @@ function TwoPanelMenu({ items }: { items: MenuItemWithChildren[] }) {
               ))}
             </>
           ) : (
-            <div className='flex items-center justify-center h-full text-sm text-muted-foreground p-4'>
+            <div className='flex items-center justify-center h-full text-sm text-muted-foreground p-4 '>
               {activeItem ? (
                 <div className='text-center'>
                   <div className='font-medium mb-2'>
@@ -313,42 +322,45 @@ function TwoPanelMenu({ items }: { items: MenuItemWithChildren[] }) {
         </ul>
 
         {/* Third column - Third level items */}
-        <div className='min-h-[200px]'>
-          {activeSubItem &&
-          currentActiveSubItem?.children &&
-          currentActiveSubItem.children.length > 0 ? (
-            <>
-              {currentActiveSubItem.children.map((thirdLevelItem) => (
-                <Link
-                  key={thirdLevelItem.databaseId}
-                  href={thirdLevelItem.uri || ''}
-                  className='block px-3 py-2 text-sm hover:bg-accent'
-                >
-                  {thirdLevelItem.label}
-                </Link>
-              ))}
-            </>
-          ) : (
-            <div className='flex items-center justify-center h-full text-sm text-muted-foreground p-4'>
-              {activeSubItem ? (
-                <div className='text-center'>
-                  <div className='font-medium mb-2'>
-                    {currentActiveSubItem?.label}
+        {hasThirdLevel && (
+          <div className='min-h-[200px]'>
+            {activeSubItem &&
+            currentActiveSubItem?.children &&
+            currentActiveSubItem.children.length > 0 ? (
+              <>
+                {currentActiveSubItem.children.map((thirdLevelItem) => (
+                  <Link
+                    key={thirdLevelItem.databaseId}
+                    href={thirdLevelItem.uri || ''}
+                    className='block px-3 py-2 text-sm hover:bg-accent'
+                  >
+                    {thirdLevelItem.label}
+                  </Link>
+                ))}
+              </>
+            ) : (
+              <div className='flex items-center justify-center h-full text-sm text-muted-foreground p-4'>
+                {activeSubItem ? (
+                  <div className='text-center'>
+                    <div className='font-medium mb-2'>
+                      {currentActiveSubItem?.label}
+                    </div>
+                    <p className='text-xs'>
+                      {currentActiveSubItem?.description ||
+                        'Idite na kategoriju'}
+                    </p>
                   </div>
-                  <p className='text-xs'>
-                    {currentActiveSubItem?.description || 'Idite na kategoriju'}
-                  </p>
-                </div>
-              ) : activeItem &&
-                currentActiveItem?.children &&
-                currentActiveItem.children.length > 0 ? (
-                'Izaberite kategoriju'
-              ) : (
-                ''
-              )}
-            </div>
-          )}
-        </div>
+                ) : activeItem &&
+                  currentActiveItem?.children &&
+                  currentActiveItem.children.length > 0 ? (
+                  'Izaberite kategoriju'
+                ) : (
+                  ''
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
