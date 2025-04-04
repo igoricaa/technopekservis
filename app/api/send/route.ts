@@ -13,7 +13,8 @@ export async function POST(req: any) {
   try {
     limiter.check(req, 3);
 
-    const { name, email, phone, country, company, message } = await req.json();
+    const { name, email, phone, country, company, subject, message } =
+      await req.json();
 
     if (
       !name ||
@@ -22,7 +23,8 @@ export async function POST(req: any) {
       !country ||
       !company ||
       !message ||
-      !email.includes('@')
+      !email.includes('@') ||
+      !subject
     ) {
       return Response.json({ error: 'Invalid form data' }, { status: 400 });
     }
@@ -32,7 +34,15 @@ export async function POST(req: any) {
       to: ['office@technopekservis.rs', 'stanisavljevic.igor4@gmail.com'],
       subject: 'Kontakt forma',
       // replyTo: email,
-      react: EmailTemplate(name, email, phone, country, company, message),
+      react: EmailTemplate(
+        name,
+        email,
+        phone,
+        country,
+        company,
+        subject,
+        message
+      ),
     });
 
     return Response.json({ success: true, data });

@@ -26,6 +26,7 @@ export function ContactForm({ className }: { className?: string }) {
       company: '',
       message: '',
       recaptcha_token: '',
+      subject: 'Prodaja',
     },
     success: false,
     errors: null,
@@ -116,7 +117,7 @@ export function ContactForm({ className }: { className?: string }) {
             </div>
           </div>
           <div
-            className='group/field grid relative'
+            className='group/field grid relative lg:w-[calc(50%-14px)]'
             data-invalid={!!state.errors?.company}
           >
             <input
@@ -134,6 +135,52 @@ export function ContactForm({ className }: { className?: string }) {
               </p>
             )}
           </div>
+
+          <div
+            className='group/field grid relative'
+            data-invalid={!!state.errors?.subject}
+          >
+            <label className=' mb-2'>Zašto nas kontaktirate</label>
+            <div className='flex gap-4'>
+              <label className='flex items-center gap-2 cursor-pointer'>
+                <input
+                  type='radio'
+                  id='subject'
+                  name='subject'
+                  value='Prodaja'
+                  className='accent-foreground'
+                  defaultChecked={state.defaultValues.subject === 'Prodaja'}
+                />
+                Prodaja
+              </label>
+              <label className='flex items-center gap-2 cursor-pointer'>
+                <input
+                  type='radio'
+                  name='subject'
+                  value='Servis'
+                  className='accent-foreground'
+                  defaultChecked={state.defaultValues.subject === 'Servis'}
+                />
+                Servis
+              </label>
+              <label className='flex items-center gap-2 cursor-pointer text-sm'>
+                <input
+                  type='radio'
+                  name='subject'
+                  value='Drugo'
+                  className='accent-foreground'
+                  defaultChecked={state.defaultValues.subject === 'Drugo'}
+                />
+                Drugo
+              </label>
+            </div>
+            {state.errors?.subject && (
+              <p id='error-subject' className={errorClasses}>
+                {state.errors.subject}
+              </p>
+            )}
+          </div>
+
           <div
             className='group/field grid relative'
             data-invalid={!!state.errors?.message}

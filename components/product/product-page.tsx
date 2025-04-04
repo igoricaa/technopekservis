@@ -27,7 +27,6 @@ const ProductPage = async ({
     notFound();
   }
 
-  // Check if the product belongs to the category or subcategory
   const isInCategory = product.productCategories.edges.some(
     (category: any) => category.node.slug === categorySlug
   );
@@ -51,7 +50,7 @@ const ProductPage = async ({
   const categoryHierarchyPath = [...slugs].join('/');
 
   return (
-    <main className='pb-32 pt-40'>
+    <main className='pb-32 pt-28'>
       <Breadcrumbs
         items={[
           { label: 'Početna', href: '/' },

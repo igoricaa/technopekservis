@@ -4,12 +4,18 @@ import Image from 'next/image';
 import podrucjeDelovanja from '@/public/techno-pek-servis-podrucje-delovanja.webp';
 import HeaderBanner from '@/components/ui/header-banner';
 import CtaSection from '@/components/cta-section';
+import Breadcrumbs from '@/components/breadcrumbs';
 
 const AboutPage = () => {
   return (
     <main className='pt-28'>
       <HeaderBanner />
-
+      <Breadcrumbs
+        items={[
+          { label: 'Početna', href: '/' },
+          { label: 'O nama', href: '/o-nama' },
+        ]}
+      />
       <section className='pt-20 pb-30'>
         <div className='px-side max-w-5xl mx-auto'>
           <h1 className='text-5xl font-bold mb-10'>O nama</h1>

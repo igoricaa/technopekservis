@@ -4,6 +4,7 @@ export type FormFields = {
   phone: string;
   country: string;
   company: string;
+  subject: string;
   message: string;
   recaptcha_token: string;
 };
@@ -28,6 +29,10 @@ function validateForm(data: FormFields) {
 
   if (!data.company || data.company.length < 2 || data.company.length > 50) {
     errors.company = 'Ime firme mora imati između 2 i 50 karaktera';
+  }
+
+  if (!data.subject || !['Prodaja', 'Servis', 'Drugo'].includes(data.subject)) {
+    errors.subject = 'Molimo odaberite jedno od ponuđenog.';
   }
 
   if (!data.message || data.message.length < 10 || data.message.length > 1000) {
@@ -64,6 +69,7 @@ export async function contactFormAction(
     phone: formData.get('phone') as string,
     country: formData.get('country') as string,
     company: formData.get('company') as string,
+    subject: formData.get('subject') as string,
     message: formData.get('message') as string,
     recaptcha_token: formData.get('recaptcha_token') as string,
   };
@@ -98,6 +104,7 @@ export async function contactFormAction(
       phone: data.phone,
       country: data.country,
       company: data.company,
+      subject: data.subject,
       message: data.message,
     }),
   })
@@ -124,6 +131,7 @@ export async function contactFormAction(
           phone: '',
           country: '',
           company: '',
+          subject: 'Prodaja',
           message: '',
           recaptcha_token: data.recaptcha_token,
         },
@@ -148,6 +156,7 @@ export async function contactFormAction(
       phone: '',
       country: '',
       company: '',
+      subject: 'Prodaja',
       message: '',
       recaptcha_token: data.recaptcha_token,
     },

@@ -24,29 +24,23 @@ interface PageProps {
 const Page = async ({ params }: PageProps) => {
   const { categorySlug, slug } = await params;
 
-  // If slug is undefined or empty, it's a category page
   if (!slug || slug.length === 0) {
     return <CategoryPage categorySlug={categorySlug} />;
   }
 
-  // If we have two segments and the second one is a product
   if (slug.length === 2) {
     return <ProductPage categorySlug={categorySlug} productSlug={slug[1]} />;
   }
 
-  // If we have one segment, it could be either a subcategory or a product
-  // We need to check if it's a product by trying to fetch it
   const { product } = await fetchGraphQL<ProductData>(
     print(getProductBySlugQuery),
     { slug: slug[0] }
   );
 
   if (product) {
-    // If we found a product, it's a product page
     return <ProductPage categorySlug={categorySlug} productSlug={slug[0]} />;
   }
 
-  // If we didn't find a product, it's a subcategory page
   return <CategoryPage categorySlug={slug[0]} />;
 };
 

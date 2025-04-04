@@ -4,6 +4,7 @@ export const EmailTemplate = (
   phone: string,
   country: string,
   company: string,
+  subject: string,
   message: string
 ) => (
   <div>
@@ -13,6 +14,7 @@ export const EmailTemplate = (
     <p>Telefon: {phone}</p>
     <p>Država: {country}</p>
     <p>Firma: {company}</p>
+    <p>Razlog upita: {subject}</p>
     <p>Poruka: {message}</p>
   </div>
 );
