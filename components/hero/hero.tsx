@@ -6,7 +6,7 @@ import heroImg from '@/public/techno-pek-servis-hero.webp';
 
 const Hero = () => {
   return (
-    <section className='relative w-screen h-[60vh] px-side py-12 flex flex-col justify-end'>
+    <section className='relative w-screen h-[60vh] px-side py-4 sm:py-8 lg:py-12 flex flex-col justify-end'>
       <Image
         src={heroImg}
         alt='Techno Pek Servis - Pekarska oprema'
@@ -15,9 +15,11 @@ const Hero = () => {
         sizes='(max-width:640px) 640px, (max-width: 1024px) 1024px, 1920px'
         className='object-cover'
       />
-      <div className='relative z-10 bg-black/70 px-6 py-4 rounded-lg max-w-2xl'>
-        <h1 className='text-white text-6xl font-bold'>Pekarska oprema</h1>
-        <p className='text-white text-lg mt-2'>
+      <div className='relative z-10 bg-black/70 px-2 sm:px-4 lg:px-6 py-4 rounded-lg max-w-2xl'>
+        <h1 className='text-white text-5xl lg:text-6xl font-bold'>
+          Pekarska oprema
+        </h1>
+        <p className='text-white lg:text-lg mt-2'>
           Najbolja pekarska oprema na tržištu. Najbolja pekarska oprema na
           tržištu. Najbolja pekarska oprema na tržištu. Najbolja pekarska oprema
           na tržištu.

@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --padding-side: 2rem;
+  --padding-side: var(--padding-side);
   --color-accent: hsl(var(--accent));
   --color-black: hsl(var(--black));
 
@@ -85,6 +85,8 @@
 :root {
   --accent: 27 80% 46%;
   --black: 0 0% 11%;
+
+  --padding-side: 2rem;
 
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -172,17 +174,13 @@
 }
 
 @media (max-width: 1024px) {
-  @layer base {
-    :root {
-      --padding-side: 1.5rem;
-    }
+  :root {
+    --padding-side: 1.5rem;
   }
 }
 
 @media (max-width: 680px) {
-  @layer base {
-    :root {
-      --padding-side: 1rem;
-    }
+  :root {
+    --padding-side: 1rem;
   }
 }

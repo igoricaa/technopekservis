@@ -17,16 +17,15 @@ export const ProductCard = ({
   className?: string;
 }) => {
   return (
-    <Link
-      href={productLink}
-      aria-label={`View details for ${productTitle}`}
-      className={cn('col-span-2 lg:col-span-3', className)}
+    <article
+      className={cn(
+        'col-span-2 lg:col-span-3 group px-4 py-6 shadow-md h-full flex flex-col bg-white',
+        className
+      )}
+      role='article'
+      aria-label={`Product: ${productTitle}`}
     >
-      <article
-        className={cn('group px-4 py-6 shadow-md h-full flex flex-col bg-white')}
-        role='article'
-        aria-label={`Product: ${productTitle}`}
-      >
+      <Link href={productLink} aria-label={`View details for ${productTitle}`}>
         <div className='overflow-hidden'>
           <Image
             src={productImage}
@@ -50,8 +49,8 @@ export const ProductCard = ({
         >
           Saznajte više
         </Button>
-      </article>
-    </Link>
+      </Link>
+    </article>
   );
 };
 

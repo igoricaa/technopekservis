@@ -12,10 +12,10 @@ import Logo from '../ui/logo';
 
 const Footer = () => {
   return (
-    <footer className='pt-20 pb-6 bg-black'>
-      <div className='max-w-7xl mx-auto px-side border-b border-white/20 pb-10 flex justify-between gap-10'>
+    <footer className='pt-10 sm:pt-16 lg:pt-20 pb-6 bg-black'>
+      <div className='max-w-7xl mx-auto px-side border-b border-white/20 pb-10 flex flex-col lg:flex-row justify-between gap-10'>
         <div>
-          <Logo className='w-44' />
+          <Logo className='w-40 lg:w-44' />
 
           <div className='mt-8 space-y-2'>
             <p className='text-xl text-white'>Zapratite nas</p>
@@ -76,7 +76,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className='max-w-7xl mx-auto px-side flex justify-between items-center pt-6'>
+      <div className='max-w-7xl mx-auto px-side flex flex-col lg:flex-row justify-between lg:items-center gap-2 lg:gap-0 pt-6'>
         <p className='text-white'>ⓒ Copyright 2025 Techno Pek Servis</p>
         <Link href='https://iza.rs' target='_blank' className='text-white'>
           Developed by Iza

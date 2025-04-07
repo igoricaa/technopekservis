@@ -8,9 +8,11 @@ import GoogleMap from './google-map';
 const ContactSection = ({ className }: { className?: string }) => {
   return (
     <section className={cn(className)}>
-      <div className='max-w-7xl mx-auto px-side grid grid-cols-1 md:grid-cols-2 gap-16'>
+      <div className='max-w-7xl mx-auto px-side grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 lg:gap-16'>
         <div className='flex flex-col gap-2'>
-          <h2 className='text-6xl font-bold mb-4'>Kako do nas</h2>
+          <h2 className='text-4xl sm:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4'>
+            Kako do nas
+          </h2>
           <ContactField
             icon={<MapPinIcon className='w-5 h-5' />}
             label='Lazara Mamuzića 26A , Galenika'
@@ -58,13 +60,8 @@ const ContactField = ({
   href: string;
 }) => {
   return (
-    <Link
-      href={href}
-      target='_blank'
-      className='flex gap-2 items-center w-fit group'
-    >
-      {icon}{' '}
-      <span className='pb-[1px] underline-animated grouped'>{label}</span>
+    <Link href={href} target='_blank' className='flex gap-2 items-center w-fit'>
+      {icon} <span className='pb-[1px]'>{label}</span>
     </Link>
   );
 };

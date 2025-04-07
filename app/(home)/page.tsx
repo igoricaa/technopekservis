@@ -46,25 +46,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   } as Metadata;
 }
 
-// export function generateStaticParams() {
-//   return [];
-// }
-
 export default async function Home({ params }: Props) {
   const slug = nextSlugToWpSlug((await params).slug);
 
   return (
     <main>
       <Hero />
-      <section className='max-w-7xl mx-auto px-side py-20'>
-        <h2 className='text-5xl font-bold'>Izabrani proizvodi</h2>
-        <ProductGridSection className='mt-16 grid grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-4' />
+      <section className='max-w-7xl mx-auto px-side py-10 lg:py-20'>
+        <h2 className='text-4xl lg:text-5xl font-bold'>Izabrani proizvodi</h2>
+        <ProductGridSection className='mt-6 sm:mt-8 lg:mt-16 grid grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-4' />
       </section>
 
-      <section className='max-w-7xl mx-auto px-side py-20'>
-        <div className='flex gap-16'>
+      <section className='max-w-7xl mx-auto px-side py-10 lg:py-20'>
+        <div className='flex flex-col lg:flex-row gap-10 sm:gap-12 lg:gap-16'>
           <div className='space-y-4'>
-            <h2 className='text-6xl font-bold mb-5'>O nama</h2>
+            <h2 className='text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5'>
+              O nama
+            </h2>
             <p>
               Naša firma nudi visokokvalitetnu pekarsku opremu i profesionalne
               usluge održavanja, dok ponosno zastupamo širok asortiman opreme
@@ -89,14 +87,14 @@ export default async function Home({ params }: Props) {
           <Image
             src={aboutUsImg}
             alt='Techno Pek Servis - O nama'
-            className='object-cover w-xl max-w-2/5'
+            className='object-cover w-full lg:w-xl lg:max-w-2/5'
           />
         </div>
       </section>
 
-      <InfiniteSlider data={clients} className='mt-20' />
+      <InfiniteSlider data={clients} className='mt-10 sm:mt-16 lg:mt-20' />
 
-      <ContactSection className='py-28' />
+      <ContactSection className='py-16 sm:py-20 lg:py-28' />
     </main>
   );
 }
