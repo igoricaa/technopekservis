@@ -4,6 +4,7 @@ import { Post } from '@/gql/graphql';
 import { cn } from '@/lib/utils';
 import {
   getAdjacentPostsQuery,
+  getAllPostsQuery,
   getPostBySlugQuery,
 } from '@/queries/post-queries';
 import { fetchGraphQL } from '@/utils/fetch-graphql';
@@ -12,6 +13,20 @@ import Link from 'next/dist/client/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
+
+export async function generateStaticParams() {
+  const postsData = await fetchGraphQL<{ posts: { nodes: Post[] } }>(
+    print(getAllPostsQuery)
+  );
+
+  if (!postsData || !postsData.posts) {
+    return [];
+  }
+
+  return postsData.posts.nodes.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export interface PostData {
   post: Post;

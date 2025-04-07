@@ -14,6 +14,97 @@ import {
   sortCategoriesByChildren,
 } from '@/utils/utils';
 
+export async function generateStaticParams() {
+  return [];
+}
+
+// export async function generateStaticParams() {
+//   const categoriesData = await fetchGraphQL<{
+//     productCategories: {
+//       edges: {
+//         node: {
+//           slug: string;
+//           children: {
+//             nodes: {
+//               slug: string;
+//             }[];
+//           };
+//         };
+//       }[];
+//     };
+//   }>(print(getAllProductCategoriesQuery));
+
+//   // Fetch all products
+//   const productsData = await fetchGraphQL<{
+//     products: {
+//       nodes: {
+//         slug: string;
+//         productCategories: {
+//           edges: {
+//             isPrimary: boolean;
+//             node: {
+//               slug: string;
+//               ancestors: {
+//                 nodes: {
+//                   slug: string;
+//                 }[];
+//               };
+//             };
+//           }[];
+//         };
+//       }[];
+//     };
+//   }>(print(getAllProductsQuery));
+
+//   if (
+//     !categoriesData?.productCategories?.edges ||
+//     !productsData?.products?.nodes
+//   ) {
+//     return [];
+//   }
+
+//   const params: { categorySlug: string; slug?: string[] }[] = [];
+
+//   // Add all top-level category routes
+//   categoriesData.productCategories.edges.forEach(({ node }) => {
+//     params.push({ categorySlug: node.slug });
+//   });
+
+//   // Add all product routes
+//   productsData.products.nodes.forEach((product) => {
+//     // Find the primary category for each product
+//     const primaryCategory = product.productCategories.edges.find(
+//       (edge) => edge.isPrimary
+//     )?.node;
+
+//     if (primaryCategory) {
+//       const ancestorSlugs =
+//         primaryCategory.ancestors?.nodes.map((ancestor) =>
+//           ancestor.slug !== 'pekarska-oprema' ? ancestor.slug : null
+//         ) || [];
+
+//       const fullCategorySlug = [
+//         ...ancestorSlugs.reverse(),
+//         primaryCategory.slug,
+//       ].join('/');
+
+//       params.push({
+//         categorySlug: fullCategorySlug,
+//         slug: [product.slug],
+//       });
+
+//       // params.push({
+//       //   categorySlug: fullCategorySlug,
+//       //   slug: [product.slug],
+//       // });
+//     }
+//   });
+
+//   console.log('params:', params);
+
+//   return params;
+// }
+
 interface PageProps {
   params: Promise<{
     categorySlug: string;
@@ -23,6 +114,8 @@ interface PageProps {
 
 const Page = async ({ params }: PageProps) => {
   const { categorySlug, slug } = await params;
+
+  // testna();
 
   if (!slug || slug.length === 0) {
     return <CategoryPage categorySlug={categorySlug} />;
@@ -92,3 +185,90 @@ const CategoryPage = async ({ categorySlug }: { categorySlug: string }) => {
 };
 
 export default Page;
+
+// async function testna() {
+//   const categoriesData = await fetchGraphQL<{
+//     productCategories: {
+//       edges: {
+//         node: {
+//           slug: string;
+//           children: {
+//             nodes: {
+//               slug: string;
+//             }[];
+//           };
+//         };
+//       }[];
+//     };
+//   }>(print(getAllProductCategoriesQuery));
+
+//   // Fetch all products
+//   const productsData = await fetchGraphQL<{
+//     products: {
+//       nodes: {
+//         slug: string;
+//         productCategories: {
+//           edges: {
+//             isPrimary: boolean;
+//             node: {
+//               slug: string;
+//               ancestors: {
+//                 nodes: {
+//                   slug: string;
+//                 }[];
+//               };
+//             };
+//           }[];
+//         };
+//       }[];
+//     };
+//   }>(print(getAllProductsQuery));
+
+//   if (
+//     !categoriesData?.productCategories?.edges ||
+//     !productsData?.products?.nodes
+//   ) {
+//     return [];
+//   }
+
+//   const params: { categorySlug: string; slug?: string[] }[] = [];
+
+//   // Add all top-level category routes
+//   categoriesData.productCategories.edges.forEach(({ node }) => {
+//     params.push({ categorySlug: node.slug });
+//   });
+
+//   // Add all product routes
+//   productsData.products.nodes.forEach((product) => {
+//     // Find the primary category for each product
+//     const primaryCategory = product.productCategories.edges.find(
+//       (edge) => edge.isPrimary
+//     )?.node;
+
+//     if (primaryCategory) {
+//       const ancestorSlugs =
+//         primaryCategory.ancestors?.nodes.map((ancestor) =>
+//           ancestor.slug !== 'pekarska-oprema' ? ancestor.slug : null
+//         ) || [];
+
+//       const fullCategorySlug = [
+//         ...ancestorSlugs.reverse(),
+//         primaryCategory.slug,
+//       ].join('/');
+
+//       params.push({
+//         categorySlug: fullCategorySlug,
+//         slug: [product.slug],
+//       });
+
+//       // params.push({
+//       //   categorySlug: fullCategorySlug,
+//       //   slug: [product.slug],
+//       // });
+//     }
+//   });
+
+//   console.log('params:', params);
+
+//   return params;
+// }

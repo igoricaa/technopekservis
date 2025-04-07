@@ -9,6 +9,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+export async function generateStaticParams() {
+  return bakeryExamples.map((example) => ({
+    slug: example.slug,
+  }));
+}
+
 const TvojaPekaraExamplePage = async ({
   params,
 }: {

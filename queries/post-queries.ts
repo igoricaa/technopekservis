@@ -85,7 +85,7 @@ export const getAdjacentPostsQuery = gql`
 
 export const getAllPostsQuery = gql`
   query getAllPosts {
-    posts(first: 100) {
+    posts(first: 200) {
       nodes {
         slug
         title
