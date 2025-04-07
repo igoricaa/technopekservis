@@ -39,19 +39,20 @@ const TvojaPekaraExamplePage = async ({
           { label: bakeryExample.title, href: `/tvoja-pekara/${slug}` },
         ]}
       />
-      <h1 className='text-5xl font-bold text-center mt-16'>
+      <h1 className='text-4xl sm:text-5xl font-bold pl-side lg:pl-0 lg:text-center mt-10 sm:mt-16'>
         {bakeryExample.title}
       </h1>
-      <section className='max-w-7xl mx-auto mt-24 px-side pb-32 flex items-center gap-16 justify-between'>
+      <section className='max-w-7xl mx-auto mt-16 sm:mt-20 lg:mt-24 px-side pb-16 sm:pb-24 lg:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 justify-between'>
         <Image
           src={bakeryExample.image}
           alt={bakeryExample.title}
           width={530}
           height={400}
+          className='w-full max-w-lg'
         />
-        <div>
-          <h2 className='text-4xl font-bold'>Oprema:</h2>
-          <ol className='mt-5 space-y-1 pl-6'>
+        <div className='w-full lg:w-auto'>
+          <h2 className='text-3xl sm:text-4xl font-bold'>Oprema:</h2>
+          <ol className='mt-3 sm:mt-5 space-y-1 pl-6'>
             {bakeryExample.equipment.map((equipment, index) => (
               <li key={`equipment-${index}`} className='list-decimal'>
                 {equipment}

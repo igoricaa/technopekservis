@@ -9,9 +9,17 @@ const Breadcrumbs = ({
   className?: string;
 }) => {
   return (
-    <nav className={cn('flex gap-2 items-center pl-side lg:pl-28 mt-4 ', className)}>
+    <nav
+      className={cn(
+        'flex gap-1 sm:gap-2 items-center pl-side lg:pl-28 mt-4 ',
+        className
+      )}
+    >
       {items.map((item, index) => (
-        <p key={index} className='flex gap-2 items-center font-medium'>
+        <p
+          key={index}
+          className='flex gap-1 sm:gap-2 items-center text-xs sm:text-sm lg:text-base font-medium whitespace-nowrap'
+        >
           {index === items.length - 1 ? (
             <span>{item.label}</span>
           ) : (
