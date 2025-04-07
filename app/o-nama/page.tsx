@@ -16,9 +16,9 @@ const AboutPage = () => {
           { label: 'O nama', href: '/o-nama' },
         ]}
       />
-      <section className='pt-20 pb-30'>
+      <section className='pt-10 sm:pt-20 pb-10 sm:pb-30'>
         <div className='px-side max-w-5xl mx-auto'>
-          <h1 className='text-5xl font-bold mb-10'>O nama</h1>
+          <h1 className='text-5xl font-bold mb-6 sm:mb-8 lg:mb-10'>O nama</h1>
           <div className='space-y-4'>
             <p>
               Naša firma nudi visokokvalitetnu pekarsku opremu i profesionalne
@@ -34,7 +34,7 @@ const AboutPage = () => {
               Naš cilj je visok nivo zadovoljstva kupaca, stoga nas
               kontaktirajte da saznate više o našim proizvodima i uslugama.
             </p>
-            <div className='space-y-6 mt-10'>
+            <div className='space-y-6 mt-8 sm:mt-10'>
               <h2 className='text-4xl font-bold'>Čime se mi bavimo </h2>
               <p>
                 Naša firma se bavi prodajom i servisiranjem pekarske opreme,
@@ -61,12 +61,12 @@ const AboutPage = () => {
           </div>
         </div>
 
-        <InfiniteSlider data={clients} className='mt-30' />
+        <InfiniteSlider data={clients} className='mt-16 sm:mt-20 lg:mt-30' />
 
-        <div className='px-side max-w-5xl mx-auto mt-30 flex justify-between items-center gap-12'>
+        <div className='px-side max-w-5xl mx-auto mt-16 sm:mt-20 lg:mt-30 flex flex-col lg:flex-row justify-between items-center gap-12'>
           <div className='space-y-4'>
             <h2 className='text-4xl font-bold'>Područje delovanja</h2>
-            <p className='mt-6'>
+            <p className='mt-4 sm:mt-6'>
               Naša firma posluje na području Srbije, Crne Gore, Makedonije i
               Bosne i Hercegovine. Naša usluga obuhvata sve aspekte poslovanja u
               ovim zemljama.
@@ -80,7 +80,7 @@ const AboutPage = () => {
           <Image
             src={podrucjeDelovanja}
             alt='Techno Pek Servis - Područje delovanja'
-            className='object-cover min-w-sm'
+            className='object-cover lg:min-w-sm'
           />
         </div>
       </section>

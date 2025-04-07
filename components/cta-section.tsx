@@ -4,8 +4,8 @@ import { buttonVariants } from './ui/button';
 
 const CtaSection = ({ className }: { className?: string }) => {
   return (
-    <section className={cn('bg-accent py-32', className)}>
-      <div className='px-side py-14 max-w-3xl mx-auto text-center bg-white rounded-xl'>
+    <section className={cn('bg-accent px-side py-16 sm:py-32', className)}>
+      <div className='px-side py-10 lg:py-14 max-w-3xl mx-auto text-center bg-white rounded-xl'>
         <h2 className='text-5xl font-bold mb-10'>Imate pitanja?</h2>
         <p className='text-xl'>
           Ukoliko vam je potrebna pomoć, imate pitanja ili želite da zakažete
