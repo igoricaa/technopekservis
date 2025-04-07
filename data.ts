@@ -208,7 +208,10 @@ export const bakeryExamples: BakeryExample[] = [
 export type Partner = {
   name: string;
   description: string;
-  logo: string;
+  logo: {
+    src: string;
+    aspectRatio?: string;
+  };
   link?: string;
 };
 
@@ -217,41 +220,59 @@ export const partners: Partner[] = [
     name: 'Winterhalter',
     description:
       'Porodična kompanija sa predanim osobljem. Mreža profesionalnih partnera. Ovo je osnova na kojoj Winterhalter razvija rešenja za komercijalno pranje posuđa. Za dobrobit naših kupaca širom sveta.',
-    logo: '/partneri/winterhalter-logo.webp',
+    logo: {
+      src: '/partneri/winterhalter-logo.webp',
+      aspectRatio: 'aspect-[1549/591]',
+    },
     link: 'https://www.winterhalter.com/',
   },
   {
     name: 'Termicom D.O.O.',
     description:
       'Termicom kompanija se više od dvadeset godina, veoma uspešno, bavi prodajom ugostiteljske opreme, rezervnih delova, sredstava za pranje i servisiranjem rashladnih uređaja na teritoriji cele Republike Srbije.',
-    logo: '/partneri/termicom-logo.webp',
+    logo: {
+      src: '/partneri/termicom-logo.webp',
+      aspectRatio: 'aspect-square',
+    },
     link: 'https://termicom.rs/',
   },
   {
     name: 'Fisti D.O.O.',
     description:
       'Fisti d.o.o je mlada firma,osnovana 2008 u Ljubljani,sa poslovnom strategijom u oblasti ekologije. Na slovenačkom tržištu, tržištima bivše Jugoslavije i Albanije nudimo profesionalne vodene filtere preduzeća BRITA GmbH i rešenja za smanjenje otpada i manipulativnih troškova.',
-    logo: '/partneri/fisti-logo.webp',
+    logo: {
+      src: '/partneri/fisti-logo.webp',
+      aspectRatio: 'aspect-square',
+    },
     link: 'https://www.fisti.si/sr/',
   },
   {
     name: 'Quorum D.O.O.',
     description:
       'Quorum se nalazi na opstini Čačak, mesto Čačak, adresa Đorđa Popovića 34. Matični broj preduzeća je 17047264. Privredno društvo za proizvodnju, promet, trgovinu i usluge Quorum doo Čačak je osnovano 08.11.1995. godine.',
-    logo: '/partneri/quorum-logo.svg',
+    logo: {
+      src: '/partneri/quorum-logo.svg',
+      aspectRatio: 'aspect-square',
+    },
   },
   {
     name: 'Gastpro D.O.O.',
     description:
       'Preduzeće Gastpro osnovano je sa ciljem da na tržištu Srbije implementira tehnološki savremenu profesionalnu ugostiteljsku opremu. Proizvodni kapaciteti koji imaju za cilj preradu, obradu namirnica i jela, proizvodnju hrane kao poluproizvoda ili krajnjeg proizvoda su naši korisnici.',
-    logo: '/partneri/gastpro-logo.webp',
+    logo: {
+      src: '/partneri/gastpro-logo.webp',
+      aspectRatio: 'aspect-square',
+    },
     link: 'https://www.gastpro.rs/sr',
   },
   {
     name: 'EuroGel',
     description:
       'Ljubav prema čokoladi, tortama i kolačima je učinila da izaberemo svoj profesionalni put upravo tamo gde je čokolade i slatkiša u izobilju!',
-    logo: '/partneri/euro-gel-logo.webp',
+    logo: {
+      src: '/partneri/euro-gel-logo.webp',
+      aspectRatio: 'aspect-square',
+    },
     link: 'https://www.eurogel.rs/',
   },
 ];
