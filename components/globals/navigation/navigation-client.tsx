@@ -69,18 +69,18 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
     <nav className='relative z-50'>
       <ul className='flex items-center space-x-1 bg-background'>
         {menuTree.map((item) => {
-          if (!item.label || !item.uri) return null;
+          if (!item) return null;
 
           const isActive =
             pathname === item.uri ||
-            (pathname.startsWith(item.uri) && item.uri !== '/');
+            (pathname.startsWith(item.uri || '') && item.uri !== '/');
 
           if (item.children && item.children.length > 0) {
             return (
               <NavItemWithDropdown
                 key={item.databaseId}
-                href={item.uri}
-                label={item.label}
+                href={item.uri || ''}
+                label={item.label || ''}
                 isActive={isActive}
                 active={activeMenu === item.databaseId.toString()}
                 // onClick={(e) => handleMenuToggle(item.databaseId.toString(), e)}
@@ -97,8 +97,8 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
           return (
             <NavItem
               key={item.databaseId}
-              href={item.uri}
-              label={item.label}
+              href={item.uri || ''}
+              label={item.label || ''}
               isActive={isActive}
             />
           );
@@ -161,24 +161,43 @@ function NavItemWithDropdown({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <Link
-        href={href}
-        onClick={onClick}
-        className={cn(
-          'flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors',
-          active || isActive
-            ? 'bg-accent text-accent-foreground'
-            : 'text-foreground hover:bg-accent hover:text-accent-foreground'
-        )}
-      >
-        {label}
-        <ChevronDown
+      {href ? (
+        <Link
+          href={href}
+          onClick={onClick}
           className={cn(
-            'ml-1 h-4 w-4 transition-transform duration-200',
-            active ? 'rotate-180' : ''
+            'flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors',
+            active || isActive
+              ? 'bg-accent text-accent-foreground'
+              : 'text-foreground hover:bg-accent hover:text-accent-foreground'
           )}
-        />
-      </Link>
+        >
+          {label}
+          <ChevronDown
+            className={cn(
+              'ml-1 h-4 w-4 transition-transform duration-200',
+              active ? 'rotate-180' : ''
+            )}
+          />
+        </Link>
+      ) : (
+        <span
+          className={cn(
+            'flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors',
+            href && (active || isActive)
+              ? 'bg-accent text-accent-foreground'
+              : 'text-foreground hover:bg-accent hover:text-accent-foreground'
+          )}
+        >
+          {label}
+          <ChevronDown
+            className={cn(
+              'ml-1 h-4 w-4 transition-transform duration-200',
+              active ? 'rotate-180' : ''
+            )}
+          />
+        </span>
+      )}
 
       {active && (
         <div
@@ -206,19 +225,13 @@ function TwoPanelMenu({ items }: { items: MenuItemWithChildren[] }) {
   useEffect(() => {
     if (items.some((item) => item.children && item.children.length > 0)) {
       setHasThirdLevel(true);
-      console.log('ima treci nivo- useEffect ', items);
-    } else {
-      setHasThirdLevel(false);
-      console.log('nema treci nivo- useEffect ', items);
     }
   }, [items]);
 
-  // Get the currently active item object
   const currentActiveItem = activeItem
     ? items.find((item) => item.databaseId.toString() === activeItem)
     : null;
 
-  // Get the currently active subitem object
   const currentActiveSubItem =
     activeItem &&
     activeSubItem &&
@@ -252,10 +265,20 @@ function TwoPanelMenu({ items }: { items: MenuItemWithChildren[] }) {
               }}
             >
               {item.children && item.children.length > 0 ? (
-                <>
-                  <span>{item.label}</span>
-                  <ChevronRight className='h-4 w-4' />
-                </>
+                item.uri ? (
+                  <Link
+                    href={item.uri || ''}
+                    className='w-full flex items-center justify-between'
+                  >
+                    <span>{item.label}</span>
+                    <ChevronRight className='h-4 w-4' />
+                  </Link>
+                ) : (
+                  <>
+                    <span>{item.label}</span>
+                    <ChevronRight className='h-4 w-4' />
+                  </>
+                )
               ) : (
                 <Link
                   href={item.uri || ''}

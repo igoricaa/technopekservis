@@ -255,3 +255,15 @@ export const partners: Partner[] = [
     link: 'https://www.eurogel.rs/',
   },
 ];
+
+export const bongardVideos = [
+  'https://www.youtube.com/embed/ErjdrQTpXWw',
+  'https://www.youtube.com/embed/9W63J8xttCg',
+  'https://www.youtube.com/embed/O2m-yPeTY5k',
+];
+
+export const wiesheuVideos = [
+  'https://www.youtube.com/embed/Pp-optbyEL4',
+  'https://www.youtube.com/embed/x7Rxj1WnDcw',
+  'https://www.youtube.com/embed/G6aFro9y7SE',
+];

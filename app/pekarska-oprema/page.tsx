@@ -5,10 +5,7 @@ import {
   GetProductsAndCategoriesResponse,
 } from '@/queries/product-queries';
 import { fetchGraphQL } from '@/utils/fetch-graphql';
-import {
-  getCategoryHierarchySlugsAndNames,
-  sortCategoriesByChildren,
-} from '@/utils/utils';
+import { sortCategoriesByChildren } from '@/utils/utils';
 import { print } from 'graphql';
 
 const getProductsAndCategories = async () => {

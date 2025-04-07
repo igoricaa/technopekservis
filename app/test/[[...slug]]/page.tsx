@@ -51,7 +51,6 @@ export function generateStaticParams() {
 
 export default async function Page({ params }: Props) {
   const slug = nextSlugToWpSlug((await params).slug);
-  console.log('slug', slug);
 
   const { contentNode } = await fetchGraphQL<{ contentNode: ContentNode }>(
     print(ContentInfoQuery),
@@ -65,11 +64,7 @@ export default async function Page({ params }: Props) {
     print(AllContentInfoQuery)
   );
 
-  console.log('contentNodes:', contentNodes);
-
   if (!contentNode) return notFound();
-
-  console.log('contentNode:', contentNode);
 
   switch (contentNode.contentTypeName) {
     case 'page':

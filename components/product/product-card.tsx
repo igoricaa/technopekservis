@@ -23,7 +23,7 @@ export const ProductCard = ({
       className={cn('col-span-2 lg:col-span-3', className)}
     >
       <article
-        className={cn('group px-4 py-6 shadow-md h-full flex flex-col')}
+        className={cn('group px-4 py-6 shadow-md h-full flex flex-col bg-white')}
         role='article'
         aria-label={`Product: ${productTitle}`}
       >

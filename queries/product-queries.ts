@@ -351,3 +351,33 @@ export const getProductsAndCategoriesQuery = gql`
     }
   }
 `;
+
+export const getProductsByIdsQuery = gql`
+  query getProductsByIds($in: [ID] = "") {
+    products(where: { in: $in }) {
+      nodes {
+        slug
+        title
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+        productCategories {
+          edges {
+            isPrimary
+            node {
+              slug
+              name
+              ancestors {
+                nodes {
+                  slug
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
