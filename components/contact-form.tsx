@@ -13,7 +13,7 @@ const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 const inputClasses =
   'group-data-[invalid=true]/field:border-destructive focus-visible:group-data-[invalid=true]/field:ring-destructive bg-transparent border-b border-foreground pb-1 px-1 outline-none';
 const errorClasses = 'text-destructive text-xs absolute -bottom-5 left-1';
-const inputWrapperClasses = 'grid grid-cols-2 gap-7';
+const inputWrapperClasses = 'grid sm:grid-cols-2 gap-7';
 
 export function ContactForm({ className }: { className?: string }) {
   const [captchaToken, setCaptchaToken] = useState('');
@@ -209,7 +209,7 @@ export function ContactForm({ className }: { className?: string }) {
             value={captchaToken}
           />
         </div>
-        <div className='flex items-center gap-14 mt-10'>
+        <div className='flex items-center gap-8 sm:gap-10 lg:gap-14 mt-10'>
           <Button
             type='submit'
             disabled={pending}

@@ -23,9 +23,11 @@ const ContactPage = () => {
     <main className='pt-28'>
       <HeaderBanner />
       <Breadcrumbs items={breadcrubmItems} />
-      <div className='max-w-7xl mx-auto px-side mt-40 flex gap-20'>
+      <div className='max-w-7xl mx-auto px-side mt-10 sm:mt-20 lg:mt-40 flex flex-col lg:flex-row gap-10 sm:gap-14 lg:gap-20'>
         <div className='flex flex-col gap-2'>
-          <h1 className='text-5xl font-bold mb-4'>Kontaktirajte nas</h1>
+          <h1 className='text-4xl sm:text-5xl font-bold mb-4'>
+            Kontaktirajte nas
+          </h1>
           <ContactField
             icon={<MapPinIcon className='w-5 h-5' />}
             label='Lazara Mamuzića 26A , Galenika'
@@ -42,7 +44,7 @@ const ContactPage = () => {
             href='tel:+381691885177'
           />
 
-          <p className='mt-2'>
+          <p className='mt-4'>
             Ako dolazite kolima, možete nas lako pronaći sa autoputa E-75 ili sa
             magistralnog puta M-21.
           </p>
@@ -53,9 +55,9 @@ const ContactPage = () => {
             vam pomoći.
           </p>
         </div>
-        <ContactForm className='min-w-xl' />
+        <ContactForm className='lg:min-w-xl' />
       </div>
-      <div className='mt-40'>
+      <div className='mt-20 lg:mt-40'>
         <GoogleMap />
       </div>
     </main>
@@ -74,13 +76,8 @@ const ContactField = ({
   href: string;
 }) => {
   return (
-    <Link
-      href={href}
-      target='_blank'
-      className='flex gap-2 items-center w-fit group'
-    >
-      {icon}{' '}
-      <span className='pb-[1px] underline-animated grouped'>{label}</span>
+    <Link href={href} target='_blank' className='flex gap-2 items-center w-fit'>
+      {icon} <span className='pb-[1px]'>{label}</span>
     </Link>
   );
 };
