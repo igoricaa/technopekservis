@@ -56,9 +56,9 @@ const BlogPostPage = async ({
   ];
 
   return (
-    <main className='py-28'>
+    <main className='py-20 sm:py-24 lg:py-28'>
       <Breadcrumbs items={breadcrumbItems} />
-      <div className='container mx-auto mt-20'>
+      <div className='max-w-7xl mx-auto px-side mt-10 sm:mt-16 lg:mt-20'>
         <div className='relative w-full aspect-video'>
           <Image
             src={post.featuredImage?.node.sourceUrl || ''}
@@ -67,7 +67,9 @@ const BlogPostPage = async ({
             className='object-cover'
           />
         </div>
-        <h1 className='text-5xl font-bold mt-16 mb-10'>{post.title}</h1>
+        <h1 className='text-5xl font-bold mt-10 sm:mt-12 lg:mt-16 mb-6 sm:mb-8 lg:mb-10'>
+          {post.title}
+        </h1>
         <div dangerouslySetInnerHTML={{ __html: post.content || '' }} />
 
         <Suspense fallback={<AdjacentPostSkeleton />}>
@@ -111,7 +113,7 @@ const AdjacentPosts = async ({
   const nextPost = next?.nodes[0] ?? null;
 
   return (
-    <section className='flex justify-between items-center gap-4 mt-20'>
+    <section className='flex justify-between items-center gap-4 mt-10 sm:mt-16 lg:mt-20'>
       {previousPost && (
         <AdjacentPostCard
           postTitle={previousPost.title || ''}
@@ -127,7 +129,7 @@ const AdjacentPosts = async ({
           postFeaturedImage={nextPost.featuredImage?.node.sourceUrl || ''}
           postSlug={nextPost.slug || ''}
           direction='next'
-          className='ml-auto'
+          className='lg:ml-auto'
         />
       )}
     </section>
@@ -148,9 +150,14 @@ const AdjacentPostCard = ({
   className?: string;
 }) => {
   return (
-    <Link href={`/blog/${postSlug}`} className={cn(`${className}`)}>
-      <article className='group px-2 py-4 shadow-md'>
-        <div className='relative w-xs aspect-video overflow-hidden'>
+    <article
+      className={cn(
+        'group px-2 py-4 shadow-md flex-1 md:flex-none',
+        `${className}`
+      )}
+    >
+      <Link href={`/blog/${postSlug}`}>
+        <div className='relative md:w-xs aspect-video overflow-hidden'>
           <Image
             src={postFeaturedImage}
             alt={postTitle}
@@ -162,21 +169,21 @@ const AdjacentPostCard = ({
         <Button variant='textual' className='grouped'>
           Pročitaj više
         </Button>
-      </article>
-    </Link>
+      </Link>
+    </article>
   );
 };
 
 const AdjacentPostSkeleton = () => {
   return (
-    <section className='flex justify-between items-center gap-4 mt-20'>
-      <article className='px-2 py-4 shadow-md'>
-        <div className='w-xs aspect-video shimmer'></div>
+    <section className='flex justify-between items-center gap-4 mt-10 sm:mt-16 lg:mt-20'>
+      <article className='px-2 py-4 shadow-md flex-1 sm:flex-auto'>
+        <div className='md:w-xs aspect-video shimmer'></div>
         <div className='mt-2 w-44 h-8 shimmer'></div>
         <div className='mt-2 w-32 h-9 shimmer'></div>
       </article>
-      <article className='group px-2 py-4 shadow-md'>
-        <div className='w-xs aspect-video shimmer'></div>
+      <article className='group px-2 py-4 shadow-md flex-1 sm:flex-auto'>
+        <div className='md:w-xs aspect-video shimmer'></div>
         <div className='mt-2 w-44 h-8 shimmer'></div>
         <div className='mt-2 w-32 h-9 shimmer'></div>
       </article>
