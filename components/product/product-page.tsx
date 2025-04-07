@@ -50,7 +50,7 @@ const ProductPage = async ({
   const categoryHierarchyPath = [...slugs].join('/');
 
   return (
-    <main className='pb-32 pt-28'>
+    <main className='pb-20 sm:pb-24 lg:pb-32 pt-28'>
       <Breadcrumbs
         items={[
           { label: 'Početna', href: '/' },
@@ -65,7 +65,7 @@ const ProductPage = async ({
         ]}
       />
       <div className='max-w-7xl w-full mx-auto'>
-        <article className='grid md:grid-cols-2 gap-8 pt-30'>
+        <article className='grid px-side md:grid-cols-2 gap-8 pt-10 sm:pt-24 lg:pt-30'>
           <ProductImage
             src={product.featuredImage?.node?.sourceUrl || ''}
             alt={product.title}

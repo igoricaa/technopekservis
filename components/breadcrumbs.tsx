@@ -11,7 +11,7 @@ const Breadcrumbs = ({
   return (
     <nav
       className={cn(
-        'flex gap-1 sm:gap-2 items-center pl-side lg:pl-28 mt-4 ',
+        'flex flex-wrap gap-1 sm:gap-2 items-center pl-side lg:pl-28 mt-4',
         className
       )}
     >

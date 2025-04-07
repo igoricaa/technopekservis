@@ -58,17 +58,19 @@ export const RelatedProducts = async ({
   if (relatedProducts.length === 0) return null;
 
   return (
-    <section className='mt-32'>
-      <h4 className='text-5xl font-bold mb-4'>Slični proizvodi</h4>
-      <div className='grid grid-cols-12 gap-4'>{relatedProducts}</div>{' '}
+    <section className='mt-20 sm:mt-32 px-side'>
+      <h4 className='text-4xl font-bold mb-4'>Slični proizvodi</h4>
+      <div className='grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-4'>
+        {relatedProducts}
+      </div>{' '}
     </section>
   );
 };
 
 export const RelatedProductsSkeleton = () => (
-  <section className='mt-32'>
-    <h4 className='text-5xl font-bold mb-4'>Slični proizvodi</h4>
-    <div className='grid grid-cols-12 gap-4'>
+  <section className='mt-20 sm:mt-32 px-side'>
+    <h4 className='text-4xl font-bold mb-4'>Slični proizvodi</h4>
+    <div className='grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-4'>
       {[...Array(4)].map((_, i) => (
         <ProductCardSkeleton key={i} />
       ))}

@@ -18,10 +18,10 @@ export function ProductDetails({
 }: ProductDetailsProps) {
   return (
     <div>
-      <h1 className='text-6xl font-semibold'>{title}</h1>
+      <h1 className='text-5xl lg:text-6xl font-semibold'>{title}</h1>
       {advantages && (
         <div className='max-w-none mt-6 space-y-2'>
-          <h3 className='text-3xl font-medium'>Prednosti</h3>
+          <h3 className='text-2xl sm:text-3xl font-medium'>Prednosti</h3>
           <div
             dangerouslySetInnerHTML={{ __html: advantages }}
             className='product-desc'
@@ -31,7 +31,7 @@ export function ProductDetails({
 
       {characteristics && (
         <div className='max-w-none mt-6 space-y-2'>
-          <h3 className='text-3xl font-medium'>Karakteristike</h3>
+          <h3 className='text-2xl sm:text-3xl font-medium'>Karakteristike</h3>
           <div
             dangerouslySetInnerHTML={{ __html: characteristics }}
             className='product-desc'
