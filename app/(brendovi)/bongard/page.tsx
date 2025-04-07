@@ -40,7 +40,7 @@ const BongardPage = async () => {
         ]}
       />
 
-      <section className='max-w-7xl mx-auto pt-24 pb-32'>
+      <section className='max-w-7xl mx-auto pt-16 sm:pt-20 pb-16 sm:pb-24 lg:pb-32'>
         <Image
           src='/brendovi/bongard/bongard-logo.png'
           alt='Bongard pekarska oprema logo'
@@ -56,14 +56,14 @@ const BongardPage = async () => {
           privilegovanim partnerom u sektoru pripreme, održavanja i pečenja.
         </p>
       </section>
-      <section className='bg-black py-32'>
-        <div className='max-w-7xl mx-auto'>
-          <h2 className='text-white text-center text-5xl font-bold'>
+      <section className='bg-black py-16 sm:py-24 lg:py-32'>
+        <div className='max-w-7xl mx-auto px-side lg:px-0'>
+          <h2 className='text-white lg:text-center text-4xl sm:text-5xl font-bold'>
             Kompletan asortiman Bongard opreme
             <br />
             prilagođen vašim potrebama
           </h2>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12'>
+          <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12'>
             {bongardCategories.map((category) => (
               <BrandCategoryCard
                 key={category.name}
@@ -74,9 +74,9 @@ const BongardPage = async () => {
           </div>
         </div>
       </section>
-      <section className='py-32 bg-black/10'>
-        <div className='max-w-7xl mx-auto '>
-          <h2 className='text-center text-5xl font-bold'>
+      <section className='py-16 sm:py-24 lg:py-32 bg-black/10'>
+        <div className='max-w-7xl mx-auto px-side'>
+          <h2 className='lg:text-center text-4xl sm:text-5xl font-bold'>
             Novi i istaknuti proizvodi
           </h2>
 
@@ -85,7 +85,7 @@ const BongardPage = async () => {
           </div>
         </div>
       </section>
-      <section className='max-w-7xl mx-auto pt-14 pb-6'>
+      <section className='max-w-7xl mx-auto pt-16 pb-8'>
         <VideosSlider videos={bongardVideos} />
       </section>
     </main>

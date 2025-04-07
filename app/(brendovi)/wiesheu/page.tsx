@@ -39,7 +39,7 @@ const WiesheuPage = async () => {
         ]}
       />
 
-      <section className='max-w-7xl mx-auto pt-24 pb-32'>
+      <section className='max-w-7xl mx-auto pt-5 sm:pt-16 lg:pt-24 pb-16 sm:pb-24 lg:pb-32'>
         <WiesheuLogo className='max-w-sm mx-auto' />
         <p className='text-center max-w-3xl mx-auto -mt-6'>
           Wiesheu predstavlja inovativne proizvode i rešenja za profesionalne
@@ -48,9 +48,9 @@ const WiesheuPage = async () => {
         </p>
       </section>
 
-      <section className='py-32 bg-black/10'>
-        <div className='max-w-7xl mx-auto '>
-          <h2 className='text-center text-5xl font-bold'>
+      <section className='py-16 sm:py-24 lg:py-32 bg-black/10'>
+        <div className='max-w-7xl mx-auto px-side'>
+          <h2 className='lg:text-center text-4xl sm:text-5xl font-bold'>
             Novi i istaknuti proizvodi
           </h2>
 
@@ -59,7 +59,7 @@ const WiesheuPage = async () => {
           </div>
         </div>
       </section>
-      <section className='max-w-7xl mx-auto pt-14 pb-6'>
+      <section className='max-w-7xl mx-auto pt-16 pb-8'>
         <VideosSlider videos={wiesheuVideos} />
       </section>
     </main>

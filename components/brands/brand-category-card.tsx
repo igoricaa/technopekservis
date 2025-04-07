@@ -33,13 +33,15 @@ const BrandCategoryCard = ({
           className='absolute left-0 top-8 w-11 h-7 [clip-path:polygon(0_0,100%_0,80%_100%,0%_100%)]'
           style={{ backgroundColor: color }}
         />
-        <h3 className='text-white text-4xl font-bold text-center relative'>
+        <h3 className='text-white text-2xl sm:text-4xl font-bold text-center relative'>
           {name}
         </h3>
         <Button
           variant='secondary'
           size='lg'
-          className={cn('absolute bottom-10 left-1/2 -translate-x-1/2')}
+          className={cn(
+            'absolute bottom-4 sm:bottom-8 lg:bottom-10 left-1/2 -translate-x-1/2 text-sm sm:text-base'
+          )}
         >
           Pogledaj ponudu
         </Button>

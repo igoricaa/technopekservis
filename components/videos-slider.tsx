@@ -67,7 +67,7 @@ export default function VideosSlider({ videos }: { videos: string[] }) {
                 allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                 allowFullScreen
                 className='aspect-video w-full max-w-2xl'
-              ></iframe>
+              />
             </div>
           ))}
         </div>
@@ -125,7 +125,7 @@ function Arrow(props: {
   return (
     <svg
       onClick={props.onClick}
-      className={`w-7.5 h-7.5 absolute top-1/2 -translate-y-1/2 fill-black cursor-pointer ${
+      className={`w-9 h-9 absolute top-1/2 -translate-y-1/2 fill-white bg-black p-2 cursor-pointer ${
         props.left ? 'left-1.5' : 'left-auto right-1.5'
       }`}
       xmlns='http://www.w3.org/2000/svg'
