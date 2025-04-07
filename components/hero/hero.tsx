@@ -6,7 +6,7 @@ import heroImg from '@/public/techno-pek-servis-hero.webp';
 
 const Hero = () => {
   return (
-    <section className='relative w-screen h-[60vh] px-side py-4 sm:py-8 lg:py-12 flex flex-col justify-end'>
+    <section className='relative w-screen h-[calc(100vh-440px)] lg:h-[50vh] px-side py-4 sm:py-8 lg:py-12 flex flex-col justify-end'>
       <Image
         src={heroImg}
         alt='Techno Pek Servis - Pekarska oprema'
@@ -19,14 +19,13 @@ const Hero = () => {
         <h1 className='text-white text-5xl lg:text-6xl font-bold'>
           Pekarska oprema
         </h1>
-        <p className='text-white lg:text-lg mt-2'>
+        <p className='text-white text-sm sm:text-base lg:text-lg mt-2'>
           Najbolja pekarska oprema na tržištu. Najbolja pekarska oprema na
           tržištu. Najbolja pekarska oprema na tržištu. Najbolja pekarska oprema
           na tržištu.
         </p>
         <Link
           href='/pekarska-oprema'
-          // className='text-white text-lg mt-2 bg-primary px-4 py-2 rounded-lg'
           className={cn(buttonVariants({ size: 'lg' }), 'mt-6')}
         >
           Pogledaj ponudu

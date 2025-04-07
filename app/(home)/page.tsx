@@ -57,7 +57,7 @@ export default async function Home({ params }: Props) {
         <ProductGridSection className='mt-6 sm:mt-8 lg:mt-16 grid grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-4' />
       </section>
 
-      <section className='max-w-7xl mx-auto px-side py-10 lg:py-20'>
+      <section className='max-w-7xl mx-auto px-side pt-8 pb-10 lg:py-20'>
         <div className='flex flex-col lg:flex-row gap-10 sm:gap-12 lg:gap-16'>
           <div className='space-y-4'>
             <h2 className='text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5'>

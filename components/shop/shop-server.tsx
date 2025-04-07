@@ -20,13 +20,13 @@ const ShopServer = ({
 }) => {
   return (
     <>
-      <div className='bg-gray-200 rounded-md px-4 py-4 w-xs h-fit sticky top-30'>
-        <p className='text-2xl font-bold'>Proizvodi</p>
+      <div className='bg-gray-200 rounded-md px-4 py-4 sm:w-xs h-fit lg:sticky top-30'>
+        <p className='text-xl sm:text-2xl font-bold'>Proizvodi</p>
         <Link
           href='/pekarska-oprema'
           className={cn(
             buttonVariants({ variant: 'filter' }),
-            'mt-4 font-medium'
+            'mt-4 font-medium text-sm sm:text-base'
           )}
         >
           Svi proizvodi
@@ -73,7 +73,7 @@ const ProductCategoryAccordion = ({
         className={cn(
           buttonVariants({ variant: 'filter' }),
           `${!hasParent ? 'mt-2' : ''}`,
-          '!ml-4'
+          '!ml-4 text-sm sm:text-base'
         )}
       >
         {category.name}
@@ -90,7 +90,7 @@ const ProductCategoryAccordion = ({
       value={category.slug || category.id}
       className='py-2 border-b border-black/50'
     >
-      <AccordionTrigger className='!px-0 !py-0 !h-auto text-primary text-base rounded-none w-fit hover:no-underline font-open-sans cursor-pointer'>
+      <AccordionTrigger className='!px-0 !py-0 !h-auto text-primary text-sm sm:text-base rounded-none w-fit hover:no-underline font-open-sans cursor-pointer'>
         {category.name}
       </AccordionTrigger>
       <AccordionContent className='mt-2'>
