@@ -6,34 +6,35 @@ import Burger from './burger';
 import { MenuItemWithChildren } from '@/utils/types';
 import Logo from '@/components/ui/logo';
 import { cn } from '@/lib/utils';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { ChevronDown } from 'lucide-react';
 
 const MobileMenu = ({
   className,
   menuTree,
-  activeMenu,
-  pathname,
 }: {
   className?: string;
   menuTree: MenuItemWithChildren[];
-  activeMenu: string | null;
-  pathname: string;
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [parentAccordionValue, setParentAccordionValue] = useState<string>('');
+  const [childAccordionValue, setChildAccordionValue] = useState<string>('');
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    // toggleScroll();
-  };
-
-  const toggleScroll = () => {
+    setParentAccordionValue('');
+    setChildAccordionValue('');
     document.body.style.overflow = isMenuOpen ? 'auto' : 'hidden';
   };
 
   return (
     <nav className={`${className}`}>
-      <div className='flex items-center gap-6 sm:gap-8 z-50 relative '>
-        <Burger handleClick={toggleMenu} isOpen={isMenuOpen} />
-      </div>
+      <Burger handleClick={toggleMenu} isOpen={isMenuOpen} />
 
       <div
         className={cn(
@@ -53,19 +54,94 @@ const MobileMenu = ({
         <Link href='/'>
           <Logo className='w-15 sm:w-18' />
         </Link>
-        <ul className='space-y-4'>
-          {menuTree.map((route: MenuItemWithChildren) => (
-            <li key={route.id}>
-              <Link
-                href={route.uri || ''}
-                className='text-2xl text-white'
-                onClick={toggleMenu}
-              >
-                {route.label}
-              </Link>
-            </li>
+        <Accordion
+          type='single'
+          collapsible
+          className='w-full'
+          value={parentAccordionValue}
+          onValueChange={setParentAccordionValue}
+        >
+          {menuTree.map((menuItem: MenuItemWithChildren) => (
+            <AccordionItem
+              key={menuItem.label}
+              value={menuItem.label || 'menu'}
+              className='border-none'
+            >
+              {menuItem.children && menuItem.children.length > 0 ? (
+                <>
+                  <AccordionTrigger
+                    className='text-2xl text-white font-normal font-open-sans py-2 hover:no-underline justify-normal'
+                    noIcon
+                  >
+                    {menuItem.label}
+                    <ChevronDown className='h-8 w-8 shrink-0 fill-white text-white transition-transform duration-200' />
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul className='pl-4'>
+                      {menuItem.children.map((child) => (
+                        <li key={child.label}>
+                          {child.children && child.children.length > 0 ? (
+                            <Accordion
+                              type='single'
+                              collapsible
+                              className='w-full'
+                              value={childAccordionValue}
+                              onValueChange={setChildAccordionValue}
+                            >
+                              <AccordionItem
+                                value={child.label || 'submenu'}
+                                className='border-none'
+                              >
+                                <AccordionTrigger
+                                  className='text-xl text-white font-normal font-open-sans hover:no-underline py-2 justify-normal'
+                                  noIcon
+                                >
+                                  {child.label}
+                                  <ChevronDown className='h-7 w-7 shrink-0 fill-white text-white transition-transform duration-200' />
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                  <ul className='pl-4'>
+                                    {child.children.map((subChild) => (
+                                      <li key={subChild.label}>
+                                        <Link
+                                          href={subChild.uri || ''}
+                                          onClick={toggleMenu}
+                                          className='text-xl text-white block py-2 hover:text-gray-300'
+                                        >
+                                          {subChild.label}
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          ) : (
+                            <Link
+                              href={child.uri || ''}
+                              onClick={toggleMenu}
+                              className='text-xl text-white block py-2 hover:text-gray-300'
+                            >
+                              {child.label}
+                            </Link>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </>
+              ) : (
+                <Link
+                  href={menuItem.uri || ''}
+                  onClick={toggleMenu}
+                  className='text-2xl text-white block py-2 hover:text-gray-300'
+                >
+                  {menuItem.label}
+                </Link>
+              )}
+            </AccordionItem>
           ))}
-        </ul>
+        </Accordion>
       </div>
     </nav>
   );

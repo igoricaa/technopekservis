@@ -8,7 +8,7 @@ const Burger = ({
   return (
     <button
       onClick={handleClick}
-      className='w-6 h-4.5 sm:w-8 sm:h-6.5 flex flex-col justify-center items-end gap-1.5'
+      className='w-6 h-4.5 sm:w-8 sm:h-6.5 flex flex-col justify-center items-end gap-1.5 z-50 relative'
     >
       <span
         className={`block w-full h-0.5 sm:h-0.75 foreground transition-all duration-300 origin-center ${

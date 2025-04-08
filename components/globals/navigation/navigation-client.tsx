@@ -38,12 +38,6 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
     return rootItems;
   }, [menuItems]);
 
-  // const handleMenuToggle = (menu: string, e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   setActiveMenu(activeMenu === menu ? null : menu);
-  // };
-
   const handleMenuHover = (menu: string) => {
     if (isMobile) return;
     setActiveMenu(menu);
@@ -66,11 +60,7 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
   return (
     <>
       {isMobile ? (
-        <NavMenuMobile
-          menuTree={menuTree}
-          activeMenu={activeMenu}
-          pathname={pathname}
-        />
+        <NavMenuMobile menuTree={menuTree} />
       ) : (
         <NavMenuDesktop
           menuTree={menuTree}
@@ -86,22 +76,8 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
   );
 }
 
-const NavMenuMobile = ({
-  menuTree,
-  activeMenu,
-  pathname,
-}: {
-  menuTree: MenuItemWithChildren[];
-  activeMenu: string | null;
-  pathname: string;
-}) => {
-  return (
-    <MobileMenu
-      menuTree={menuTree}
-      activeMenu={activeMenu}
-      pathname={pathname}
-    />
-  );
+const NavMenuMobile = ({ menuTree }: { menuTree: MenuItemWithChildren[] }) => {
+  return <MobileMenu menuTree={menuTree} />;
 };
 
 const NavMenuDesktop = ({
@@ -139,7 +115,6 @@ const NavMenuDesktop = ({
                 label={item.label || ''}
                 isActive={isActive}
                 active={activeMenu === item.databaseId.toString()}
-                // onClick={(e) => handleMenuToggle(item.databaseId.toString(), e)}
                 onMouseEnter={() => handleMenuHover(item.databaseId.toString())}
                 onMouseLeave={handleMenuLeave}
                 onDropdownMouseEnter={handleDropdownHover}
