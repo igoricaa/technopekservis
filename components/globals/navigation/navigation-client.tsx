@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { useMobile } from '@/utils/hooks';
 import { useState, useMemo, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import Burger from './burger';
 import MobileMenu from './mobile-menu';
 import { MenuItemWithChildren } from '@/utils/types';
 
@@ -17,7 +16,7 @@ interface NavMenuProps {
 
 export default function NavMenu({ menuItems }: NavMenuProps) {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const isMobile = useMobile();
+  const isMobile = useMobile(1280);
   const pathname = usePathname();
 
   const menuTree = useMemo(() => {
@@ -71,10 +70,6 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
           menuTree={menuTree}
           activeMenu={activeMenu}
           pathname={pathname}
-          handleMenuHover={handleMenuHover}
-          handleMenuLeave={handleMenuLeave}
-          handleDropdownHover={handleDropdownHover}
-          handleDropdownLeave={handleDropdownLeave}
         />
       ) : (
         <NavMenuDesktop
@@ -95,29 +90,17 @@ const NavMenuMobile = ({
   menuTree,
   activeMenu,
   pathname,
-  handleMenuHover,
-  handleMenuLeave,
-  handleDropdownHover,
-  handleDropdownLeave,
 }: {
   menuTree: MenuItemWithChildren[];
   activeMenu: string | null;
   pathname: string;
-  handleMenuHover: (menu: string) => void;
-  handleMenuLeave: () => void;
-  handleDropdownHover: () => void;
-  handleDropdownLeave: () => void;
 }) => {
   return (
-    <div>
-      <MobileMenu
-        menuTree={menuTree}
-        activeMenu={activeMenu}
-        pathname={pathname}
-        handleMenuHover={handleMenuHover}
-        handleMenuLeave={handleMenuLeave}
-      />
-    </div>
+    <MobileMenu
+      menuTree={menuTree}
+      activeMenu={activeMenu}
+      pathname={pathname}
+    />
   );
 };
 
