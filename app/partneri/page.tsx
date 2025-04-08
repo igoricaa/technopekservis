@@ -22,9 +22,13 @@ const Partners = () => {
         <h1 className='text-5xl lg:text-6xl font-bold lg:text-center mt-10 sm:mt-20 lg:mt-20'>
           Techno Pek Servis partneri
         </h1>
-        <section className='mt-18 sm:my-20 lg:mt-22 space-y-24'>
+        <section className='mt-18 sm:my-20 lg:mt-22 space-y-12'>
           {partners.map((partner: Partner, index: number) => (
-            <PartnerCard key={`partner-${index}`} partner={partner} />
+            <PartnerCard
+              key={`partner-${index}`}
+              partner={partner}
+              index={index}
+            />
           ))}
         </section>
       </div>
@@ -35,9 +39,20 @@ const Partners = () => {
 
 export default Partners;
 
-const PartnerCard = ({ partner }: { partner: Partner }) => {
+const PartnerCard = ({
+  partner,
+  index,
+}: {
+  partner: Partner;
+  index: number;
+}) => {
   return (
-    <article className='flex flex-col-reverse sm:flex-row gap-10 justify-between items-center'>
+    <article
+      className={cn(
+        'flex flex-col-reverse sm:flex-row gap-10 justify-between items-center',
+        index !== 0 && 'border-t border-black/20 pt-12'
+      )}
+    >
       <div
         className={cn(
           'relative sm:max-w-sm w-full sm:w-72',

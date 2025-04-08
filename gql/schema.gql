@@ -1925,6 +1925,9 @@ enum ContentTypeEnum {
   ATTACHMENT
 
   """The Type of Content object"""
+  GRAPHQL_DOCUMENT
+
+  """The Type of Content object"""
   PAGE
 
   """The Type of Content object"""
@@ -2092,6 +2095,12 @@ enum ContentTypesOfCategoryEnum {
   POST
 }
 
+"""Allowed Content Types of the GraphqlDocumentGroup taxonomy."""
+enum ContentTypesOfGraphqlDocumentGroupEnum {
+  """The Type of Content object"""
+  GRAPHQL_DOCUMENT
+}
+
 """Allowed Content Types of the PostFormat taxonomy."""
 enum ContentTypesOfPostFormatEnum {
   """The Type of Content object"""
@@ -2210,6 +2219,98 @@ type CreateCommentPayload {
   Whether the mutation succeeded. If the comment is not approved, the server will not return the comment to a non authenticated user, but a success message can be returned if the create succeeded, and the client can optimistically add the comment to the client cache
   """
   success: Boolean
+}
+
+"""Input for the createGraphqlDocumentGroup mutation."""
+input CreateGraphqlDocumentGroupInput {
+  """The slug that the graphql_document_group will be an alias of"""
+  aliasOf: String
+
+  """
+  This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The description of the graphql_document_group object"""
+  description: String
+
+  """The name of the graphql_document_group object to mutate"""
+  name: String!
+
+  """
+  If this argument exists then the slug will be checked to see if it is not an existing valid term. If that check succeeds (it is not a valid term), then it is added and the term id is given. If it fails, then a check is made to whether the taxonomy is hierarchical and the parent argument is not empty. If the second check succeeds, the term will be inserted and the term id will be given. If the slug argument is empty, then it will be calculated from the term name.
+  """
+  slug: String
+}
+
+"""The payload for the createGraphqlDocumentGroup mutation."""
+type CreateGraphqlDocumentGroupPayload {
+  """
+  If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The created graphql_document_group"""
+  graphqlDocumentGroup: GraphqlDocumentGroup
+}
+
+"""Input for the createGraphqlDocument mutation."""
+input CreateGraphqlDocumentInput {
+  """Alias names for saved GraphQL query documents"""
+  alias: [String!]
+
+  """
+  This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The content of the object"""
+  content: String
+
+  """
+  The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17 
+  """
+  date: String
+
+  """Description for the saved GraphQL document"""
+  description: String
+
+  """Allow, deny or default access grant for specific query"""
+  grant: String
+
+  """Set connections between the graphqlDocument and graphqlDocumentGroups"""
+  graphqlDocumentGroups: GraphqlDocumentGraphqlDocumentGroupsInput
+
+  """HTTP Cache-Control max-age directive for a saved GraphQL document"""
+  maxAgeHeader: Int
+
+  """
+  A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types.
+  """
+  menuOrder: Int
+
+  """The password used to protect the content of the object"""
+  password: String
+
+  """The slug of the object"""
+  slug: String
+
+  """The status of the object"""
+  status: PostStatusEnum
+
+  """The title of the object"""
+  title: String
+}
+
+"""The payload for the createGraphqlDocument mutation."""
+type CreateGraphqlDocumentPayload {
+  """
+  If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The Post object mutation type."""
+  graphqlDocument: GraphqlDocument
 }
 
 """Input for the createMediaItem mutation."""
@@ -2797,6 +2898,64 @@ type DeleteCommentPayload {
   deletedId: ID
 }
 
+"""Input for the deleteGraphqlDocumentGroup mutation."""
+input DeleteGraphqlDocumentGroupInput {
+  """
+  This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The ID of the graphqlDocumentGroup to delete"""
+  id: ID!
+}
+
+"""The payload for the deleteGraphqlDocumentGroup mutation."""
+type DeleteGraphqlDocumentGroupPayload {
+  """
+  If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The ID of the deleted object"""
+  deletedId: ID
+
+  """The deleted term object"""
+  graphqlDocumentGroup: GraphqlDocumentGroup
+}
+
+"""Input for the deleteGraphqlDocument mutation."""
+input DeleteGraphqlDocumentInput {
+  """
+  This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """
+  Whether the object should be force deleted instead of being moved to the trash
+  """
+  forceDelete: Boolean
+
+  """The ID of the graphqlDocument to delete"""
+  id: ID!
+
+  """Override the edit lock when another user is editing the post"""
+  ignoreEditLock: Boolean
+}
+
+"""The payload for the deleteGraphqlDocument mutation."""
+type DeleteGraphqlDocumentPayload {
+  """
+  If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The ID of the deleted object"""
+  deletedId: ID
+
+  """The object before it was deleted"""
+  graphqlDocument: GraphqlDocument
+}
+
 """Input for the deleteMediaItem mutation."""
 input DeleteMediaItemInput {
   """
@@ -3335,6 +3494,1112 @@ type GeneralSettings {
 
   """Site URL."""
   url: String
+}
+
+"""The graphqlDocument type"""
+type GraphqlDocument implements ContentNode & DatabaseIdentifier & Node & NodeWithContentEditor & NodeWithTemplate & NodeWithTitle & UniformResourceIdentifiable {
+  """Alias names for saved GraphQL query documents"""
+  alias: [String!]
+
+  """The ancestors of the content node."""
+  ancestors(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+  ): GraphqlDocumentToGraphqlDocumentConnection @deprecated(reason: "This content type is not hierarchical and typically will not have ancestors")
+
+  """The content of the post."""
+  content(
+    """Format of the field output"""
+    format: PostObjectFieldFormatEnum
+  ): String
+
+  """Connection between the ContentNode type and the ContentType type"""
+  contentType: ContentNodeToContentTypeConnectionEdge
+
+  """The name of the Content Type the node belongs to"""
+  contentTypeName: String!
+
+  """The unique identifier stored in the database"""
+  databaseId: Int!
+
+  """Post publishing date."""
+  date: String
+
+  """The publishing date set in GMT."""
+  dateGmt: String
+
+  """Description for the saved GraphQL document"""
+  description: String
+
+  """The desired slug of the post"""
+  desiredSlug: String
+
+  """
+  If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
+  """
+  editingLockedBy: ContentNodeToEditLockConnectionEdge
+
+  """The RSS enclosure for the object"""
+  enclosure: String
+
+  """Connection between the ContentNode type and the EnqueuedScript type"""
+  enqueuedScripts(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+  ): ContentNodeToEnqueuedScriptConnection
+
+  """
+  Connection between the ContentNode type and the EnqueuedStylesheet type
+  """
+  enqueuedStylesheets(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+  ): ContentNodeToEnqueuedStylesheetConnection
+
+  """Allow, deny or default access grant for specific query"""
+  grant: String
+
+  """
+  Connection between the GraphqlDocument type and the graphqlDocumentGroup type
+  """
+  graphqlDocumentGroups(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+
+    """Arguments for filtering the connection"""
+    where: GraphqlDocumentToGraphqlDocumentGroupConnectionWhereArgs
+  ): GraphqlDocumentToGraphqlDocumentGroupConnection
+
+  """The id field matches the WP_Post-&gt;ID field."""
+  graphqlDocumentId: Int! @deprecated(reason: "Deprecated in favor of the databaseId field")
+
+  """
+  The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
+  """
+  guid: String
+
+  """Whether the graphql_document object is password protected."""
+  hasPassword: Boolean
+
+  """The globally unique identifier of the graphql_document object."""
+  id: ID!
+
+  """Whether the node is a Comment"""
+  isComment: Boolean!
+
+  """Whether the node is a Content Node"""
+  isContentNode: Boolean!
+
+  """Whether the node represents the front page."""
+  isFrontPage: Boolean!
+
+  """Whether  the node represents the blog page."""
+  isPostsPage: Boolean!
+
+  """Whether the object is a node in the preview state"""
+  isPreview: Boolean
+
+  """Whether the object is restricted from the current viewer"""
+  isRestricted: Boolean
+
+  """Whether the node is a Term"""
+  isTermNode: Boolean!
+
+  """The user that most recently edited the node"""
+  lastEditedBy: ContentNodeToEditLastConnectionEdge
+
+  """The permalink of the post"""
+  link: String
+
+  """HTTP Cache-Control max-age directive for a saved GraphQL document"""
+  maxAgeHeader: Int
+
+  """
+  The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time.
+  """
+  modified: String
+
+  """
+  The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
+  """
+  modifiedGmt: String
+
+  """The parent of the content node."""
+  parent: GraphqlDocumentToParentConnectionEdge @deprecated(reason: "This content type is not hierarchical and typically will not have a parent")
+
+  """The password for the graphql_document object."""
+  password: String
+
+  """
+  Connection between the GraphqlDocument type and the graphqlDocument type
+  """
+  preview: GraphqlDocumentToPreviewConnectionEdge @deprecated(reason: "The &quot;GraphqlDocument&quot; Type is not publicly queryable and does not support previews. This field will be removed in the future.")
+
+  """The database id of the preview node"""
+  previewRevisionDatabaseId: Int
+
+  """Whether the object is a node in the preview state"""
+  previewRevisionId: ID
+
+  """The Yoast SEO data of the ContentNode"""
+  seo: PostTypeSEO
+
+  """
+  The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
+  """
+  slug: String
+
+  """The current status of the object"""
+  status: String
+
+  """The template assigned to the node"""
+  template: ContentTemplate
+
+  """Connection between the GraphqlDocument type and the TermNode type"""
+  terms(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+
+    """Arguments for filtering the connection"""
+    where: GraphqlDocumentToTermNodeConnectionWhereArgs
+  ): GraphqlDocumentToTermNodeConnection
+
+  """
+  The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
+  """
+  title(
+    """Format of the field output"""
+    format: PostObjectFieldFormatEnum
+  ): String
+
+  """The unique resource identifier path"""
+  uri: String
+}
+
+"""Connection to graphqlDocument Nodes"""
+interface GraphqlDocumentConnection implements Connection {
+  """
+  A list of edges (relational context) between RootQuery and connected graphqlDocument Nodes
+  """
+  edges: [GraphqlDocumentConnectionEdge!]!
+
+  """A list of connected graphqlDocument Nodes"""
+  nodes: [GraphqlDocument!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: GraphqlDocumentConnectionPageInfo!
+}
+
+"""Edge between a Node and a connected graphqlDocument"""
+interface GraphqlDocumentConnectionEdge implements Edge {
+  """
+  Opaque reference to the nodes position in the connection. Value can be used with pagination args.
+  """
+  cursor: String
+
+  """The connected graphqlDocument Node"""
+  node: GraphqlDocument!
+}
+
+"""Page Info on the connected GraphqlDocumentConnectionEdge"""
+interface GraphqlDocumentConnectionPageInfo implements PageInfo & WPPageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Raw schema for page"""
+  seo: SEOPostTypePageInfo
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+"""Set relationships between the graphqlDocument to graphqlDocumentGroups"""
+input GraphqlDocumentGraphqlDocumentGroupsInput {
+  """
+  If true, this will append the graphqlDocumentGroup to existing related graphqlDocumentGroups. If false, this will replace existing relationships. Default true.
+  """
+  append: Boolean
+
+  """The input list of items to set."""
+  nodes: [GraphqlDocumentGraphqlDocumentGroupsNodeInput]
+}
+
+"""
+List of graphqlDocumentGroups to connect the graphqlDocument to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists.
+"""
+input GraphqlDocumentGraphqlDocumentGroupsNodeInput {
+  """
+  The description of the graphqlDocumentGroup. This field is used to set a description of the graphqlDocumentGroup if a new one is created during the mutation.
+  """
+  description: String
+
+  """
+  The ID of the graphqlDocumentGroup. If present, this will be used to connect to the graphqlDocument. If no existing graphqlDocumentGroup exists with this ID, no connection will be made.
+  """
+  id: ID
+
+  """
+  The name of the graphqlDocumentGroup. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field.
+  """
+  name: String
+
+  """
+  The slug of the graphqlDocumentGroup. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation.
+  """
+  slug: String
+}
+
+"""The graphqlDocumentGroup type"""
+type GraphqlDocumentGroup implements DatabaseIdentifier & Node & TermNode & UniformResourceIdentifiable {
+  """
+  Connection between the GraphqlDocumentGroup type and the ContentNode type
+  """
+  contentNodes(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+
+    """Arguments for filtering the connection"""
+    where: GraphqlDocumentGroupToContentNodeConnectionWhereArgs
+  ): GraphqlDocumentGroupToContentNodeConnection
+
+  """The number of objects connected to the object"""
+  count: Int
+
+  """The unique identifier stored in the database"""
+  databaseId: Int!
+
+  """The description of the object"""
+  description: String
+
+  """Connection between the TermNode type and the EnqueuedScript type"""
+  enqueuedScripts(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+  ): TermNodeToEnqueuedScriptConnection
+
+  """Connection between the TermNode type and the EnqueuedStylesheet type"""
+  enqueuedStylesheets(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+  ): TermNodeToEnqueuedStylesheetConnection
+
+  """The id field matches the WP_Post-&gt;ID field."""
+  graphqlDocumentGroupId: Int @deprecated(reason: "Deprecated in favor of databaseId")
+
+  """
+  Connection between the GraphqlDocumentGroup type and the graphqlDocument type
+  """
+  graphqlDocuments(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+
+    """Arguments for filtering the connection"""
+    where: GraphqlDocumentGroupToGraphqlDocumentConnectionWhereArgs
+  ): GraphqlDocumentGroupToGraphqlDocumentConnection
+
+  """The globally unique ID for the object"""
+  id: ID!
+
+  """Whether the node is a Comment"""
+  isComment: Boolean!
+
+  """Whether the node is a Content Node"""
+  isContentNode: Boolean!
+
+  """Whether the node represents the front page."""
+  isFrontPage: Boolean!
+
+  """Whether  the node represents the blog page."""
+  isPostsPage: Boolean!
+
+  """Whether the object is restricted from the current viewer"""
+  isRestricted: Boolean
+
+  """Whether the node is a Term"""
+  isTermNode: Boolean!
+
+  """The link to the term"""
+  link: String
+
+  """The human friendly name of the object."""
+  name: String
+
+  """The Yoast SEO data of the Groups taxonomy."""
+  seo: TaxonomySEO
+
+  """An alphanumeric identifier for the object unique to its type."""
+  slug: String
+
+  """Connection between the GraphqlDocumentGroup type and the Taxonomy type"""
+  taxonomy: GraphqlDocumentGroupToTaxonomyConnectionEdge
+
+  """The name of the taxonomy that the object is associated with"""
+  taxonomyName: String
+
+  """The ID of the term group that this term object belongs to"""
+  termGroupId: Int
+
+  """The taxonomy ID that the object is associated with"""
+  termTaxonomyId: Int
+
+  """The unique resource identifier path"""
+  uri: String
+}
+
+"""Connection to graphqlDocumentGroup Nodes"""
+interface GraphqlDocumentGroupConnection implements Connection {
+  """
+  A list of edges (relational context) between RootQuery and connected graphqlDocumentGroup Nodes
+  """
+  edges: [GraphqlDocumentGroupConnectionEdge!]!
+
+  """A list of connected graphqlDocumentGroup Nodes"""
+  nodes: [GraphqlDocumentGroup!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: GraphqlDocumentGroupConnectionPageInfo!
+}
+
+"""Edge between a Node and a connected graphqlDocumentGroup"""
+interface GraphqlDocumentGroupConnectionEdge implements Edge {
+  """
+  Opaque reference to the nodes position in the connection. Value can be used with pagination args.
+  """
+  cursor: String
+
+  """The connected graphqlDocumentGroup Node"""
+  node: GraphqlDocumentGroup!
+}
+
+"""Page Info on the connected GraphqlDocumentGroupConnectionEdge"""
+interface GraphqlDocumentGroupConnectionPageInfo implements PageInfo & WPPageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Raw schema for page"""
+  seo: SEOPostTypePageInfo
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+"""The Type of Identifier used to fetch a single resource. Default is ID."""
+enum GraphqlDocumentGroupIdType {
+  """The Database ID for the node"""
+  DATABASE_ID
+
+  """The hashed Global ID"""
+  ID
+
+  """The name of the node"""
+  NAME
+
+  """Url friendly name of the node"""
+  SLUG
+
+  """The URI for the node"""
+  URI
+}
+
+"""
+Connection between the GraphqlDocumentGroup type and the ContentNode type
+"""
+type GraphqlDocumentGroupToContentNodeConnection implements Connection & ContentNodeConnection {
+  """Edges for the GraphqlDocumentGroupToContentNodeConnection connection"""
+  edges: [GraphqlDocumentGroupToContentNodeConnectionEdge!]!
+
+  """The nodes of the connection, without the edges"""
+  nodes: [ContentNode!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: GraphqlDocumentGroupToContentNodeConnectionPageInfo!
+}
+
+"""An edge in a connection"""
+type GraphqlDocumentGroupToContentNodeConnectionEdge implements ContentNodeConnectionEdge & Edge {
+  """A cursor for use in pagination"""
+  cursor: String
+
+  """The item at the end of the edge"""
+  node: ContentNode!
+}
+
+"""
+Page Info on the &quot;GraphqlDocumentGroupToContentNodeConnection&quot;
+"""
+type GraphqlDocumentGroupToContentNodeConnectionPageInfo implements ContentNodeConnectionPageInfo & PageInfo & WPPageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Raw schema for page"""
+  seo: SEOPostTypePageInfo
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+"""
+Arguments for filtering the GraphqlDocumentGroupToContentNodeConnection connection
+"""
+input GraphqlDocumentGroupToContentNodeConnectionWhereArgs {
+  """The Types of content to filter"""
+  contentTypes: [ContentTypesOfGraphqlDocumentGroupEnum]
+
+  """Filter the connection based on dates"""
+  dateQuery: DateQueryInput
+
+  """
+  True for objects with passwords; False for objects without passwords; null for all objects with or without passwords
+  """
+  hasPassword: Boolean
+
+  """Specific database ID of the object"""
+  id: Int
+
+  """Array of IDs for the objects to retrieve"""
+  in: [ID]
+
+  """Get objects with a specific mimeType property"""
+  mimeType: MimeTypeEnum
+
+  """Slug / post_name of the object"""
+  name: String
+
+  """Specify objects to retrieve. Use slugs"""
+  nameIn: [String]
+
+  """
+  Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored
+  """
+  notIn: [ID]
+
+  """What parameter to use to order the objects by."""
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  """Use ID to return only children. Use 0 to return only top-level items"""
+  parent: ID
+
+  """Specify objects whose parent is in an array"""
+  parentIn: [ID]
+
+  """Specify posts whose parent is not in an array"""
+  parentNotIn: [ID]
+
+  """Show posts with a specific password."""
+  password: String
+
+  """Show Posts based on a keyword search"""
+  search: String
+
+  """Retrieve posts where post status is in an array."""
+  stati: [PostStatusEnum]
+
+  """Show posts with a specific status."""
+  status: PostStatusEnum
+
+  """Title of the object"""
+  title: String
+}
+
+"""
+Connection between the GraphqlDocumentGroup type and the graphqlDocument type
+"""
+type GraphqlDocumentGroupToGraphqlDocumentConnection implements Connection & GraphqlDocumentConnection {
+  """
+  Edges for the GraphqlDocumentGroupToGraphqlDocumentConnection connection
+  """
+  edges: [GraphqlDocumentGroupToGraphqlDocumentConnectionEdge!]!
+
+  """The nodes of the connection, without the edges"""
+  nodes: [GraphqlDocument!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: GraphqlDocumentGroupToGraphqlDocumentConnectionPageInfo!
+}
+
+"""An edge in a connection"""
+type GraphqlDocumentGroupToGraphqlDocumentConnectionEdge implements Edge & GraphqlDocumentConnectionEdge {
+  """A cursor for use in pagination"""
+  cursor: String
+
+  """The item at the end of the edge"""
+  node: GraphqlDocument!
+}
+
+"""
+Page Info on the &quot;GraphqlDocumentGroupToGraphqlDocumentConnection&quot;
+"""
+type GraphqlDocumentGroupToGraphqlDocumentConnectionPageInfo implements GraphqlDocumentConnectionPageInfo & PageInfo & WPPageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Raw schema for page"""
+  seo: SEOPostTypePageInfo
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+"""
+Arguments for filtering the GraphqlDocumentGroupToGraphqlDocumentConnection connection
+"""
+input GraphqlDocumentGroupToGraphqlDocumentConnectionWhereArgs {
+  """Filter the connection based on dates"""
+  dateQuery: DateQueryInput
+
+  """
+  True for objects with passwords; False for objects without passwords; null for all objects with or without passwords
+  """
+  hasPassword: Boolean
+
+  """Specific database ID of the object"""
+  id: Int
+
+  """Array of IDs for the objects to retrieve"""
+  in: [ID]
+
+  """Get objects with a specific mimeType property"""
+  mimeType: MimeTypeEnum
+
+  """Slug / post_name of the object"""
+  name: String
+
+  """Specify objects to retrieve. Use slugs"""
+  nameIn: [String]
+
+  """
+  Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored
+  """
+  notIn: [ID]
+
+  """What parameter to use to order the objects by."""
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  """Use ID to return only children. Use 0 to return only top-level items"""
+  parent: ID
+
+  """Specify objects whose parent is in an array"""
+  parentIn: [ID]
+
+  """Specify posts whose parent is not in an array"""
+  parentNotIn: [ID]
+
+  """Show posts with a specific password."""
+  password: String
+
+  """Show Posts based on a keyword search"""
+  search: String
+
+  """Retrieve posts where post status is in an array."""
+  stati: [PostStatusEnum]
+
+  """Show posts with a specific status."""
+  status: PostStatusEnum
+
+  """Title of the object"""
+  title: String
+}
+
+"""Connection between the GraphqlDocumentGroup type and the Taxonomy type"""
+type GraphqlDocumentGroupToTaxonomyConnectionEdge implements Edge & OneToOneConnection & TaxonomyConnectionEdge {
+  """
+  Opaque reference to the nodes position in the connection. Value can be used with pagination args.
+  """
+  cursor: String
+
+  """The node of the connection, without the edges"""
+  node: Taxonomy!
+}
+
+"""The Type of Identifier used to fetch a single resource. Default is ID."""
+enum GraphqlDocumentIdType {
+  """Identify a resource by the Database ID."""
+  DATABASE_ID
+
+  """Identify a resource by the (hashed) Global ID."""
+  ID
+
+  """
+  Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier.
+  """
+  SLUG
+
+  """Identify a resource by the URI."""
+  URI
+}
+
+"""
+Connection between the GraphqlDocument type and the graphqlDocument type
+"""
+type GraphqlDocumentToGraphqlDocumentConnection implements Connection & GraphqlDocumentConnection {
+  """Edges for the GraphqlDocumentToGraphqlDocumentConnection connection"""
+  edges: [GraphqlDocumentToGraphqlDocumentConnectionEdge!]!
+
+  """The nodes of the connection, without the edges"""
+  nodes: [GraphqlDocument!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: GraphqlDocumentToGraphqlDocumentConnectionPageInfo!
+}
+
+"""An edge in a connection"""
+type GraphqlDocumentToGraphqlDocumentConnectionEdge implements Edge & GraphqlDocumentConnectionEdge {
+  """A cursor for use in pagination"""
+  cursor: String @deprecated(reason: "This content type is not hierarchical and typically will not have ancestors")
+
+  """The item at the end of the edge"""
+  node: GraphqlDocument! @deprecated(reason: "This content type is not hierarchical and typically will not have ancestors")
+}
+
+"""
+Page Info on the &quot;GraphqlDocumentToGraphqlDocumentConnection&quot;
+"""
+type GraphqlDocumentToGraphqlDocumentConnectionPageInfo implements GraphqlDocumentConnectionPageInfo & PageInfo & WPPageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Raw schema for page"""
+  seo: SEOPostTypePageInfo
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+"""
+Connection between the GraphqlDocument type and the graphqlDocumentGroup type
+"""
+type GraphqlDocumentToGraphqlDocumentGroupConnection implements Connection & GraphqlDocumentGroupConnection {
+  """
+  Edges for the GraphqlDocumentToGraphqlDocumentGroupConnection connection
+  """
+  edges: [GraphqlDocumentToGraphqlDocumentGroupConnectionEdge!]!
+
+  """The nodes of the connection, without the edges"""
+  nodes: [GraphqlDocumentGroup!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: GraphqlDocumentToGraphqlDocumentGroupConnectionPageInfo!
+}
+
+"""An edge in a connection"""
+type GraphqlDocumentToGraphqlDocumentGroupConnectionEdge implements Edge & GraphqlDocumentGroupConnectionEdge {
+  """A cursor for use in pagination"""
+  cursor: String
+
+  """The Yoast SEO Primary graphql_document_group"""
+  isPrimary: Boolean
+
+  """The item at the end of the edge"""
+  node: GraphqlDocumentGroup!
+}
+
+"""
+Page Info on the &quot;GraphqlDocumentToGraphqlDocumentGroupConnection&quot;
+"""
+type GraphqlDocumentToGraphqlDocumentGroupConnectionPageInfo implements GraphqlDocumentGroupConnectionPageInfo & PageInfo & WPPageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Raw schema for page"""
+  seo: SEOPostTypePageInfo
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+"""
+Arguments for filtering the GraphqlDocumentToGraphqlDocumentGroupConnection connection
+"""
+input GraphqlDocumentToGraphqlDocumentGroupConnectionWhereArgs {
+  """
+  Unique cache key to be produced when this query is stored in an object cache. Default is 'core'.
+  """
+  cacheDomain: String
+
+  """
+  Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0.
+  """
+  childOf: Int
+
+  """
+  True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false.
+  """
+  childless: Boolean
+
+  """
+  Retrieve terms where the description is LIKE the input value. Default empty.
+  """
+  descriptionLike: String
+
+  """
+  Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array.
+  """
+  exclude: [ID]
+
+  """
+  Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array.
+  """
+  excludeTree: [ID]
+
+  """
+  Whether to hide terms not assigned to any posts. Accepts true or false. Default false
+  """
+  hideEmpty: Boolean
+
+  """
+  Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true.
+  """
+  hierarchical: Boolean
+
+  """Array of term ids to include. Default empty array."""
+  include: [ID]
+
+  """Array of names to return term(s) for. Default empty."""
+  name: [String]
+
+  """Retrieve terms where the name is LIKE the input value. Default empty."""
+  nameLike: String
+
+  """
+  Array of object IDs. Results will be limited to terms associated with these objects.
+  """
+  objectIds: [ID]
+
+  """Direction the connection should be ordered in"""
+  order: OrderEnum
+
+  """Field(s) to order terms by. Defaults to 'name'."""
+  orderby: TermObjectsConnectionOrderbyEnum
+
+  """
+  Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false.
+  """
+  padCounts: Boolean
+
+  """Parent term ID to retrieve direct-child terms of. Default empty."""
+  parent: Int
+
+  """
+  Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty.
+  """
+  search: String
+
+  """Array of slugs to return term(s) for. Default empty."""
+  slug: [String]
+
+  """Array of term taxonomy IDs, to match when querying terms."""
+  termTaxonomyId: [ID]
+
+  """Whether to prime meta caches for matched terms. Default true."""
+  updateTermMetaCache: Boolean
+}
+
+"""
+Connection between the GraphqlDocument type and the graphqlDocument type
+"""
+type GraphqlDocumentToParentConnectionEdge implements Edge & GraphqlDocumentConnectionEdge & OneToOneConnection {
+  """
+  Opaque reference to the nodes position in the connection. Value can be used with pagination args.
+  """
+  cursor: String
+
+  """The node of the connection, without the edges"""
+  node: GraphqlDocument! @deprecated(reason: "This content type is not hierarchical and typically will not have a parent")
+}
+
+"""
+Connection between the GraphqlDocument type and the graphqlDocument type
+"""
+type GraphqlDocumentToPreviewConnectionEdge implements Edge & GraphqlDocumentConnectionEdge & OneToOneConnection {
+  """
+  Opaque reference to the nodes position in the connection. Value can be used with pagination args.
+  """
+  cursor: String
+
+  """The node of the connection, without the edges"""
+  node: GraphqlDocument! @deprecated(reason: "The &quot;GraphqlDocument&quot; Type is not publicly queryable and does not support previews. This field will be removed in the future.")
+}
+
+"""Connection between the GraphqlDocument type and the TermNode type"""
+type GraphqlDocumentToTermNodeConnection implements Connection & TermNodeConnection {
+  """Edges for the GraphqlDocumentToTermNodeConnection connection"""
+  edges: [GraphqlDocumentToTermNodeConnectionEdge!]!
+
+  """The nodes of the connection, without the edges"""
+  nodes: [TermNode!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: GraphqlDocumentToTermNodeConnectionPageInfo!
+}
+
+"""An edge in a connection"""
+type GraphqlDocumentToTermNodeConnectionEdge implements Edge & TermNodeConnectionEdge {
+  """A cursor for use in pagination"""
+  cursor: String
+
+  """The item at the end of the edge"""
+  node: TermNode!
+}
+
+"""Page Info on the &quot;GraphqlDocumentToTermNodeConnection&quot;"""
+type GraphqlDocumentToTermNodeConnectionPageInfo implements PageInfo & TermNodeConnectionPageInfo & WPPageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Raw schema for page"""
+  seo: SEOPostTypePageInfo
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+"""
+Arguments for filtering the GraphqlDocumentToTermNodeConnection connection
+"""
+input GraphqlDocumentToTermNodeConnectionWhereArgs {
+  """
+  Unique cache key to be produced when this query is stored in an object cache. Default is 'core'.
+  """
+  cacheDomain: String
+
+  """
+  Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0.
+  """
+  childOf: Int
+
+  """
+  True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false.
+  """
+  childless: Boolean
+
+  """
+  Retrieve terms where the description is LIKE the input value. Default empty.
+  """
+  descriptionLike: String
+
+  """
+  Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array.
+  """
+  exclude: [ID]
+
+  """
+  Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array.
+  """
+  excludeTree: [ID]
+
+  """
+  Whether to hide terms not assigned to any posts. Accepts true or false. Default false
+  """
+  hideEmpty: Boolean
+
+  """
+  Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true.
+  """
+  hierarchical: Boolean
+
+  """Array of term ids to include. Default empty array."""
+  include: [ID]
+
+  """Array of names to return term(s) for. Default empty."""
+  name: [String]
+
+  """Retrieve terms where the name is LIKE the input value. Default empty."""
+  nameLike: String
+
+  """
+  Array of object IDs. Results will be limited to terms associated with these objects.
+  """
+  objectIds: [ID]
+
+  """Direction the connection should be ordered in"""
+  order: OrderEnum
+
+  """Field(s) to order terms by. Defaults to 'name'."""
+  orderby: TermObjectsConnectionOrderbyEnum
+
+  """
+  Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false.
+  """
+  padCounts: Boolean
+
+  """Parent term ID to retrieve direct-child terms of. Default empty."""
+  parent: Int
+
+  """
+  Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty.
+  """
+  search: String
+
+  """Array of slugs to return term(s) for. Default empty."""
+  slug: [String]
+
+  """The Taxonomy to filter terms by"""
+  taxonomies: [TaxonomyEnum]
+
+  """Array of term taxonomy IDs, to match when querying terms."""
+  termTaxonomyId: [ID]
+
+  """Whether to prime meta caches for matched terms. Default true."""
+  updateTermMetaCache: Boolean
 }
 
 """Content node with hierarchical (parent/child) relationships"""
@@ -10544,6 +11809,18 @@ type RootMutation {
     input: CreateCommentInput!
   ): CreateCommentPayload
 
+  """The createGraphqlDocument mutation"""
+  createGraphqlDocument(
+    """Input for the createGraphqlDocument mutation"""
+    input: CreateGraphqlDocumentInput!
+  ): CreateGraphqlDocumentPayload
+
+  """The createGraphqlDocumentGroup mutation"""
+  createGraphqlDocumentGroup(
+    """Input for the createGraphqlDocumentGroup mutation"""
+    input: CreateGraphqlDocumentGroupInput!
+  ): CreateGraphqlDocumentGroupPayload
+
   """The createMediaItem mutation"""
   createMediaItem(
     """Input for the createMediaItem mutation"""
@@ -10609,6 +11886,18 @@ type RootMutation {
     """Input for the deleteComment mutation"""
     input: DeleteCommentInput!
   ): DeleteCommentPayload
+
+  """The deleteGraphqlDocument mutation"""
+  deleteGraphqlDocument(
+    """Input for the deleteGraphqlDocument mutation"""
+    input: DeleteGraphqlDocumentInput!
+  ): DeleteGraphqlDocumentPayload
+
+  """The deleteGraphqlDocumentGroup mutation"""
+  deleteGraphqlDocumentGroup(
+    """Input for the deleteGraphqlDocumentGroup mutation"""
+    input: DeleteGraphqlDocumentGroupInput!
+  ): DeleteGraphqlDocumentGroupPayload
 
   """The deleteMediaItem mutation"""
   deleteMediaItem(
@@ -10717,6 +12006,18 @@ type RootMutation {
     """Input for the updateComment mutation"""
     input: UpdateCommentInput!
   ): UpdateCommentPayload
+
+  """The updateGraphqlDocument mutation"""
+  updateGraphqlDocument(
+    """Input for the updateGraphqlDocument mutation"""
+    input: UpdateGraphqlDocumentInput!
+  ): UpdateGraphqlDocumentPayload
+
+  """The updateGraphqlDocumentGroup mutation"""
+  updateGraphqlDocumentGroup(
+    """Input for the updateGraphqlDocumentGroup mutation"""
+    input: UpdateGraphqlDocumentGroupInput!
+  ): UpdateGraphqlDocumentGroupPayload
 
   """The updateMediaItem mutation"""
   updateMediaItem(
@@ -10924,6 +12225,92 @@ type RootQuery {
 
   """Fields of the &#039;GeneralSettings&#039; settings group"""
   generalSettings: GeneralSettings
+
+  """An object of the graphqlDocument Type. Saved GraphQL Documents"""
+  graphqlDocument(
+    """
+    Whether to return the Preview Node instead of the Published Node. When the ID of a Node is provided along with asPreview being set to true, the preview node with un-published changes will be returned instead of the published node. If no preview node exists or the requester doesn't have proper capabilities to preview, no node will be returned. If the ID provided is a URI and has a preview query arg, it will be used as a fallback if the "asPreview" argument is not explicitly provided as an argument.
+    """
+    asPreview: Boolean
+
+    """The globally unique identifier of the object."""
+    id: ID!
+
+    """Type of unique identifier to fetch by. Default is Global ID"""
+    idType: GraphqlDocumentIdType
+  ): GraphqlDocument
+
+  """A graphqlDocument object"""
+  graphqlDocumentBy(
+    """Get the graphqlDocument by its database ID"""
+    graphqlDocumentId: Int
+
+    """Get the graphqlDocument object by its global ID"""
+    id: ID
+
+    """
+    Get the graphqlDocument by its slug (only available for non-hierarchical types)
+    """
+    slug: String
+
+    """Get the graphqlDocument by its uri"""
+    uri: String
+  ): GraphqlDocument @deprecated(reason: "Deprecated in favor of using the single entry point for this type with ID and IDType fields. For example, instead of postBy( id: &quot;&quot; ), use post(id: &quot;&quot; idType: &quot;&quot;)")
+
+  """A 0bject"""
+  graphqlDocumentGroup(
+    """The globally unique identifier of the object."""
+    id: ID!
+
+    """Type of unique identifier to fetch by. Default is Global ID"""
+    idType: GraphqlDocumentGroupIdType
+  ): GraphqlDocumentGroup
+
+  """
+  Connection between the RootQuery type and the graphqlDocumentGroup type
+  """
+  graphqlDocumentGroups(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+
+    """Arguments for filtering the connection"""
+    where: RootQueryToGraphqlDocumentGroupConnectionWhereArgs
+  ): RootQueryToGraphqlDocumentGroupConnection
+
+  """Connection between the RootQuery type and the graphqlDocument type"""
+  graphqlDocuments(
+    """
+    Cursor used along with the "first" argument to reference where in the dataset to get data
+    """
+    after: String
+
+    """
+    Cursor used along with the "last" argument to reference where in the dataset to get data
+    """
+    before: String
+
+    """The number of items to return after the referenced "after" cursor"""
+    first: Int
+
+    """The number of items to return before the referenced "before" cursor"""
+    last: Int
+
+    """Arguments for filtering the connection"""
+    where: RootQueryToGraphqlDocumentConnectionWhereArgs
+  ): RootQueryToGraphqlDocumentConnection
 
   """An object of the mediaItem Type. """
   mediaItem(
@@ -12058,6 +13445,233 @@ type RootQueryToEnqueuedStylesheetConnectionPageInfo implements EnqueuedStyleshe
 
   """When paginating backwards, the cursor to continue."""
   startCursor: String
+}
+
+"""Connection between the RootQuery type and the graphqlDocument type"""
+type RootQueryToGraphqlDocumentConnection implements Connection & GraphqlDocumentConnection {
+  """Edges for the RootQueryToGraphqlDocumentConnection connection"""
+  edges: [RootQueryToGraphqlDocumentConnectionEdge!]!
+
+  """The nodes of the connection, without the edges"""
+  nodes: [GraphqlDocument!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: RootQueryToGraphqlDocumentConnectionPageInfo!
+}
+
+"""An edge in a connection"""
+type RootQueryToGraphqlDocumentConnectionEdge implements Edge & GraphqlDocumentConnectionEdge {
+  """A cursor for use in pagination"""
+  cursor: String
+
+  """The item at the end of the edge"""
+  node: GraphqlDocument!
+}
+
+"""Page Info on the &quot;RootQueryToGraphqlDocumentConnection&quot;"""
+type RootQueryToGraphqlDocumentConnectionPageInfo implements GraphqlDocumentConnectionPageInfo & PageInfo & WPPageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Raw schema for page"""
+  seo: SEOPostTypePageInfo
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+"""
+Arguments for filtering the RootQueryToGraphqlDocumentConnection connection
+"""
+input RootQueryToGraphqlDocumentConnectionWhereArgs {
+  """Filter the connection based on dates"""
+  dateQuery: DateQueryInput
+
+  """
+  True for objects with passwords; False for objects without passwords; null for all objects with or without passwords
+  """
+  hasPassword: Boolean
+
+  """Specific database ID of the object"""
+  id: Int
+
+  """Array of IDs for the objects to retrieve"""
+  in: [ID]
+
+  """Get objects with a specific mimeType property"""
+  mimeType: MimeTypeEnum
+
+  """Slug / post_name of the object"""
+  name: String
+
+  """Specify objects to retrieve. Use slugs"""
+  nameIn: [String]
+
+  """
+  Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored
+  """
+  notIn: [ID]
+
+  """What parameter to use to order the objects by."""
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  """Use ID to return only children. Use 0 to return only top-level items"""
+  parent: ID
+
+  """Specify objects whose parent is in an array"""
+  parentIn: [ID]
+
+  """Specify posts whose parent is not in an array"""
+  parentNotIn: [ID]
+
+  """Show posts with a specific password."""
+  password: String
+
+  """Show Posts based on a keyword search"""
+  search: String
+
+  """Retrieve posts where post status is in an array."""
+  stati: [PostStatusEnum]
+
+  """Show posts with a specific status."""
+  status: PostStatusEnum
+
+  """Title of the object"""
+  title: String
+}
+
+"""
+Connection between the RootQuery type and the graphqlDocumentGroup type
+"""
+type RootQueryToGraphqlDocumentGroupConnection implements Connection & GraphqlDocumentGroupConnection {
+  """Edges for the RootQueryToGraphqlDocumentGroupConnection connection"""
+  edges: [RootQueryToGraphqlDocumentGroupConnectionEdge!]!
+
+  """The nodes of the connection, without the edges"""
+  nodes: [GraphqlDocumentGroup!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: RootQueryToGraphqlDocumentGroupConnectionPageInfo!
+}
+
+"""An edge in a connection"""
+type RootQueryToGraphqlDocumentGroupConnectionEdge implements Edge & GraphqlDocumentGroupConnectionEdge {
+  """A cursor for use in pagination"""
+  cursor: String
+
+  """The item at the end of the edge"""
+  node: GraphqlDocumentGroup!
+}
+
+"""Page Info on the &quot;RootQueryToGraphqlDocumentGroupConnection&quot;"""
+type RootQueryToGraphqlDocumentGroupConnectionPageInfo implements GraphqlDocumentGroupConnectionPageInfo & PageInfo & WPPageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Raw schema for page"""
+  seo: SEOPostTypePageInfo
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+"""
+Arguments for filtering the RootQueryToGraphqlDocumentGroupConnection connection
+"""
+input RootQueryToGraphqlDocumentGroupConnectionWhereArgs {
+  """
+  Unique cache key to be produced when this query is stored in an object cache. Default is 'core'.
+  """
+  cacheDomain: String
+
+  """
+  Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0.
+  """
+  childOf: Int
+
+  """
+  True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false.
+  """
+  childless: Boolean
+
+  """
+  Retrieve terms where the description is LIKE the input value. Default empty.
+  """
+  descriptionLike: String
+
+  """
+  Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array.
+  """
+  exclude: [ID]
+
+  """
+  Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array.
+  """
+  excludeTree: [ID]
+
+  """
+  Whether to hide terms not assigned to any posts. Accepts true or false. Default false
+  """
+  hideEmpty: Boolean
+
+  """
+  Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true.
+  """
+  hierarchical: Boolean
+
+  """Array of term ids to include. Default empty array."""
+  include: [ID]
+
+  """Array of names to return term(s) for. Default empty."""
+  name: [String]
+
+  """Retrieve terms where the name is LIKE the input value. Default empty."""
+  nameLike: String
+
+  """
+  Array of object IDs. Results will be limited to terms associated with these objects.
+  """
+  objectIds: [ID]
+
+  """Direction the connection should be ordered in"""
+  order: OrderEnum
+
+  """Field(s) to order terms by. Defaults to 'name'."""
+  orderby: TermObjectsConnectionOrderbyEnum
+
+  """
+  Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false.
+  """
+  padCounts: Boolean
+
+  """Parent term ID to retrieve direct-child terms of. Default empty."""
+  parent: Int
+
+  """
+  Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty.
+  """
+  search: String
+
+  """Array of slugs to return term(s) for. Default empty."""
+  slug: [String]
+
+  """Array of term taxonomy IDs, to match when querying terms."""
+  termTaxonomyId: [ID]
+
+  """Whether to prime meta caches for matched terms. Default true."""
+  updateTermMetaCache: Boolean
 }
 
 """Connection between the RootQuery type and the mediaItem type"""
@@ -13760,6 +15374,9 @@ type SEOContentTypeArchive {
 """The Yoast SEO search appearance content types"""
 type SEOContentTypes {
   """"""
+  graphqlDocument: SEOContentType
+
+  """"""
   mediaItem: SEOContentType
 
   """"""
@@ -14043,6 +15660,9 @@ type SEOTaxonomyTypeArchive {
 type SEOTaxonomyTypes {
   """"""
   category: SEOTaxonomyType
+
+  """"""
+  graphqlDocumentGroup: SEOTaxonomyType
 
   """"""
   postFormat: SEOTaxonomyType
@@ -14894,6 +16514,9 @@ enum TaxonomyEnum {
   """Taxonomy enum category"""
   CATEGORY
 
+  """Taxonomy enum graphql_document_group"""
+  GRAPHQLDOCUMENTGROUP
+
   """Taxonomy enum post_format"""
   POSTFORMAT
 
@@ -15550,6 +17173,107 @@ type UpdateCommentPayload {
   Whether the mutation succeeded. If the comment is not approved, the server will not return the comment to a non authenticated user, but a success message can be returned if the create succeeded, and the client can optimistically add the comment to the client cache
   """
   success: Boolean
+}
+
+"""Input for the updateGraphqlDocumentGroup mutation."""
+input UpdateGraphqlDocumentGroupInput {
+  """The slug that the graphql_document_group will be an alias of"""
+  aliasOf: String
+
+  """
+  This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The description of the graphql_document_group object"""
+  description: String
+
+  """The ID of the graphqlDocumentGroup object to update"""
+  id: ID!
+
+  """The name of the graphql_document_group object to mutate"""
+  name: String
+
+  """
+  If this argument exists then the slug will be checked to see if it is not an existing valid term. If that check succeeds (it is not a valid term), then it is added and the term id is given. If it fails, then a check is made to whether the taxonomy is hierarchical and the parent argument is not empty. If the second check succeeds, the term will be inserted and the term id will be given. If the slug argument is empty, then it will be calculated from the term name.
+  """
+  slug: String
+}
+
+"""The payload for the updateGraphqlDocumentGroup mutation."""
+type UpdateGraphqlDocumentGroupPayload {
+  """
+  If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The created graphql_document_group"""
+  graphqlDocumentGroup: GraphqlDocumentGroup
+}
+
+"""Input for the updateGraphqlDocument mutation."""
+input UpdateGraphqlDocumentInput {
+  """Alias names for saved GraphQL query documents"""
+  alias: [String!]
+
+  """
+  This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The content of the object"""
+  content: String
+
+  """
+  The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17 
+  """
+  date: String
+
+  """Description for the saved GraphQL document"""
+  description: String
+
+  """Allow, deny or default access grant for specific query"""
+  grant: String
+
+  """Set connections between the graphqlDocument and graphqlDocumentGroups"""
+  graphqlDocumentGroups: GraphqlDocumentGraphqlDocumentGroupsInput
+
+  """The ID of the graphqlDocument object"""
+  id: ID!
+
+  """Override the edit lock when another user is editing the post"""
+  ignoreEditLock: Boolean
+
+  """HTTP Cache-Control max-age directive for a saved GraphQL document"""
+  maxAgeHeader: Int
+
+  """
+  A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types.
+  """
+  menuOrder: Int
+
+  """The password used to protect the content of the object"""
+  password: String
+
+  """The slug of the object"""
+  slug: String
+
+  """The status of the object"""
+  status: PostStatusEnum
+
+  """The title of the object"""
+  title: String
+}
+
+"""The payload for the updateGraphqlDocument mutation."""
+type UpdateGraphqlDocumentPayload {
+  """
+  If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+  """
+  clientMutationId: String
+
+  """The Post object mutation type."""
+  graphqlDocument: GraphqlDocument
 }
 
 """Input for the updateMediaItem mutation."""
