@@ -20,7 +20,7 @@ const ContactPage = () => {
   ];
 
   return (
-    <main className='pt-28'>
+    <main className='pt-18 sm:pt-20 lg:pt-28'>
       <HeaderBanner />
       <Breadcrumbs items={breadcrubmItems} />
       <div className='max-w-7xl mx-auto px-side mt-10 sm:mt-20 lg:mt-40 flex flex-col lg:flex-row gap-10 sm:gap-14 lg:gap-20'>

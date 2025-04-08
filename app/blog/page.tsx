@@ -22,7 +22,7 @@ const PostsPage = async () => {
   ];
 
   return (
-    <main className='py-20 sm:py-24 lg:py-28'>
+    <main className='py-18 sm:py-20 lg:py-28'>
       <Breadcrumbs items={breadcrumbItems} />
       <div className='max-w-7xl mx-auto px-side pt-10 lg:pt-20'>
         <h1 className='text-5xl lg:text-6xl font-bold mb-6 sm:mb-10'>Blog</h1>

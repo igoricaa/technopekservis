@@ -31,7 +31,7 @@ const BongardPage = async () => {
   const products: Product[] = await getBongardProducts();
 
   return (
-    <main className='pt-28'>
+    <main className='pt-18 sm:pt-20 lg:pt-28'>
       <HeaderBanner />
       <Breadcrumbs
         items={[

@@ -50,7 +50,7 @@ const ProductPage = async ({
   const categoryHierarchyPath = [...slugs].join('/');
 
   return (
-    <main className='pb-20 sm:pb-24 lg:pb-32 pt-28'>
+    <main className='py-18 sm:py-20 lg:py-28'>
       <Breadcrumbs
         items={[
           { label: 'Početna', href: '/' },

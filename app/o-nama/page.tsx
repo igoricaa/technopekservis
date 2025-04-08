@@ -8,7 +8,7 @@ import Breadcrumbs from '@/components/breadcrumbs';
 
 const AboutPage = () => {
   return (
-    <main className='pt-28'>
+    <main className='pt-18 sm:pt-20 lg:pt-28'>
       <HeaderBanner />
       <Breadcrumbs
         items={[

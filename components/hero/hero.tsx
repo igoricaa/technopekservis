@@ -6,7 +6,7 @@ import heroImg from '@/public/techno-pek-servis-hero.webp';
 
 const Hero = () => {
   return (
-    <section className='flex flex-col justify-end relative w-screen h-[calc(100vh-440px)] lg:h-[50vh] px-side py-4 sm:py-8 lg:py-12 mt-18 sm:mt-20'>
+    <section className='flex flex-col justify-end relative w-screen h-[calc(100vh-440px)] lg:h-[50vh] px-side py-4 sm:py-8 lg:py-12 mt-18 sm:mt-20 lg:mt-28'>
       <Image
         src={heroImg}
         alt='Techno Pek Servis - Pekarska oprema'

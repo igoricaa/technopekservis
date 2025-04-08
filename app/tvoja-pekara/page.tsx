@@ -13,7 +13,7 @@ const TvojaPekaraPage = () => {
     { label: 'Tvoja pekara', href: '/tvoja-pekara' },
   ];
   return (
-    <main className='pt-28'>
+    <main className='pt-18 sm:pt-20 lg:pt-28'>
       <HeaderBanner />
       <Breadcrumbs items={breadcrumbItems} />
 

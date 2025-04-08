@@ -56,7 +56,7 @@ const BlogPostPage = async ({
   ];
 
   return (
-    <main className='py-20 sm:py-24 lg:py-28'>
+    <main className='py-18 sm:py-20 lg:py-28'>
       <Breadcrumbs items={breadcrumbItems} />
       <div className='max-w-7xl mx-auto px-side mt-10 sm:mt-16 lg:mt-20'>
         <div className='relative w-full aspect-video'>
