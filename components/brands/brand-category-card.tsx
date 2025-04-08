@@ -26,7 +26,7 @@ const BrandCategoryCard = ({
           src={image}
           alt={`${brandName} - ${name}`}
           fill
-          sizes='285px'
+          sizes='450px'
           className='object-cover opacity-50 group-hover:opacity-70 group-hover:scale-125 transition-all duration-300'
         />
         <span

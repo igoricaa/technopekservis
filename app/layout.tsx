@@ -31,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${cormorant.variable} ${openSans.variable} antialiased`}
       >
-        {/* <Header /> */}
+        <Header />
         {children}
         <Footer />
       </body>

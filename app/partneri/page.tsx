@@ -48,6 +48,7 @@ const PartnerCard = ({ partner }: { partner: Partner }) => {
           src={partner.logo.src}
           alt={partner.name}
           fill
+          sizes='(max-width: 640px) 640px, 290px'
           className='object-contain'
         />
       </div>

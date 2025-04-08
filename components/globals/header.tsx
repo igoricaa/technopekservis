@@ -11,7 +11,10 @@ const Header = () => {
         <Logo className='!w-20' />
       </Link>
       <Navigation />
-      <Link href='/kontakt' className={cn(buttonVariants({ size: 'lg' }))}>
+      <Link
+        href='/kontakt'
+        className={cn(buttonVariants({ size: 'lg' }), 'hidden lg:inline-flex')}
+      >
         Kontaktirajte nas
       </Link>
     </header>

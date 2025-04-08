@@ -64,6 +64,7 @@ const BlogPostPage = async ({
             src={post.featuredImage?.node.sourceUrl || ''}
             alt={post.title || ''}
             fill
+            sizes='(max-width: 640px) 640px, 1260px'
             className='object-cover'
           />
         </div>
@@ -157,12 +158,13 @@ const AdjacentPostCard = ({
       )}
     >
       <Link href={`/blog/${postSlug}`}>
-        <div className='relative md:w-xs aspect-video overflow-hidden'>
+        <div className='overflow-hidden'>
           <Image
             src={postFeaturedImage}
             alt={postTitle}
-            fill
-            className='object-cover group-hover:scale-110 transition-all duration-300'
+            width={320}
+            height={180}
+            className='object-cover aspect-video group-hover:scale-110 transition-all duration-300'
           />
         </div>
         <h3 className='text-2xl font-bold mt-2'>{postTitle}</h3>

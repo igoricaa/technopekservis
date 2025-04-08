@@ -7,10 +7,9 @@ import { cn } from '@/lib/utils';
 import { useMobile } from '@/utils/hooks';
 import { useState, useMemo, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-
-interface MenuItemWithChildren extends MenuItem {
-  children?: MenuItemWithChildren[];
-}
+import Burger from './burger';
+import MobileMenu from './mobile-menu';
+import { MenuItemWithChildren } from '@/utils/types';
 
 interface NavMenuProps {
   menuItems: MenuItem[];
@@ -66,7 +65,81 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
   };
 
   return (
-    <nav className='relative z-50'>
+    <>
+      {isMobile ? (
+        <NavMenuMobile
+          menuTree={menuTree}
+          activeMenu={activeMenu}
+          pathname={pathname}
+          handleMenuHover={handleMenuHover}
+          handleMenuLeave={handleMenuLeave}
+          handleDropdownHover={handleDropdownHover}
+          handleDropdownLeave={handleDropdownLeave}
+        />
+      ) : (
+        <NavMenuDesktop
+          menuTree={menuTree}
+          activeMenu={activeMenu}
+          pathname={pathname}
+          handleMenuHover={handleMenuHover}
+          handleMenuLeave={handleMenuLeave}
+          handleDropdownHover={handleDropdownHover}
+          handleDropdownLeave={handleDropdownLeave}
+        />
+      )}
+    </>
+  );
+}
+
+const NavMenuMobile = ({
+  menuTree,
+  activeMenu,
+  pathname,
+  handleMenuHover,
+  handleMenuLeave,
+  handleDropdownHover,
+  handleDropdownLeave,
+}: {
+  menuTree: MenuItemWithChildren[];
+  activeMenu: string | null;
+  pathname: string;
+  handleMenuHover: (menu: string) => void;
+  handleMenuLeave: () => void;
+  handleDropdownHover: () => void;
+  handleDropdownLeave: () => void;
+}) => {
+  return (
+    <div>
+      <MobileMenu
+        menuTree={menuTree}
+        activeMenu={activeMenu}
+        pathname={pathname}
+        handleMenuHover={handleMenuHover}
+        handleMenuLeave={handleMenuLeave}
+      />
+    </div>
+  );
+};
+
+const NavMenuDesktop = ({
+  menuTree,
+  activeMenu,
+  pathname,
+  handleMenuHover,
+  handleMenuLeave,
+  handleDropdownHover,
+  handleDropdownLeave,
+}: {
+  menuTree: MenuItemWithChildren[];
+  activeMenu: string | null;
+  pathname: string;
+  handleMenuHover: (menu: string) => void;
+  handleMenuLeave: () => void;
+  handleDropdownHover: () => void;
+  handleDropdownLeave: () => void;
+}) => {
+  return (
+    <nav className='hidden lg:block relative z-50'>
       <ul className='flex items-center space-x-1 bg-background'>
         {menuTree.map((item) => {
           if (!item) return null;
@@ -106,7 +179,7 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
       </ul>
     </nav>
   );
-}
+};
 
 function NavItem({
   href,
