@@ -49,10 +49,24 @@ const PartnerCard = ({
   return (
     <article
       className={cn(
-        'flex flex-col-reverse sm:flex-row gap-10 justify-between items-center',
+        'flex flex-col sm:flex-row gap-10 justify-between items-center',
         index !== 0 && 'border-t border-black/20 pt-12'
       )}
     >
+      <div className='sm:max-w-2xl w-full'>
+        <h2 className='text-4xl font-bold'>{partner.name}</h2>
+        <p className=' text-gray-500 mt-4'>{partner.description}</p>
+
+        {partner.link && (
+          <Link
+            href={partner.link}
+            className={cn(buttonVariants({ size: 'lg' }), 'mt-4')}
+            target='_blank'
+          >
+            Saznajte više
+          </Link>
+        )}
+      </div>
       <div
         className={cn(
           'relative sm:max-w-sm w-full sm:w-72',
@@ -66,20 +80,6 @@ const PartnerCard = ({
           sizes='(max-width: 640px) 640px, 290px'
           className='object-contain'
         />
-      </div>
-      <div className='sm:max-w-3/5 w-full'>
-        <h2 className='text-4xl font-bold'>{partner.name}</h2>
-        <p className=' text-gray-500 mt-4'>{partner.description}</p>
-
-        {partner.link && (
-          <Link
-            href={partner.link}
-            className={cn(buttonVariants({ size: 'lg' }), 'mt-4')}
-            target='_blank'
-          >
-            Saznajte više
-          </Link>
-        )}
       </div>
     </article>
   );
